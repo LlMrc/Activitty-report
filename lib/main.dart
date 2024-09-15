@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:report/local.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
 import 'src/app.dart';
-import 'src/settings/settings_controller.dart';
-import 'src/settings/settings_service.dart';
+import 'src/local/local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SharedPreferencesSingleton().init();
+  // Initialize timezone and notifications
+  tz.initializeTimeZones();
 
-  // Run the app and pass in the SettingsController. The app listens to the
-  // SettingsController for changes, then passes it further down to the
-  // SettingsView.
-  runApp(MyApp());
+  runApp(const MyApp());
 }
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();

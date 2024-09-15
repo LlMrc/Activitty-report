@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'src/model/event.dart';
-import 'src/model/note.dart';
-import 'src/model/student.dart';
+
+import '../model/event.dart';
+import '../model/note.dart';
+import '../model/repo.dart';
+import '../model/student.dart';
 
 class SharedPreferencesSingleton {
   static final SharedPreferencesSingleton _instance =
@@ -16,7 +18,10 @@ class SharedPreferencesSingleton {
   SharedPreferencesSingleton._internal();
   static const String keyNote = 'notes';
   static const String keyEvents = 'events';
-  static const String _studentKey = 'students';
+  static const String keyStudent = 'students';
+  static const String keyRepo = 'repoList';
+  static const String keyNotification = 'notification';
+  static const String keyTimer = 'timer';
 
   // Initialize SharedPreferences instance
   late SharedPreferences _prefs;
@@ -34,7 +39,7 @@ class SharedPreferencesSingleton {
 
   // Get all students
   Future<List<Student>> getAllStudents() async {
-    final String? studentJson = _prefs.getString(_studentKey);
+    final String? studentJson = _prefs.getString(keyStudent);
     if (studentJson != null) {
       List<dynamic> jsonList = jsonDecode(studentJson);
       return jsonList.map((json) => Student.fromMap(json)).toList();
@@ -51,14 +56,14 @@ class SharedPreferencesSingleton {
 
   // Delete all students
   Future<void> deleteAllStudents() async {
-    await _prefs.remove(_studentKey);
+    await _prefs.remove(keyStudent);
   }
 
   // Save the updated list of students to SharedPreferences
   Future<void> _saveStudents(List<Student> students) async {
     final String studentJson =
         jsonEncode(students.map((student) => student.toMap()).toList());
-    await _prefs.setString(_studentKey, studentJson);
+    await _prefs.setString(keyStudent, studentJson);
   }
 
   // Save or update a note.
@@ -133,5 +138,59 @@ class SharedPreferencesSingleton {
           (value as List).map((e) => Event.fromJson(e)).toList();
       return MapEntry(dateTime, events);
     });
+  }
+
+  // Add a Repo object to the list in SharedPreferences
+  Future<void> addRepo(Repo repo) async {
+    List<String> repoList = _prefs.getStringList(keyRepo) ?? [];
+
+    // Convert Repo to JSON string and add to list
+    String repoJson = jsonEncode(repo.toJson());
+    repoList.add(repoJson);
+
+    // Save the updated list in SharedPreferences
+    await _prefs.setStringList(keyRepo, repoList);
+  }
+
+  // Delete a Repo object by title (or any unique identifier)
+  Future<void> deleteRepo(String title) async {
+    List<String> repoList = _prefs.getStringList(keyRepo) ?? [];
+
+    // Filter the list to remove the Repo with the matching title
+    repoList.removeWhere((repoJson) {
+      Map<String, dynamic> repoMap = jsonDecode(repoJson);
+      return repoMap['title'] == title;
+    });
+
+    // Save the updated list in SharedPreferences
+    await _prefs.setStringList(keyRepo, repoList);
+  }
+
+  // Get all Repo objects from SharedPreferences
+  List<Repo> getRepos() {
+    List<String> repoList = _prefs.getStringList(keyRepo) ?? [];
+
+    // Convert the JSON strings back to Repo objects
+    return repoList.map((repoJson) {
+      return Repo.fromJson(jsonDecode(repoJson));
+    }).toList();
+  }
+
+  //Enable natification
+  void enableNotification(bool newValue) async {
+    await _prefs.setBool(keyNotification, newValue);
+  }
+
+  bool getNotification() {
+    return _prefs.getBool(keyNotification) ?? false;
+  }
+
+  //Enable Timer
+  void upDateTimer(bool newValue) async {
+    await _prefs.setBool(keyTimer, newValue);
+  }
+
+  bool getTimer() {
+    return _prefs.getBool(keyTimer) ?? false;
   }
 }

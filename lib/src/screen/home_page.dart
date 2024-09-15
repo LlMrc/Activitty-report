@@ -1,49 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:report/local.dart';
-
-import '../settings/settings_view.dart';
+import 'package:report/src/feature/notification/local_notification.dart';
+import '../local/local.dart';
 import '../shape/custom_shape.dart';
-import '../model/sample_item.dart';
-import 'calender/calender.dart';
-import 'notes/note_screen.dart';
-import 'student/add_students.dart';
+import '../model/modules.dart';
+import '../feature/calender/calender.dart';
+import '../feature/notes/note_screen.dart';
+import '../feature/student/add_students.dart';
+import 'drawer.dart';
 
 /// Displays a list of SampleItems.
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
     this.items = const [
-      SampleItem(
+      Modules(
           1,
           'assets/images/user.png',
           'Etidyan',
           AddStudentScreen
               .routeName), //<a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Freepik - Flaticon</a>
-      SampleItem(
+      Modules(
           2,
           'assets/images/note.png',
           'Pran Not',
           NoteScreen
               .routeName), //<a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Pixel perfect - Flaticon</a>
-      SampleItem(
+      Modules(
           3, 'assets/images/calendar.png', 'Ajanda', CalenderScreen.routeName)
     ], //<a href="https://www.flaticon.com/free-icons/agenda" title="agenda icons">Agenda icons created by Freepik - Flaticon</a>
   });
 
   static const routeName = '/';
 
-  final List<SampleItem> items;
+  final List<Modules> items;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final _studentPreferences = SharedPreferencesSingleton();
+  @override
+  void initState() {
+    initNotification();
+    super.initState();
+  }
+
+  void initNotification() async {
+    bool enableNotification = await ReportNification.requestPermissions();
+    if (enableNotification && _preferences.getNotification()) {
+      ReportNification.initNotification();
+    }
+  }
+
+  final _preferences = SharedPreferencesSingleton();
+  bool started = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        endDrawer: const RepoDrawer(),
         body: Column(
           children: [
             const SizedBox(height: 16),
@@ -78,11 +94,7 @@ class _HomePageState extends State<HomePage> {
                         child: IconButton(
                           icon: const Icon(Icons.settings),
                           onPressed: () {
-                            // Navigate to the settings page. If the user leaves and returns
-                            // to the app after it has been killed while running in the
-                            // background, the navigation stack is restored.
-                            Navigator.restorablePushNamed(
-                                context, SettingsView.routeName);
+                            Scaffold.of(context).openDrawer();
                           },
                         ),
                       ),
@@ -100,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                     .toList()),
             const SizedBox(height: 10),
             FutureBuilder(
-                future: _studentPreferences.getAllStudents(),
+                future: _preferences.getAllStudents(),
                 builder: (context, snapShot) {
                   final students = snapShot.data;
                   if (snapShot.connectionState == ConnectionState.waiting) {
@@ -137,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                           trailing: IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () async {
-                              await _studentPreferences
+                              await _preferences
                                   .removeStudent(students[index].name);
                               setState(() {
                                 students.removeAt(index);
@@ -151,11 +163,18 @@ class _HomePageState extends State<HomePage> {
                 })
           ],
         ),
+        floatingActionButton: AnimatedOpacity(
+          duration: Durations.medium1,
+          opacity: _preferences.getTimer() ? 1.0 : 0.0,
+          child: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(started ? Icons.timer_outlined : Icons.close)),
+        ),
       ),
     );
   }
 
-  Widget buildItem(SampleItem item, BuildContext context) {
+  Widget buildItem(Modules item, BuildContext context) {
     return InkWell(
       key: Key(item.id.toString()),
       onTap: () {
@@ -200,17 +219,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-  // appBar: AppBar(
-      //   title: const Text('Sample Items'),
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(Icons.settings),
-      //       onPressed: () {
-      //         // Navigate to the settings page. If the user leaves and returns
-      //         // to the app after it has been killed while running in the
-      //         // background, the navigation stack is restored.
-      //         Navigator.restorablePushNamed(context, SettingsView.routeName);
-      //       },
-      //     ),
-      //   ],
-      // ),

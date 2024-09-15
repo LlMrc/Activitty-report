@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:report/local.dart';
 import 'package:report/src/model/note.dart';
+
+import '../../local/local.dart';
 
 class DisplayNote extends StatefulWidget {
   const DisplayNote({super.key, required this.note, required this.onPressed});

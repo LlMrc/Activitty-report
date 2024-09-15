@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:report/local.dart';
+
 import 'package:uuid/uuid.dart';
 
+import '../../local/local.dart';
 import '../../model/note.dart';
 
 class AddNote extends StatefulWidget {

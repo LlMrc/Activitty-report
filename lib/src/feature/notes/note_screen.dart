@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:report/local.dart';
+
 import 'package:report/src/feature/notes/display.dart';
 import 'package:report/src/feature/notes/sticky_note_ui.dart';
+import '../../local/local.dart';
 import 'add_note.dart';
 import 'package:intl/intl.dart';
 
@@ -68,9 +69,7 @@ class NoteScreenState extends State<NoteScreen> {
                                   color: note.color,
                                   child: Column(
                                     children: [
-                                      const SizedBox(
-                                        height: 6,
-                                      ),
+                                      const SizedBox(height: 6),
                                       Text(
                                         note.title,
                                         maxLines: 1,
@@ -186,11 +185,11 @@ class NoteScreenState extends State<NoteScreen> {
 ////////////////////////////    NOTES DETAILS ////////////////////////////////////////////////
 class SilverBar {
   static List sliverAppBar = const [
-    AssetImage('assets/appBar.jpg'),
-    AssetImage('assets/appBar1.jpg'),
-    AssetImage('assets/appBar2.jpg'),
-    AssetImage('assets/appBar3.jpg'),
-    AssetImage('assets/appBar4.jpg')
+    AssetImage('assets/kong1.jpg'),
+    AssetImage('assets/kong2.jpg'),
+    AssetImage('assets/kong3.jpg'),
+    AssetImage('assets/kong4.jpg'),
+    AssetImage('assets/kong5.jpg')
   ];
   static AssetImage getColorItem() => (sliverAppBar.toList()..shuffle()).first;
 }

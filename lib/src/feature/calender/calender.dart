@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import '../../local/local.dart';
 import '../../model/event.dart';
 
 class CalenderScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class CalenderScreen extends StatefulWidget {
 class _CalenderScreenState extends State<CalenderScreen> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-
+  final ValueNotifier<bool> _showFAB = ValueNotifier<bool>(false);
   //----------------------------
 
   Map<DateTime, List<Event>> events = {};
@@ -68,7 +68,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
       });
       _selectedEvents.value = _getEventsForDay(selectedDay);
     }
-    bloc.add(GestureDetectorEvent(isDragging: true));
+    _showFAB.value = true;
     debugPrint('${_selectedEvents.value}');
   }
 
@@ -89,8 +89,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
     } else if (end != null) {
       _selectedEvents.value = _getEventsForDay(end);
     }
-
-    bloc.add(GestureDetectorEvent(isDragging: true));
+    _showFAB.value = true;
   }
 
   final _titleController = TextEditingController();
@@ -99,181 +98,168 @@ class _CalenderScreenState extends State<CalenderScreen> {
   // //Clear text controller
 
   TimeOfDay _timeOfDay = TimeOfDay.now();
-  final bloc = CalandarBloc();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocBuilder<CalandarBloc, CalandarState>(
-        bloc: bloc,
-        builder: (context, state) {
-          return GestureDetector(
-            onVerticalDragUpdate: (details) {
-              if (details.delta.dy < 0) {
-                bloc.add(GestureDetectorEvent(isDragging: false));
-              } else {
-                bloc.add(GestureDetectorEvent(isDragging: true));
-              }
-            },
-            child: Scaffold(
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 14),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        DateFormat('MMMM yyyy').format(_selectedDay!),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TableCalendar(
-                      headerStyle: HeaderStyle(
-                          formatButtonDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(),
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onInverseSurface)),
-                      firstDay: DateTime.utc(2010, 12, 31),
-                      lastDay: DateTime.utc(2030, 01, 01),
-                      focusedDay: _focusedDay,
-                      selectedDayPredicate: (day) =>
-                          isSameDay(_selectedDay, day),
-                      rangeStartDay: _rangeStart,
-                      rangeEndDay: _rangeEnd,
-                      calendarFormat: _calendarFormat,
-                      rangeSelectionMode: _rangeSelectionMode,
-                      eventLoader: _getEventsForDay,
-                      startingDayOfWeek: StartingDayOfWeek.monday,
-                      calendarStyle: CalendarStyle(
-                        markerDecoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.error),
-                        selectedDecoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.primary),
-                        weekendDecoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                        ),
-                        todayDecoration: const BoxDecoration(
-                          image: DecorationImage(
-                              alignment: Alignment.center,
-                              fit: BoxFit.cover,
-                              image: AssetImage('images/car.jpeg')),
-                          shape: BoxShape.circle,
-                        ),
-                        // Use `CalendarStyle` to customize the UI
-                        outsideDaysVisible: false,
-                      ),
-                      onDaySelected: _onDaySelected,
-                      onRangeSelected: _onRangeSelected,
-                      onFormatChanged: (format) {
-                        if (_calendarFormat != format) {
-                          setState(() {
-                            _calendarFormat = format;
-                          });
-                        }
-                      },
-                      onPageChanged: (focusedDay) {
-                        _focusedDay = focusedDay;
-                      },
-                    ),
-                    const SizedBox(height: 10.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: ValueListenableBuilder(
-                        builder: (context, value, _) {
-                          return Center(
-                            child: Wrap(
-                              spacing: 10,
-                              children: value
-                                  .map((e) => Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 20, horizontal: 12),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(4)),
-                                        child: Stack(
-                                          children: [
-                                            stickyNote(context, e),
-                                            Positioned(
-                                              top: -10,
-                                              right: -5,
-                                              child: IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _selectedEvents.value
-                                                          .clear();
-                                                      events.removeWhere((key,
-                                                              value) =>
-                                                          key.day ==
-                                                          _selectedDay!.day);
-                                                      SharedPrefSingleton()
-                                                          .saveEvents(events);
-                                                      _selectedEvents.value =
-                                                          _getEventsForDay(
-                                                              _selectedDay!);
-
-                                                      _getEventsForDay(
-                                                          _selectedDay!);
-                                                      loadPreviousEvents();
-                                                      bloc.add(
-                                                          GestureDetectorEvent(
-                                                              isDragging:
-                                                                  false));
-
-                                                      _getEventsForDay;
-                                                    });
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.push_pin_rounded,
-                                                    color: Colors.blue,
-                                                  )),
-                                            )
-                                          ],
-                                        ),
-                                      ))
-                                  .toList(),
-                            ),
-                          );
-                        },
-                        valueListenable: _selectedEvents,
-                      ),
-                    )
-                  ],
+        child: GestureDetector(
+      onVerticalDragUpdate: (details) {
+        if (details.delta.dy < 0) {
+          _showFAB.value = false;
+        } else {
+          _showFAB.value = true;
+        }
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  DateFormat('MMMM yyyy').format(_selectedDay!),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              floatingActionButton: AnimatedOpacity(
-                duration: const Duration(milliseconds: 500),
-                opacity: state.isDragging ? 1.0 : 0.0,
-                child: FloatingActionButton.extended(
-                  onPressed: () {
-                    //  Show dialog to user to input event
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => myDialog(context));
+              TableCalendar(
+                headerStyle: HeaderStyle(
+                    formatButtonDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(),
+                        color: Theme.of(context).colorScheme.tertiaryContainer),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onInverseSurface)),
+                firstDay: DateTime.utc(2010, 12, 31),
+                lastDay: DateTime.utc(2030, 01, 01),
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                eventLoader: _getEventsForDay,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  markerDecoration:
+                      BoxDecoration(color: Theme.of(context).colorScheme.error),
+                  selectedDecoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.primary),
+                  weekendDecoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                  ),
+                  todayDecoration: const BoxDecoration(
+                    image: DecorationImage(
+                        alignment: Alignment.center,
+                        fit: BoxFit.cover,
+                        image: AssetImage('images/car.jpeg')),
+                    shape: BoxShape.circle,
+                  ),
+                  // Use `CalendarStyle` to customize the UI
+                  outsideDaysVisible: false,
+                ),
+                onDaySelected: _onDaySelected,
+                onRangeSelected: _onRangeSelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: ValueListenableBuilder(
+                  builder: (context, value, _) {
+                    return Center(
+                      child: Wrap(
+                        spacing: 10,
+                        children: value
+                            .map((e) => Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 20, horizontal: 12),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: Stack(
+                                    children: [
+                                      stickyNote(context, e),
+                                      Positioned(
+                                        top: -10,
+                                        right: -5,
+                                        child: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _selectedEvents.value.clear();
+                                                events.removeWhere(
+                                                    (key, value) =>
+                                                        key.day ==
+                                                        _selectedDay!.day);
+                                                SharedPreferencesSingleton()
+                                                    .saveEvents(events);
+                                                _selectedEvents.value =
+                                                    _getEventsForDay(
+                                                        _selectedDay!);
+
+                                                _getEventsForDay(_selectedDay!);
+                                                loadPreviousEvents();
+                                                _showFAB.value = false;
+
+                                                _getEventsForDay;
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              Icons.push_pin_rounded,
+                                              color: Colors.blue,
+                                            )),
+                                      )
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    );
                   },
-                  label: const Text('Add Events'),
-                  icon: const Icon(Icons.add),
+                  valueListenable: _selectedEvents,
                 ),
+              )
+            ],
+          ),
+        ),
+        floatingActionButton: ValueListenableBuilder(
+          builder: (context, isVisible, _) {
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              opacity: isVisible ? 1.0 : 0.0,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  //  Show dialog to user to input event
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => myDialog(context));
+                },
+                label: const Text('Add Events'),
+                icon: const Icon(Icons.add),
               ),
-            ),
-          );
-        },
+            );
+          },
+          valueListenable: _showFAB,
+        ),
       ),
-    );
+    ));
   }
 
   @override
@@ -360,13 +346,13 @@ class _CalenderScreenState extends State<CalenderScreen> {
                     _selectedDay!.day, _timeOfDay.hour, _timeOfDay.minute);
                 final selectedEvent = Event(
                     title: _titleController.text,
-                    from: _fromController.text,
+                    description: _fromController.text,
                     timeStamp: DateFormat.MMMEd().format(date));
                 events.addAll({
                   _selectedDay!: [..._selectedEvents.value, selectedEvent]
                 });
 
-                await SharedPrefSingleton().saveEvents(events);
+                await SharedPreferencesSingleton().saveEvents(events);
 
                 _selectedEvents.value = _getEventsForDay(_selectedDay!);
                 if (contextPopup.mounted) {
@@ -384,7 +370,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
   }
 
   void loadPreviousEvents() async {
-    events = SharedPrefSingleton().getEvents();
+    events = SharedPreferencesSingleton().getEvents();
     setState(() {});
   }
 
@@ -421,7 +407,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(e.from,
+          child: Text(e.description,
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

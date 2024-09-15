@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting the Date and Time
-import '../../../local.dart'; // Import your SharedPreferences singleton
+// Import your SharedPreferences singleton
+import '../../local/local.dart';
 import '../../model/student.dart'; // Import your Student model
 
 class AddStudentScreen extends StatefulWidget {
