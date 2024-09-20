@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           color: Colors.deepPurple,
                           image: const DecorationImage(
-                            image: AssetImage('assets/images/background.jpeg'),
+                            image: AssetImage('assets/bg.jpg'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(16),

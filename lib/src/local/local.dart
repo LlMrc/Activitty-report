@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/event.dart';
 import '../model/note.dart';
-import '../model/repo.dart';
+
 import '../model/student.dart';
 
 class SharedPreferencesSingleton {
@@ -18,6 +18,7 @@ class SharedPreferencesSingleton {
   SharedPreferencesSingleton._internal();
   static const String keyNote = 'notes';
   static const String keyEvents = 'events';
+  static const String keyEventsRange = 'events_range';
   static const String keyStudent = 'students';
   static const String keyRepo = 'repoList';
   static const String keyNotification = 'notification';
@@ -140,41 +141,49 @@ class SharedPreferencesSingleton {
     });
   }
 
-  // Add a Repo object to the list in SharedPreferences
-  Future<void> addRepo(Repo repo) async {
-    List<String> repoList = _prefs.getStringList(keyRepo) ?? [];
-
-    // Convert Repo to JSON string and add to list
-    String repoJson = jsonEncode(repo.toJson());
-    repoList.add(repoJson);
-
-    // Save the updated list in SharedPreferences
-    await _prefs.setStringList(keyRepo, repoList);
+//Users can select Date range  when saving event
+Future<void> saveEventsWithDateRange(
+      Map<List<DateTime>, Event> events) async {
+    final eventsJson = _encodeEventsWithDateRange(events);
+    debugPrint("Saving events with date range: $eventsJson");
+    await _prefs.setString(keyEventsRange, eventsJson); // Use a different key
+  }
+String _encodeEventsWithDateRange(Map<List<DateTime>, Event> events) {
+    return json.encode(events.map(
+      (key, value) => MapEntry(
+        key
+            .map((date) => date.toIso8601String())
+            .join(' to '), // Encode the list of DateTimes as a string
+        value.toJson(), // Ensure Event has a toJson() method
+      ),
+    ));
   }
 
-  // Delete a Repo object by title (or any unique identifier)
-  Future<void> deleteRepo(String title) async {
-    List<String> repoList = _prefs.getStringList(keyRepo) ?? [];
+  Map<List<DateTime>, Event> _decodeEventsWithDateRange(String eventsJson) {
+    final Map<String, dynamic> jsonMap = json.decode(eventsJson);
+    return jsonMap.map((key, value) {
+      // Split the key back into two DateTime objects
+      final List<DateTime> dateRange = key
+          .split(' to ')
+          .map((dateString) => DateTime.parse(dateString))
+          .toList();
 
-    // Filter the list to remove the Repo with the matching title
-    repoList.removeWhere((repoJson) {
-      Map<String, dynamic> repoMap = jsonDecode(repoJson);
-      return repoMap['title'] == title;
+      // Decode the Event from JSON
+      final Event event = Event.fromJson(value);
+      return MapEntry(dateRange, event);
     });
-
-    // Save the updated list in SharedPreferences
-    await _prefs.setStringList(keyRepo, repoList);
   }
 
-  // Get all Repo objects from SharedPreferences
-  List<Repo> getRepos() {
-    List<String> repoList = _prefs.getStringList(keyRepo) ?? [];
+ 
 
-    // Convert the JSON strings back to Repo objects
-    return repoList.map((repoJson) {
-      return Repo.fromJson(jsonDecode(repoJson));
-    }).toList();
+  Map<List<DateTime>, Event> getEventsWithDateRange() {
+    final eventsJson = _prefs.getString(keyEventsRange);
+    return eventsJson != null ? _decodeEventsWithDateRange(eventsJson) : {};
   }
+
+
+
+  
 
   //Enable natification
   void enableNotification(bool newValue) async {

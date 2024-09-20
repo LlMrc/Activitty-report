@@ -15,7 +15,7 @@ class ReportNification {
     // Set up Android initialization settings
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings(
-            'app_icon'); // Ensure you have an app icon
+            'ic_launcher'); // Ensure you have an app icon
 
     // Set up iOS initialization settings
     const DarwinInitializationSettings initializationSettingsIOS =
@@ -39,7 +39,7 @@ class ReportNification {
       onDidReceiveNotificationResponse: (NotificationResponse? payload) async {
         // Handle notification tap (optional)
         if (payload != null) {
-          print('Notification payload: $payload');
+          debugPrint('Notification payload: $payload');
         }
       },
     );
@@ -77,17 +77,42 @@ class ReportNification {
     return grantedNotificationPermission ?? false;
   }
 
-  static void showEventAlarm() async {
+ static void showEventAlarm() async {
+    // Retrieve single-date events
     Map<DateTime, List<Event>> map = SharedPreferencesSingleton().getEvents();
     var eventList = map.keys.toList();
 
+    // Schedule notifications for single-date events
     for (var date in eventList) {
       for (var event in map[date]!) {
         await _scheduleLocalEventNotification(
             event: event, scheduledDate: date);
       }
     }
+
+    // Retrieve date-range events
+    Map<List<DateTime>, Event> mapRange =
+        SharedPreferencesSingleton().getEventsWithDateRange();
+
+    // Schedule notifications for date-range events
+    for (var dateRange in mapRange.keys) {
+      DateTime startDate = dateRange.first;
+      DateTime endDate = dateRange.last;
+      var event = mapRange[dateRange];
+          // Schedule notifications for each day within the date range
+
+if(event != null){
+        for (var date = startDate;
+            date.isBefore(endDate.add(const Duration(days: 1)));
+            date = date.add(const Duration(days: 1))) {
+          await _scheduleLocalEventNotification(
+              event: event, scheduledDate: date);
+        }
+}
+    
+    }
   }
+
 
   // Show event in local notification
   static Future<void> _scheduleLocalEventNotification(
@@ -121,7 +146,7 @@ class ReportNification {
       scheduleTime,
       platformChannelSpecifics,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      matchDateTimeComponents: event.pyonye == true? DateTimeComponents.dayOfMonthAndTime: DateTimeComponents.dayOfWeekAndTime,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
       payload: '1',

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:report/src/model/event.dart';
 import '../local/local.dart';
-import '../model/repo.dart';
+
 
 class DateRangePickerScreen extends StatefulWidget {
   const DateRangePickerScreen({super.key});
@@ -14,6 +15,7 @@ class DateRangePickerScreen extends StatefulWidget {
 class _DateRangePickerScreenState extends State<DateRangePickerScreen> {
   DateTimeRange? selectedDateRange;
   DateTime? selectedSingleDate;
+    final Map<List<DateTime>, Event> _dateRangeEvents = {};
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
   bool isSingleDate = false; // Toggle between single date and date range
@@ -71,16 +73,17 @@ class _DateRangePickerScreenState extends State<DateRangePickerScreen> {
         dateRange = [selectedDateRange!.start, selectedDateRange!.end];
       }
 
-      // Create a new Repo object
-      Repo newRepo = Repo(
-        dates: dateRange,
-        title: titleController.text,
-        content: contentController.text,
-      );
 
-      // Add the Repo to SharedPreferences
-      SharedPreferencesSingleton prefsSingleton = SharedPreferencesSingleton();
-      await prefsSingleton.addRepo(newRepo);
+      // Create a new Repo object
+      Event newRepo = Event(
+       pyonye: true,
+        title: titleController.text,
+        description: contentController.text,
+      );
+      _dateRangeEvents[dateRange]= newRepo;
+      // // Add the Repo to SharedPreferences
+       SharedPreferencesSingleton prefsSingleton = SharedPreferencesSingleton();
+       await prefsSingleton.saveEventsWithDateRange(_dateRangeEvents);
 
       // Clear the input fields after adding
       titleController.clear();
