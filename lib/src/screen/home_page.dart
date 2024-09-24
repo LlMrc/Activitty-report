@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:report/src/feature/notification/local_notification.dart';
+import 'package:report/src/widget/student_tile.dart';
 import '../local/local.dart';
 import '../model/event.dart';
 import '../shape/custom_shape.dart';
@@ -119,56 +120,7 @@ class _HomePageState extends State<HomePage> {
                         .map((item) => buildItem(item, context))
                         .toList()),
                 const SizedBox(height: 10),
-                FutureBuilder(
-                    future: _preferences.getAllStudents(),
-                    builder: (context, snapShot) {
-                      final students = snapShot.data;
-                      if (snapShot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (students == null || students.isEmpty) {
-                        return SizedBox(
-                            child: Column(
-                                children: List.generate(
-                                    3,
-                                    (index) => ListTile(
-                                          leading: const CircleAvatar(),
-                                          title: Container(
-                                              width: 70,
-                                              height: 18,
-                                              color: Colors.grey[300]),
-                                          subtitle: Container(
-                                              width: 50,
-                                              height: 20,
-                                              color: Colors.grey[200]),
-                                        ))));
-                      }
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: students.length,
-                          itemBuilder: (context, index) => Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: ListTile(
-                              title: Text(students[index].name),
-                              subtitle: Text(students[index].phoneNumber ?? ''),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () async {
-                                  await _preferences
-                                      .removeStudent(students[index].name);
-                                  setState(() {
-                                    students.removeAt(index);
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    })
+               const StudentListTile()
               ],
             );
           }

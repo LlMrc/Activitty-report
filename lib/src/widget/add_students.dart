@@ -16,10 +16,13 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   DateTime _selectedDateTime = DateTime.now(); // Store both date and time
 
   // Method to pick date
   Future<void> _pickDate(BuildContext context) async {
+    // Unfocus any text fields or input elements to dismiss the keyboard
+    FocusScope.of(context).unfocus();
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDateTime,
@@ -49,6 +52,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   // Method to pick time
   Future<void> _pickTime(BuildContext context) async {
+    // Unfocus any text fields or input elements to dismiss the keyboard
+    FocusScope.of(context).unfocus();
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
@@ -77,6 +82,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
         name: _nameController.text,
         phoneNumber: _phoneNumberController.text,
         dateAdded: _selectedDateTime,
+        comment: _commentController.text,
         address: _addressController.text,
       );
 
@@ -87,6 +93,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       _nameController.clear();
       _phoneNumberController.clear();
       _addressController.clear();
+      _commentController.clear();
       setState(() {
         _selectedDateTime = DateTime.now();
       });
@@ -100,64 +107,79 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Student'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              const SizedBox(
-                height: 100,
-              ),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _phoneNumberController,
-                decoration: const InputDecoration(labelText: 'Phone Number'),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value != null && value.isNotEmpty && value.length < 7) {
-                    return 'Please enter a valid phone number';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _addressController,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Address'),
-              ),
-              const SizedBox(height: 20),
-              ListTile(
-                title: Text(
-                  '${DateFormat.EEEE().format(_selectedDateTime)} '
-                  '${DateFormat.Hm().format(_selectedDateTime)}',
+    return GestureDetector(
+        onTap: () {
+        // Dismiss the keyboard when tapping outside of the Form
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text('Add a Student'.toUpperCase()),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                const SizedBox(height: 50),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a name';
+                    }
+                    return null;
+                  },
                 ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.calendar_today_rounded),
-                  onPressed: () => _pickDate(context),
+                const SizedBox(height: 16,),
+                TextFormField(
+                  controller: _phoneNumberController,
+                  decoration: const InputDecoration(labelText: 'Phone Number'),
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value != null && value.isNotEmpty && value.length < 7) {
+                      return 'Please enter a valid phone number';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _addStudent,
-                child: const Text('Add Student'),
-              ),
-            ],
+                 const SizedBox(
+                  height: 16,
+                ),
+                TextFormField(
+                  controller: _addressController,
+                  decoration: const InputDecoration(labelText: 'Address'),
+                ),
+                const SizedBox(height: 30),
+             
+                TextFormField(
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Comment'),
+                  controller: _commentController,
+            
+                ),
+                const SizedBox(height: 20),
+                ListTile(
+                  title: Text(
+                    '${DateFormat.EEEE().format(_selectedDateTime)} '
+                    '${DateFormat.Hm().format(_selectedDateTime)}',
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.calendar_today_rounded),
+                    onPressed: () => _pickDate(context),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _addStudent,
+                  child: const Text('Ajoute'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

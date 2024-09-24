@@ -19,24 +19,7 @@ class _PyonyeServicesDataPickerState extends State<PyonyeServicesDataPicker> {
   bool isSingleDate = false; // Toggle between single date and date range
   bool _isVisible = false;
  
-  
-
  
-
-  // Function to add the repo to SharedPreferences
-
-
-    //   if (mounted) {
-    //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //         content: Text(
-    //             'Bravo 👏!! sèvis pyonye a ap komanse ${dateRange.first}')));
-    //   }
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(content: Text('Byen konplete espas yo tanpri!')));
-    // }
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +32,7 @@ class _PyonyeServicesDataPickerState extends State<PyonyeServicesDataPicker> {
           width: double.infinity,
           alignment: Alignment.bottomCenter,
           decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/pyonye.jpg'))),
-           child: Text('Chwazi kilè w\'ap komanse ✍',
+           child: Text('Chwazi Dat w\'ap komanse ✍',
            style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.primaryContainer ,  fontWeight: FontWeight.w700,  shadows: [ BoxShadow(color: Colors.grey.shade700, offset: const Offset(1, -1))]),)),
           const SizedBox(height: 20),
           Padding(
