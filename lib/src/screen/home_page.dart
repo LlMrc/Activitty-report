@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:report/src/feature/notification/local_notification.dart';
 import '../local/local.dart';
+import '../model/event.dart';
 import '../shape/custom_shape.dart';
 import '../model/modules.dart';
 import '../feature/calender/calender.dart';
 import '../feature/notes/note_screen.dart';
-import '../feature/student/add_students.dart';
-import 'drawer.dart';
+import '../widget/add_students.dart';
+import '../widget/drawer.dart';
 
 /// Displays a list of SampleItems.
 class HomePage extends StatefulWidget {
@@ -41,11 +42,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    initNotification();
+    init();
     super.initState();
   }
 
-  void initNotification() async {
+  void init() async {
     bool enableNotification = await ReportNification.requestPermissions();
     if (enableNotification && _preferences.getNotification()) {
       ReportNification.initNotification();
@@ -54,118 +55,127 @@ class _HomePageState extends State<HomePage> {
 
   final _preferences = SharedPreferencesSingleton();
   bool started = false;
-
+  final _event = Event();
+     
   @override
   Widget build(BuildContext context) {
+    bool? isPyonye = _event.pyonye;
     return SafeArea(
       child: Scaffold(
-        endDrawer: const RepoDrawer(),
-        body: Column(
-          children: [
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(16)),
-                child: SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      /// background image
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurple,
-                          image: const DecorationImage(
-                            image: AssetImage('assets/bg.jpg'),
-                            fit: BoxFit.cover,
+        endDrawer:  const RepoDrawer(),
+        body: Builder(
+          builder: (context) {
+            return Column(
+              children: [
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    child: SizedBox(
+                      height: 200,
+                      width: double.infinity,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          /// background image
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple,
+                              image: const DecorationImage(
+                                image: AssetImage('assets/bg.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      CustomPaint(
-                        painter: CardPaint(),
-                        size: const Size(600, 200),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: IconButton(
-                          icon: const Icon(Icons.settings),
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: widget.items
-                    .map((item) => buildItem(item, context))
-                    .toList()),
-            const SizedBox(height: 10),
-            FutureBuilder(
-                future: _preferences.getAllStudents(),
-                builder: (context, snapShot) {
-                  final students = snapShot.data;
-                  if (snapShot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (students == null || students.isEmpty) {
-                    return SizedBox(
-                        child: Column(
-                            children: List.generate(
-                                3,
-                                (index) => ListTile(
-                                      leading: const CircleAvatar(),
-                                      title: Container(
-                                          width: 70,
-                                          height: 18,
-                                          color: Colors.grey[300]),
-                                      subtitle: Container(
-                                          width: 50,
-                                          height: 20,
-                                          color: Colors.grey[200]),
-                                    ))));
-                  }
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: students.length,
-                      itemBuilder: (context, index) => Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: ListTile(
-                          title: Text(students[index].name),
-                          subtitle: Text(students[index].phoneNumber ?? ''),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () async {
-                              await _preferences
-                                  .removeStudent(students[index].name);
-                              setState(() {
-                                students.removeAt(index);
-                              });
-                            },
+                          CustomPaint(
+                            painter: CardPaint(),
+                            size: const Size(600, 200),
                           ),
-                        ),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: IconButton(
+                              icon: Icon(Icons.settings,
+                                  color:
+                                      Theme.of(context).colorScheme.inversePrimary),
+                              onPressed: () {
+                              
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  );
-                })
-          ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: widget.items
+                        .map((item) => buildItem(item, context))
+                        .toList()),
+                const SizedBox(height: 10),
+                FutureBuilder(
+                    future: _preferences.getAllStudents(),
+                    builder: (context, snapShot) {
+                      final students = snapShot.data;
+                      if (snapShot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (students == null || students.isEmpty) {
+                        return SizedBox(
+                            child: Column(
+                                children: List.generate(
+                                    3,
+                                    (index) => ListTile(
+                                          leading: const CircleAvatar(),
+                                          title: Container(
+                                              width: 70,
+                                              height: 18,
+                                              color: Colors.grey[300]),
+                                          subtitle: Container(
+                                              width: 50,
+                                              height: 20,
+                                              color: Colors.grey[200]),
+                                        ))));
+                      }
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: students.length,
+                          itemBuilder: (context, index) => Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: ListTile(
+                              title: Text(students[index].name),
+                              subtitle: Text(students[index].phoneNumber ?? ''),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () async {
+                                  await _preferences
+                                      .removeStudent(students[index].name);
+                                  setState(() {
+                                    students.removeAt(index);
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    })
+              ],
+            );
+          }
         ),
         floatingActionButton: AnimatedOpacity(
           duration: Durations.medium1,
-          opacity: _preferences.getTimer() ? 1.0 : 0.0,
+          opacity: isPyonye == true ? 1.0 : 0.0,
           child: FloatingActionButton(
               onPressed: () {},
               child: Icon(started ? Icons.timer_outlined : Icons.close)),

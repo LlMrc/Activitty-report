@@ -19,7 +19,7 @@ final Event event;
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           width: double.maxFinite,
           color: const Color.fromARGB(255, 234, 235, 176),
-          child: Text(event.title.toUpperCase(),
+          child: Text(event.title  ?? 'Okenn tit'.toUpperCase(),
               textAlign: TextAlign.start,
               style: const TextStyle(
                   color: Colors.black,
@@ -31,7 +31,7 @@ final Event event;
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(event.description,
+          child: Text(event.description ?? 'Okenn deskripsyon',
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

@@ -174,6 +174,37 @@ String _encodeEventsWithDateRange(Map<List<DateTime>, Event> events) {
     });
   }
 
+Future<bool?> getPyonye(DateTime targetDate, {DateTime? endDate}) async {
+    final eventsJson = _prefs.getString(keyEventsRange);
+    if (eventsJson == null) return null; // No events saved
+
+    // Decode the stored events
+    final events = _decodeEventsWithDateRange(eventsJson);
+
+    // Check if it's a single date event
+    if (endDate == null) {
+      // Look for the event with a single target date
+      for (List<DateTime> dateRange in events.keys) {
+        if (dateRange.length == 1 && dateRange.first == targetDate) {
+          // Return the pyonye value from the Event
+          return events[dateRange]?.pyonye;
+        }
+      }
+    } else {
+      // Look for the event with a date range
+      for (List<DateTime> dateRange in events.keys) {
+        if (dateRange.first == targetDate && dateRange.last == endDate) {
+          // Return the pyonye value from the Event
+          return events[dateRange]?.pyonye;
+        }
+      }
+    }
+
+    return null; // No event found for the single date or date range
+  }
+
+
+
  
 
   Map<List<DateTime>, Event> getEventsWithDateRange() {
@@ -194,12 +225,5 @@ String _encodeEventsWithDateRange(Map<List<DateTime>, Event> events) {
     return _prefs.getBool(keyNotification) ?? false;
   }
 
-  //Enable Timer
-  void upDateTimer(bool newValue) async {
-    await _prefs.setBool(keyTimer, newValue);
-  }
-
-  bool getTimer() {
-    return _prefs.getBool(keyTimer) ?? false;
-  }
+ 
 }

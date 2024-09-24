@@ -85,7 +85,7 @@ class ReportNification {
     // Schedule notifications for single-date events
     for (var date in eventList) {
       for (var event in map[date]!) {
-        await _scheduleLocalEventNotification(
+        await scheduleLocalEventNotification(
             event: event, scheduledDate: date);
       }
     }
@@ -105,7 +105,7 @@ if(event != null){
         for (var date = startDate;
             date.isBefore(endDate.add(const Duration(days: 1)));
             date = date.add(const Duration(days: 1))) {
-          await _scheduleLocalEventNotification(
+          await scheduleLocalEventNotification(
               event: event, scheduledDate: date);
         }
 }
@@ -115,7 +115,7 @@ if(event != null){
 
 
   // Show event in local notification
-  static Future<void> _scheduleLocalEventNotification(
+  static Future<void> scheduleLocalEventNotification(
       {required Event event, required DateTime scheduledDate}) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         const AndroidNotificationDetails(
@@ -152,4 +152,7 @@ if(event != null){
       payload: '1',
     );
   }
+
+
+  
 }

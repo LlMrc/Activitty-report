@@ -87,13 +87,15 @@ class _CalenderScreenState extends State<CalenderScreen> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Clear range selection
+
+        // Clear range selection when a single day is selected
+        _rangeStart = null;
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
 
-      // Load events for the selected day
-      _selectedEvents.value = _getEventsForDay(selectedDay);
+        // Load events for the selected day
+        _selectedEvents.value = _getEventsForDay(selectedDay);
+      });
     }
 
     _showFAB.value = true;
@@ -204,16 +206,12 @@ class _CalenderScreenState extends State<CalenderScreen> {
                               : Colors.transparent);
 
                       return Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: 12.0,
-                          height: 12.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
+                          alignment: Alignment.bottomCenter,
+                          child: Icon(
+                            Icons.star,
+                            size: 14,
                             color: markerColor,
-                          ),
-                        ),
-                      );
+                          ));
                     }
                     return null; // No marker if there are no events
                   },
@@ -252,7 +250,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
               const SizedBox(height: 10.0),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: ValueListenableBuilder(
+                child: ValueListenableBuilder<List<Event>>(
                   valueListenable: _selectedEvents,
                   builder: (context, value, _) {
                     return Center(
@@ -272,16 +270,14 @@ class _CalenderScreenState extends State<CalenderScreen> {
                                         right: -5,
                                         child: IconButton(
                                             onPressed: () {
-                                              if (_selectedEvents
-                                                      .value.length ==
-                                                  1) {
+                                              if (_selectedDay != null) {
+                                                // Single day is selected, so remove a single event
                                                 _removeEvent();
-                                              } else {
-                                                if (_rangeStart != null &&
-                                                    _rangeEnd != null) {
-                                                  _removeEventsForDateRange(
-                                                      _rangeStart!, _rangeEnd!);
-                                                }
+                                              } else if (_rangeStart != null &&
+                                                  _rangeEnd != null) {
+                                                // Date range is selected, so remove events for the range
+                                                _removeEventsForDateRange(
+                                                    _rangeStart!, _rangeEnd!);
                                               }
                                             },
                                             icon: const Icon(
@@ -434,7 +430,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   // Retrieve the saved events
                   var savedEvents =
                       SharedPreferencesSingleton().getEventsWithDateRange();
-                  print('Retrieved events: $savedEvents');
+                  debugPrint('Retrieved events: $savedEvents');
                 }
               }
 
@@ -450,9 +446,11 @@ class _CalenderScreenState extends State<CalenderScreen> {
               // Close the popup if the context is still mounted and inputs are invalid
               Navigator.of(contextPopup).pop();
             }
-            setState(() {});
+            setState(() {
+              _rangeSelectionMode = RangeSelectionMode.toggledOff;
+            });
           },
-          child: const Text('Submit'),
+          child: const Text('Soumèt'),
         )
       ],
     );
@@ -534,5 +532,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
       // Optionally reload previous events if needed
       loadPreviousEvents();
     });
+    _rangeSelectionMode = RangeSelectionMode.toggledOff;
   }
 }

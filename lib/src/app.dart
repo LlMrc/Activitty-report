@@ -4,10 +4,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:report/src/theme/theme.dart';
 import 'package:report/src/theme/util.dart';
 import 'feature/calender/calender.dart';
-import 'screen/date_picker_screen.dart';
+import 'screen/pyonye_screen.dart';
 import 'screen/home_page.dart';
 import 'feature/notes/note_screen.dart';
-import 'feature/student/add_students.dart';
+import 'widget/add_students.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
 
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       // Providing a restorationScopeId allows the Navigator built by the
       // MaterialApp to restore the navigation stack when a user leaves and
       // returns to the app after it has been killed while running in the
@@ -72,8 +73,8 @@ class MyApp extends StatelessWidget {
                 return const NoteScreen();
               case CalenderScreen.routeName:
                 return const CalenderScreen();
-              case DateRangePickerScreen.routeName:
-                return const DateRangePickerScreen();
+              case PyonyeServicesDataPicker.routeName:
+                return const PyonyeServicesDataPicker();
               case HomePage.routeName:
               default:
                 return const HomePage();
