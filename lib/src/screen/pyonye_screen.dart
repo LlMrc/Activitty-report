@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:report/src/widget/single_month_picker.dart';
 
 import '../widget/month_picker.dart';
@@ -18,11 +18,7 @@ class _PyonyeServicesDataPickerState extends State<PyonyeServicesDataPicker> {
 
   bool isSingleDate = false; // Toggle between single date and date range
   bool _isVisible = false;
-  final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
-    int selectedStartYear = DateTime.now().year;
-  int selectedStartMonth = DateTime.now().month;
-  int selectedEndYear = DateTime.now().year;
-  int selectedEndMonth = DateTime.now().month;
+ 
   
 
  
@@ -75,7 +71,7 @@ class _PyonyeServicesDataPickerState extends State<PyonyeServicesDataPicker> {
           ),
 
           const SizedBox(height: 24),
-          isSingleDate ? const SingleMonthPicker() : const MonthRangePicker(),
+          isSingleDate ? const SingleMonthPicker() : const MonthRangePickerScreen(),
     
        
         ],

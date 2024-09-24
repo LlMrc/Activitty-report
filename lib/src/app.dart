@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:report/src/theme/theme.dart';
 import 'package:report/src/theme/util.dart';
 import 'feature/calender/calender.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+         MonthYearPickerLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('en', ''), // English, no country code

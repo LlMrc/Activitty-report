@@ -1,157 +1,179 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:month_year_picker/month_year_picker.dart';
+import 'package:report/src/local/local.dart';
 
 import '../feature/notification/local_notification.dart';
-import '../model/event.dart';
+import '../model/event.dart'; // Import the month_picker package
 
-class MonthRangePicker extends StatefulWidget {
-  const MonthRangePicker({super.key});
+class MonthRangePickerScreen extends StatefulWidget {
+  const MonthRangePickerScreen({super.key});
 
   @override
-  State<MonthRangePicker> createState() => _MonthRangePickerState();
+  State<MonthRangePickerScreen> createState() => _MonthRangePickerScreenState();
 }
 
-class _MonthRangePickerState extends State<MonthRangePicker> {
-  int selectedStartYear = DateTime.now().year;
-  int selectedStartMonth = DateTime.now().month;
-  int selectedEndYear = DateTime.now().year;
-  int selectedEndMonth = DateTime.now().month;
+class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
+  DateTime? _selectedStartMonth; // For storing the selected start month
+  DateTime? _selectedEndMonth; // For storing the selected end month
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text('Premye mwa'),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text('Premye mwa:'),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // Start Year Dropdown
-            DropdownButton<int>(
-              value: selectedStartYear,
-              items: List.generate(101, (index) {
-                int year = 2020 + index;
-                return DropdownMenuItem(
-                  value: year,
-                  child: Text(year.toString()),
-                );
-              }),
-              onChanged: (value) {
-                setState(() {
-                  if (value != null) selectedStartYear = value;
-                });
-              },
+            // Show selected start month
+            Text(
+              _selectedStartMonth != null
+                  ? DateFormat.yMMM()
+                      .format(_selectedStartMonth!) // Format the month
+                  : 'Poko chwazi', // Default text if no selection
             ),
-            // Start Month Dropdown
-            DropdownButton<int>(
-              value: selectedStartMonth,
-              items: List.generate(12, (index) {
-                int month = index + 1;
-                return DropdownMenuItem(
-                  value: month,
-                  child: Text(month.toString()),
+            monthPickerWidget(
+              color: Colors.red,
+              onPressed: () async {
+                // Show the month picker for start month
+                DateTime? picked = await showMonthYearPicker(
+                  context: context,
+                  initialDate: _selectedStartMonth ?? DateTime.now(),
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2100),
                 );
-              }),
-              onChanged: (value) {
-                setState(() {
-                  if (value != null) selectedStartMonth = value;
-                });
+                if (picked != null) {
+                  setState(() {
+                    _selectedStartMonth = picked;
+                  });
+                }
               },
+              text: 'Chwazi yon mwa',
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        const Text('Dènye mwa:'),
+        const SizedBox(height: 40),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text('Dènye mwa:'),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // End Year Dropdown
-            DropdownButton<int>(
-              value: selectedEndYear,
-              items: List.generate(101, (index) {
-                int year = 2020 + index;
-                return DropdownMenuItem(
-                  value: year,
-                  child: Text(year.toString()),
-                );
-              }),
-              onChanged: (value) {
-                setState(() {
-                  if (value != null) selectedEndYear = value;
-                });
-              },
+            // Show selected end month
+            Text(
+              _selectedEndMonth != null
+                  ? DateFormat.yMMM()
+                      .format(_selectedEndMonth!) // Format the month
+                  : 'Poko chwazi', // Default text if no selection
             ),
-            // End Month Dropdown
-            DropdownButton<int>(
-              value: selectedEndMonth,
-              items: List.generate(12, (index) {
-                int month = index + 1;
-                return DropdownMenuItem(
-                  value: month,
-                  child: Text(month.toString()),
+            monthPickerWidget(
+              color: Colors.blue,
+              onPressed: () async {
+                // Show the month picker for end month
+                DateTime? picked = await showMonthYearPicker(
+                  context: context,
+                  initialDate: _selectedEndMonth ?? DateTime.now(),
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2100),
                 );
-              }),
-              onChanged: (value) {
-                setState(() {
-                  if (value != null) selectedEndMonth = value;
-                });
+                if (picked != null) {
+                  setState(() {
+                    _selectedEndMonth = picked;
+                  });
+                }
               },
+              text: 'Chwazi yon mwa',
             ),
           ],
         ),
         const SizedBox(height: 30),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.secondary),
           onPressed: () {
-            // Call the scheduling method here with the selected months
-            scheduleNotificationsForMonthRange(
-              event: Event(
-                title: 'Monthly Report',
-                description: 'Time to submit your activity report!',
-                timeStamp: null,
-                pyonye: true,
-              ),
-              startYear: selectedStartYear,
-              startMonth: selectedStartMonth,
-              endYear: selectedEndYear,
-              endMonth: selectedEndMonth,
+            final event = Event(
+              title: 'Monthly Report',
+              description: 'Time to submit your activity report!',
+              pyonye: true,
             );
+            // Handle the saving or processing logic for the selected months
+            if (_selectedStartMonth != null && _selectedEndMonth != null) {
+              // Perform the action with the selected months
+              saveAndScheduleMonthRange(
+                  event: event,
+                  startMonth: _selectedStartMonth!,
+                  endMonth: _selectedEndMonth!);
+
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                      'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedStartMonth!)}')));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Please select both start and end months')));
+
+              // Handle cases where one or both months are not selected
+            }
           },
-          child: Text(
-            'Ajoute Sèvis la',
-            style: TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
-          ),
+          child: const Text('Ajoute Sèvis la'),
         ),
       ],
     );
   }
 
-  Future<void> scheduleNotificationsForMonthRange({
+  // Function to schedule a notification for a single month
+  Future<void> saveAndScheduleMonthRange({
     required Event event,
-    required int startYear,
-    required int startMonth,
-    required int endYear,
-    required int endMonth,
+    required DateTime startMonth,
+    required DateTime endMonth,
   }) async {
-    DateTime currentMonth = DateTime(startYear, startMonth);
-    DateTime lastMonth = DateTime(endYear, endMonth);
+    DateTime currentMonth = startMonth;
+    Map<List<DateTime>, Event> eventMap = {};
 
-    while (currentMonth.isBefore(lastMonth) ||
-        currentMonth.isAtSameMomentAs(lastMonth)) {
-      // Schedule notification for the first day of the current month
-      DateTime scheduledDate = DateTime(
-        currentMonth.year,
-        currentMonth.month,
-        1,
-      );
+    // Iterate through each month in the range
+    while (currentMonth.isBefore(endMonth) ||
+        currentMonth.isAtSameMomentAs(endMonth)) {
+      // Add the event for the current month to the event map
+      eventMap[[DateTime(currentMonth.year, currentMonth.month)]] = event;
 
-      // Call your notification scheduling method
+      // Schedule notification for the current month
       await ReportNification.scheduleLocalEventNotification(
         event: event,
-        scheduledDate: scheduledDate,
+        scheduledDate: DateTime(currentMonth.year, currentMonth.month, 1),
       );
 
       // Move to the next month
       currentMonth = DateTime(currentMonth.year, currentMonth.month + 1);
     }
+
+    // Save all the events for the range using saveEventsWithDateRange
+    await SharedPreferencesSingleton().saveEventsWithDateRange(eventMap);
+  }
+
+  Widget monthPickerWidget(
+      {required VoidCallback onPressed, Color? color, required String text}) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12), color: Theme.of(context).colorScheme.primary),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(Icons.calendar_month, color: color ?? Colors.black),
+            const SizedBox(
+              width: 12,
+            ),Text(
+              text,
+              style:
+                  TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

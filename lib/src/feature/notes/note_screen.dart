@@ -189,7 +189,7 @@ class SilverBar {
     AssetImage('assets/kong2.jpg'),
     AssetImage('assets/kong3.jpg'),
     AssetImage('assets/kong4.jpg'),
-    AssetImage('assets/kong5.jpg')
+    AssetImage('assets/Kong6.png')
   ];
   static AssetImage getColorItem() => (sliverAppBar.toList()..shuffle()).first;
 }
