@@ -15,7 +15,7 @@ class Student {
     this.address,
   });
 
-  // Method to convert a Student object to a map (for saving in databases, etc.)
+  // Method to convert a Student object to a map
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -27,7 +27,7 @@ class Student {
     };
   }
 
-  // Method to create a Student object from a map (for retrieving from databases, etc.)
+  // Method to create a Student object from a map
   factory Student.fromMap(Map<String, dynamic> map) {
     return Student(
       name: map['name'],
@@ -36,6 +36,25 @@ class Student {
       phoneNumber: map['phoneNumber'],
       dateAdded: DateTime.parse(map['dateAdded']),
       address: map['address'],
+    );
+  }
+
+  // Method to create a copy of the Student object with updated fields
+  Student copyWith({
+    String? name,
+    String? phoneNumber,
+    DateTime? dateAdded,
+    String? comment,
+    int? lesson,
+    String? address,
+  }) {
+    return Student(
+      name: name ?? this.name,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      dateAdded: dateAdded ?? this.dateAdded,
+      comment: comment ?? this.comment,
+      lesson: lesson ?? this.lesson,
+      address: address ?? this.address,
     );
   }
 }

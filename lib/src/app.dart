@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     //TextTheme textTheme = Theme.of(context).textTheme;
 
     // Use with Google Fonts package to use downloadable fonts
-    TextTheme textTheme = createTextTheme(context, "Andada Pro", "Arbutus");
+    TextTheme textTheme = createTextTheme(context, "roboto", "open sans");
 
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
-         MonthYearPickerLocalizations.delegate,
+        MonthYearPickerLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('en', ''), // English, no country code

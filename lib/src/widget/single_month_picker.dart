@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
+import 'package:report/src/notifier/counter_state.dart';
 
 import '../feature/notification/local_notification.dart';
 import '../model/event.dart';
@@ -14,10 +16,10 @@ class SingleMonthPicker extends StatefulWidget {
 }
 
 class _SingleMonthPickerState extends State<SingleMonthPicker> {
-
   DateTime _selectedMonth = DateTime.now();
   @override
   Widget build(BuildContext context) {
+    final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -27,8 +29,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
             // Year Dropdown
             Text(
               _selectedMonth == DateTime.now()
-                  ? DateFormat.yMMM()
-                      .format(_selectedMonth) // Format the month
+                  ? DateFormat.yMMM().format(_selectedMonth) // Format the month
                   : 'Poko chwazi', // Default text if no selection
             ),
             // Month Dropdown
@@ -47,7 +48,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
                   });
                 }
               },
-              text:'Chwazi yon mwa',
+              text: 'Chwazi yon mwa',
             ),
           ],
         ),
@@ -64,6 +65,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
               ),
               scheduledDate: _selectedMonth,
             );
+            pyonyeNotifier.updatePyonyeStatus(_selectedMonth);
           },
           child: Text(
             'Ajoute Sèvis la',
@@ -83,21 +85,20 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
       event: event,
       scheduledDate: scheduledDate,
     );
-     // Create the key using only year and month
+    // Create the key using only year and month
     DateTime monthKey = DateTime(scheduledDate.year, scheduledDate.month, 1);
-   // Create a new map and add the event to the list for the corresponding month
+    // Create a new map and add the event to the list for the corresponding month
     Map<DateTime, List<Event>> events = {
       monthKey: [event],
     };
-      await SharedPreferencesSingleton().saveEvents(events);
-      if(mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-            'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedMonth)}')));
-      }
+    await SharedPreferencesSingleton().saveEvents(events);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedMonth)}')));
+    }
   }
 
-  
   Widget monthPickerWidget(
       {required VoidCallback onPressed, Color? color, required String text}) {
     return InkWell(

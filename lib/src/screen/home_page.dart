@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:report/src/feature/notification/local_notification.dart';
+import 'package:report/src/notifier/counter_state.dart';
 import 'package:report/src/widget/student_tile.dart';
 import '../local/local.dart';
-import '../model/event.dart';
 import '../shape/custom_shape.dart';
 import '../model/modules.dart';
 import '../feature/calender/calender.dart';
@@ -56,78 +57,75 @@ class _HomePageState extends State<HomePage> {
 
   final _preferences = SharedPreferencesSingleton();
   bool started = false;
-  final _event = Event();
-     
+
   @override
   Widget build(BuildContext context) {
-    bool? isPyonye = _event.pyonye;
+    final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
     return SafeArea(
       child: Scaffold(
-        endDrawer:  const RepoDrawer(),
-        body: Builder(
-          builder: (context) {
-            return Column(
-              children: [
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
-                    child: SizedBox(
-                      height: 200,
-                      width: double.infinity,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          /// background image
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple,
-                              image: const DecorationImage(
-                                image: AssetImage('assets/bg.jpg'),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
+        endDrawer: const RepoDrawer(),
+        body: Builder(builder: (context) {
+          return Column(
+            children: [
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
+                  child: SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        /// background image
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            image: const DecorationImage(
+                              image: AssetImage('assets/bg.jpg'),
+                              fit: BoxFit.cover,
                             ),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          CustomPaint(
-                            painter: CardPaint(),
-                            size: const Size(600, 200),
+                        ),
+                        CustomPaint(
+                          painter: CardPaint(),
+                          size: const Size(600, 200),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: IconButton(
+                            icon: Icon(Icons.settings,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary),
+                            onPressed: () {
+                              Scaffold.of(context).openEndDrawer();
+                            },
                           ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: IconButton(
-                              icon: Icon(Icons.settings,
-                                  color:
-                                      Theme.of(context).colorScheme.inversePrimary),
-                              onPressed: () {
-                              
-                                Scaffold.of(context).openEndDrawer();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: widget.items
-                        .map((item) => buildItem(item, context))
-                        .toList()),
-                const SizedBox(height: 10),
-               const StudentListTile()
-              ],
-            );
-          }
-        ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: widget.items
+                      .map((item) => buildItem(item, context))
+                      .toList()),
+              const SizedBox(height: 10),
+              const StudentListTile()
+            ],
+          );
+        }),
         floatingActionButton: AnimatedOpacity(
           duration: Durations.medium1,
-          opacity: isPyonye == true ? 1.0 : 0.0,
+          opacity: pyonyeNotifier.isPyonye == true ? 1.0 : 0.0,
           child: FloatingActionButton(
               onPressed: () {},
               child: Icon(started ? Icons.timer_outlined : Icons.close)),

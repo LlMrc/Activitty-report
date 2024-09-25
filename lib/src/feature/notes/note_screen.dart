@@ -61,42 +61,37 @@ class NoteScreenState extends State<NoteScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: GestureDetector(
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4)),
+                              child: StickyNote(
                                 color: note.color,
-                                child: StickyNote(
-                                  color: note.color,
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        note.title,
-                                        maxLines: 1,
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      note.title,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      note.content,
+                                      maxLines: 6,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    Text(
+                                        DateFormat.MMMMEEEEd()
+                                            .format(note.createdAt),
+                                        maxLines: 10,
                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        note.content,
-                                        maxLines: 6,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                          DateFormat.MMMMEEEEd()
-                                              .format(note.createdAt),
-                                          maxLines: 10,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall)
-                                    ],
-                                  ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall)
+                                  ],
                                 ),
                               ),
                               onTap: () async {

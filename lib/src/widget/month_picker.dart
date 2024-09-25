@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
+import 'package:report/src/notifier/counter_state.dart';
 
 import '../feature/notification/local_notification.dart';
 import '../model/event.dart'; // Import the month_picker package
@@ -19,6 +21,7 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -110,6 +113,8 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                       'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedStartMonth!)}')));
+              pyonyeNotifier.updatePyonyeStatus(_selectedStartMonth!,
+                  endDate: _selectedEndMonth);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Please select both start and end months')));
@@ -159,14 +164,16 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12), color: Theme.of(context).colorScheme.primary),
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).colorScheme.primary),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(Icons.calendar_month, color: color ?? Colors.black),
             const SizedBox(
               width: 12,
-            ),Text(
+            ),
+            Text(
               text,
               style:
                   TextStyle(color: Theme.of(context).scaffoldBackgroundColor),

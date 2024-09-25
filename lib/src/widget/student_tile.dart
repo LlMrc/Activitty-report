@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/model/student.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'counter.dart';
 
 class StudentListTile extends StatelessWidget {
@@ -39,7 +38,10 @@ class StudentListTile extends StatelessWidget {
                               child: Icon(Icons.call),
                             )),
                         title: Text(student.name.toUpperCase()),
-                        subtitle: Text(student.address ?? '', overflow: TextOverflow.clip,),
+                        subtitle: Text(
+                          student.address ?? '',
+                          overflow: TextOverflow.clip,
+                        ),
                         children: [studentDetails(student, context)],
                       ),
                     ),
@@ -58,8 +60,8 @@ class StudentListTile extends StatelessWidget {
     await launchUrl(launchUri);
   }
 
-  Widget studentDetails(Student student, context) {
-    debugPrint('STUDENT COMMENT: ${student.comment}');
+  Widget studentDetails(Student updatedStudent, context) {
+    debugPrint('STUDENT COMMENT: ${updatedStudent.comment}');
 
     return Container(
       color: Theme.of(context).colorScheme.secondaryContainer,
@@ -72,7 +74,7 @@ class StudentListTile extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                margin: const EdgeInsets.only(top:8),
+                margin: const EdgeInsets.only(top: 8),
                 height: 120,
                 width: 100,
                 decoration: BoxDecoration(
@@ -88,18 +90,16 @@ class StudentListTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      Text('Leson:',
+                      const Text('Leson:',
                           style: TextStyle(fontWeight: FontWeight.w600)),
-                      SizedBox(width: 20),
-                      MyCounter(),
+                      const SizedBox(width: 20),
+                      MyCounter(student: updatedStudent),
                     ],
                   ),
                   GestureDetector(
-                    onLongPress: (){
-                    
-                    },
+                    onLongPress: () {},
                     child: Container(
                         constraints: const BoxConstraints(minWidth: 200),
                         height: 60,
@@ -107,10 +107,10 @@ class StudentListTile extends StatelessWidget {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: Colors.grey)),
-                        child: Text('${student.comment}')),
+                        child: Text('${updatedStudent.comment}')),
                   ),
                   Text(
-                    DateFormat.yMMMMd().format(student.dateAdded),
+                    DateFormat.yMMMMd().format(updatedStudent.dateAdded),
                     style: const TextStyle(fontSize: 8),
                   )
                 ],

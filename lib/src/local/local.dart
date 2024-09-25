@@ -48,10 +48,36 @@ class SharedPreferencesSingleton {
     return [];
   }
 
-  // Remove a student by name
-  Future<void> removeStudent(String name) async {
+  Future<void> updateStudent(Student updatedStudent) async {
     final List<Student> students = await getAllStudents();
-    students.removeWhere((student) => student.name == name);
+    final int index =
+        students.indexWhere((student) => student.name == updatedStudent.name);
+
+    if (index != -1) {
+      // Get the current student
+      Student currentStudent = students[index];
+
+      // If the current dateAdded is different from now, update it
+      if (currentStudent.dateAdded != DateTime.now()) {
+        updatedStudent = updatedStudent.copyWith(dateAdded: DateTime.now());
+      }
+
+      // Update the student
+      students[index] = updatedStudent;
+      await _saveStudents(students); // Save the updated list
+    }
+  }
+
+// Get the count for a specific student by name
+  int? getStudentCount(Student student) {
+    // Return the count if the student is found, otherwise return null
+    return student.lesson;
+  }
+
+  // Remove a student by name
+  Future<void> removeStudent(Student currentStudent) async {
+    final List<Student> students = await getAllStudents();
+    students.removeWhere((student) => student == currentStudent);
     await _saveStudents(students);
   }
 
@@ -142,13 +168,14 @@ class SharedPreferencesSingleton {
   }
 
 //Users can select Date range  when saving event
-Future<void> saveEventsWithDateRange(
+  Future<void> saveEventsWithDateRange(
       Map<List<DateTime>, Event> events) async {
     final eventsJson = _encodeEventsWithDateRange(events);
     debugPrint("Saving events with date range: $eventsJson");
     await _prefs.setString(keyEventsRange, eventsJson); // Use a different key
   }
-String _encodeEventsWithDateRange(Map<List<DateTime>, Event> events) {
+
+  String _encodeEventsWithDateRange(Map<List<DateTime>, Event> events) {
     return json.encode(events.map(
       (key, value) => MapEntry(
         key
@@ -174,7 +201,7 @@ String _encodeEventsWithDateRange(Map<List<DateTime>, Event> events) {
     });
   }
 
-Future<bool?> getPyonye(DateTime targetDate, {DateTime? endDate}) async {
+  Future<bool?> getPyonye(DateTime targetDate, {DateTime? endDate}) async {
     final eventsJson = _prefs.getString(keyEventsRange);
     if (eventsJson == null) return null; // No events saved
 
@@ -203,18 +230,10 @@ Future<bool?> getPyonye(DateTime targetDate, {DateTime? endDate}) async {
     return null; // No event found for the single date or date range
   }
 
-
-
- 
-
   Map<List<DateTime>, Event> getEventsWithDateRange() {
     final eventsJson = _prefs.getString(keyEventsRange);
     return eventsJson != null ? _decodeEventsWithDateRange(eventsJson) : {};
   }
-
-
-
-  
 
   //Enable natification
   void enableNotification(bool newValue) async {
@@ -224,6 +243,4 @@ Future<bool?> getPyonye(DateTime targetDate, {DateTime? endDate}) async {
   bool getNotification() {
     return _prefs.getBool(keyNotification) ?? false;
   }
-
- 
 }
