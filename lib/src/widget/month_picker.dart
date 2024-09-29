@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
-import 'package:report/src/notifier/counter_state.dart';
+import 'package:report/src/notifier/my_notifier.dart';
 
 import '../feature/notification/local_notification.dart';
 import '../model/event.dart'; // Import the month_picker package
@@ -37,7 +37,7 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
               _selectedStartMonth != null
                   ? DateFormat.yMMM()
                       .format(_selectedStartMonth!) // Format the month
-                  : 'Poko chwazi', // Default text if no selection
+                  : 'Dat mwen chwazi', // Default text if no selection
             ),
             monthPickerWidget(
               color: Colors.red,
@@ -72,7 +72,7 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
               _selectedEndMonth != null
                   ? DateFormat.yMMM()
                       .format(_selectedEndMonth!) // Format the month
-                  : 'Poko chwazi', // Default text if no selection
+                  : 'Dat mwen chwazi', // Default text if no selection
             ),
             monthPickerWidget(
               color: Colors.blue,
@@ -99,7 +99,7 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
           onPressed: () {
             final event = Event(
               title: 'Monthly Report',
-              description: 'Time to submit your activity report!',
+              comment: 'Time to submit your activity report!',
               pyonye: true,
             );
             // Handle the saving or processing logic for the selected months

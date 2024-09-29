@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:report/src/feature/notes/display.dart';
 import 'package:report/src/feature/notes/sticky_note_ui.dart';
 import '../../local/local.dart';
 import 'add_note.dart';
-import 'package:intl/intl.dart';
+
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({super.key});
@@ -29,6 +30,7 @@ class NoteScreenState extends State<NoteScreen> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
+              automaticallyImplyLeading: false,
               expandedHeight: 145,
               floating: true,
               pinned: true,
@@ -44,7 +46,7 @@ class NoteScreenState extends State<NoteScreen> {
               ),
             ),
             SliverToBoxAdapter(
-              child: Column(
+              child:notes.isNotEmpty? Column(
                 children: [
                   Visibility(visible: isvisible, child: suggestList()),
                   GridView.count(
@@ -56,79 +58,90 @@ class NoteScreenState extends State<NoteScreen> {
                     crossAxisSpacing: 2,
                     mainAxisSpacing: 2,
                     children: notes.map((note) {
-                      return Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: GestureDetector(
-                              child: StickyNote(
-                                color: note.color,
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      note.title,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      note.content,
-                                      maxLines: 6,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    Text(
-                                        DateFormat.MMMMEEEEd()
-                                            .format(note.createdAt),
-                                        maxLines: 10,
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: GestureDetector(
+                                child: StickyNote(
+                                  color: note.color,
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        note.title.toUpperCase(),
+                                        maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall)
-                                  ],
-                                ),
-                              ),
-                              onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => DisplayNote(
-                                            note: note,
-                                            onPressed: () => setState(() {}))));
-                              },
-                            ),
-                          ),
-                          Positioned(
-                              top: -5,
-                              right: -10,
-                              child: IconButton(
-                                  onPressed: () async {
-                                    await noteRepository
-                                        .deleteNoteById(note.id);
-                                    setState(() {});
-                                  },
-                                  icon: const Icon(
-                                    Icons.push_pin_sharp,
-                                    color: Colors.cyan,
-                                    shadows: [
-                                      BoxShadow(
-                                          offset: Offset(-1, 1),
-                                          blurRadius: 2,
-                                          spreadRadius: 1.5)
+                                        style: const TextStyle(
+                                          overflow: TextOverflow.clip,
+                                       
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 2,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          note.content,
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                     
                                     ],
-                                  )))
-                        ],
+                                  ),
+                                ),
+                                onTap: () async {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => DisplayNote(
+                                              note: note,
+                                              onPressed: () => setState(() {}))));
+                                },
+                              ),
+                            ),
+                            Positioned(
+                                top: -5,
+                                right: -10,
+                                child: IconButton(
+                                    onPressed: () async {
+                                      await noteRepository
+                                          .deleteNoteById(note.id);
+                                      setState(() {});
+                                    },
+                                    icon: const Icon(
+                                      Icons.push_pin_sharp,
+                                      color: Colors.cyan,
+                                      shadows: [
+                                        BoxShadow(
+                                            offset: Offset(-1, 1),
+                                            blurRadius: 2,
+                                            spreadRadius: 1.5)
+                                      ],
+                                    )))
+                          ],
+                        ),
                       );
                     }).toList(),
                   ),
                 ],
-              ),
+              ):   Column(
+                  
+                      children: [
+                        const SizedBox(height: 100),
+                        SvgPicture.asset(
+                            height: 200,
+                            width: 100,
+                            'assets/svg/no_note.svg'),
+                     
+                      ],
+                    )
+                ,
             ),
           ],
         ),
@@ -184,7 +197,11 @@ class SilverBar {
     AssetImage('assets/kong2.jpg'),
     AssetImage('assets/kong3.jpg'),
     AssetImage('assets/kong4.jpg'),
-    AssetImage('assets/Kong6.png')
+    AssetImage('assets/kong6.png'),
+    AssetImage('assets/kong7.jpg'),
+    AssetImage('assets/kong5.jpg'),
+    AssetImage('assets/kong8.jpg'),
+    AssetImage('assets/kong9.jpg')
   ];
   static AssetImage getColorItem() => (sliverAppBar.toList()..shuffle()).first;
 }

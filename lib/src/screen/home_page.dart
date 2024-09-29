@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/feature/notification/local_notification.dart';
-import 'package:report/src/notifier/counter_state.dart';
-import 'package:report/src/widget/student_tile.dart';
+import 'package:report/src/notifier/my_notifier.dart';
+import 'package:report/src/feature/student/student_tile.dart';
 import '../local/local.dart';
 import '../shape/custom_shape.dart';
 import '../model/modules.dart';
 import '../feature/calender/calender.dart';
 import '../feature/notes/note_screen.dart';
-import '../widget/add_students.dart';
+import '../feature/student/add_students.dart';
 import '../widget/drawer.dart';
+import '../widget/timer/stopwatch.dart';
 
 /// Displays a list of SampleItems.
 class HomePage extends StatefulWidget {
@@ -25,7 +27,7 @@ class HomePage extends StatefulWidget {
       Modules(
           2,
           'assets/images/note.png',
-          'Pran Not',
+          'Pran Nòt',
           NoteScreen
               .routeName), //<a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Pixel perfect - Flaticon</a>
       Modules(
@@ -57,10 +59,12 @@ class _HomePageState extends State<HomePage> {
 
   final _preferences = SharedPreferencesSingleton();
   bool started = false;
-
+  bool isPyonye = false;
   @override
   Widget build(BuildContext context) {
-    final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
+    // Access the notifier from the provider within the build method
+    final myNotifier = Provider.of<PyonyeNotifier>(context);
+
     return SafeArea(
       child: Scaffold(
         endDrawer: const RepoDrawer(),
@@ -75,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                   child: SizedBox(
                     height: 200,
                     width: double.infinity,
-                    child: Stack(
+                    child:   Stack(
                       alignment: Alignment.center,
                       children: [
                         /// background image
@@ -89,9 +93,43 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        CustomPaint(
-                          painter: CardPaint(),
-                          size: const Size(600, 200),
+                        Stack(
+                          children: [
+                            CustomPaint(
+                              painter: CardPaint(),
+                              size: const Size(600, 200),
+                            ),
+                            Positioned(
+                              left: 10,
+                              top: 20,
+                              child:  SizedBox(
+                                width: 200,
+                                child: isPyonye? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(
+                                        height: 60,
+                                        width: 60,
+                                        'assets/svg/welcome.svg'),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      'Solisyon efikas pou jere ak swiv aktivite ou yo byen fasil',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surfaceContainerHigh,
+                                              fontWeight: FontWeight.w700,
+                                              letterSpacing: 2),
+                                    ),
+                                  ],
+                                )
+                                      : const StopwatchWidget(),
+                              ) ,
+                            ),
+                          ],
                         ),
                         Positioned(
                           top: 0,
@@ -107,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ],
-                    ),
+                    )
                   ),
                 ),
               ),
@@ -125,7 +163,7 @@ class _HomePageState extends State<HomePage> {
         }),
         floatingActionButton: AnimatedOpacity(
           duration: Durations.medium1,
-          opacity: pyonyeNotifier.isPyonye == true ? 1.0 : 0.0,
+          opacity: myNotifier.isPyonye == true ? 1.0 : 0.0,
           child: FloatingActionButton(
               onPressed: () {},
               child: Icon(started ? Icons.timer_outlined : Icons.close)),

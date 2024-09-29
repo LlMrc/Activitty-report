@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting the Date and Time
+import 'package:provider/provider.dart';
+import 'package:report/src/notifier/my_notifier.dart';
 // Import your SharedPreferences singleton
-import '../local/local.dart';
-import '../model/student.dart'; // Import your Student model
+import '../../local/local.dart';
+import '../../model/student.dart'; // Import your Student model
 
 class AddStudentScreen extends StatefulWidget {
   const AddStudentScreen({super.key});
@@ -107,6 +109,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final refreshPageNotifier = Provider.of<PyonyeNotifier>(context);
     return GestureDetector(
         onTap: () {
         // Dismiss the keyboard when tapping outside of the Form
@@ -115,7 +118,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text('Add a Student'.toUpperCase()),
+          title: Text('Ajoute etidyan'.toUpperCase()),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -175,7 +178,11 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: _addStudent,
+                  onPressed: (){
+                    _addStudent();
+                 refreshPageNotifier.refreshThisPage(true);
+                   Navigator.pop(context);
+                  },
                   child: const Text('Ajoute'),
                 ),
               ],

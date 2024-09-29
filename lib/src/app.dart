@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:report/src/screen/repport_screen.dart';
 import 'package:report/src/theme/theme.dart';
 import 'package:report/src/theme/util.dart';
 import 'feature/calender/calender.dart';
 import 'screen/pyonye_screen.dart';
 import 'screen/home_page.dart';
 import 'feature/notes/note_screen.dart';
-import 'widget/add_students.dart';
+import 'feature/student/add_students.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     //TextTheme textTheme = Theme.of(context).textTheme;
 
     // Use with Google Fonts package to use downloadable fonts
-    TextTheme textTheme = createTextTheme(context, "roboto", "open sans");
+    TextTheme textTheme = createTextTheme(context, "Roboto", "Open Sans");
 
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
@@ -77,6 +78,8 @@ class MyApp extends StatelessWidget {
                 return const CalenderScreen();
               case PyonyeServicesDataPicker.routeName:
                 return const PyonyeServicesDataPicker();
+               case RepportScreen.routeName:
+                return const RepportScreen();
               case HomePage.routeName:
               default:
                 return const HomePage();

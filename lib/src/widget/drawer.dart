@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:report/src/local/local.dart';
+import 'package:report/src/screen/repport_screen.dart';
 import '../screen/pyonye_screen.dart';
-
 
 class RepoDrawer extends StatefulWidget {
   const RepoDrawer({super.key});
@@ -16,11 +16,11 @@ class _RepoDrawerState extends State<RepoDrawer> {
   String? selectedLanguage;
   // Holds the selected language
   final List<String> languages = ['Anglè', 'Fansè', 'Panyòl'];
-  
+
   @override
   Widget build(BuildContext context) {
     bool notification = _preferences.getNotification();
-  
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -47,53 +47,63 @@ class _RepoDrawerState extends State<RepoDrawer> {
               _preferences.enableNotification(!value);
             },
           ),
-        
-           ListTile(leading: const Icon(Icons.note_add), title: const Text('Pran sevis Pyonye 📝'),
-          onTap:(){
-                 Navigator.restorablePushNamed(
-          context,
-          PyonyeServicesDataPicker.routeName
-         
-        );
-          }),
-             ExpansionTile(
-              collapsedBackgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-              
-              title: const Text('Chwazi yon lang'),
-              children: [
-                 InkWell(
-                  onTap: (){
-                       Navigator.of(context).pop();
+          ListTile(
+              leading: const Icon(Icons.file_copy_outlined),
+              title: const Text('Pran sevis Pyonye'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.restorablePushNamed(
+                    context, PyonyeServicesDataPicker.routeName);
+              }),
+          ExpansionTile(
+            collapsedBackgroundColor:
+                Theme.of(context).colorScheme.surfaceContainerHigh,
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            title: const Text('Chwazi yon lang'),
+            leading: const Icon(Icons.translate_outlined),
+            children: [
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
                   },
                   highlightColor: Colors.black45,
-                   child: Container(
-                                  
-                                   padding: const EdgeInsets.all(20),
-                                   width: double.infinity,
-                                   child: const Text("Franse"),
-                                 )),
-          
-                InkWell(
-                       onTap: () {
-                        Navigator.of(context).pop();
-                       },
-                  child: Container(               
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    width: double.infinity,
+                    child: const Text("Fransè"),
+                  )),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    width: double.infinity,
+                    child: const Text("Anglè"),
+                  )),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
                   padding: const EdgeInsets.all(20),
                   width: double.infinity,
-                  child: const Text("Angle"),
-                                )),
-              InkWell(onTap: () {
-                         Navigator.of(context).pop();
-                     },
-                child: Container(                         
-                  padding: const EdgeInsets.all(20),
-                  width: double.infinity,
-                  child: const Text("Panyol"),
+                  child: const Text("Panyòl"),
                 ),
               )
-              ],
-             )
+            ],
+          ),
+          ListTile(
+            leading: const Icon(Icons.history),
+            title: const Text('History'),
+            onTap: () {
+              
+                     Navigator.of(context).pop();
+              Navigator.restorablePushNamed(
+                  context, RepportScreen.routeName);
+               
+            },
+          )
         ],
       ),
     );

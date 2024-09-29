@@ -81,8 +81,7 @@ class AddNoteState extends State<AddNote> {
                   controller: _titleController,
                   decoration: InputDecoration(
                     isDense: true,
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                
                     prefixIcon: Icon(Icons.edit, color: Colors.grey[400]),
                     hintText: 'Title...',
                   )),

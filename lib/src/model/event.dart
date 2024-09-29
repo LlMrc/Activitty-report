@@ -1,12 +1,12 @@
 class Event {
   String? title;
-  String? description;
+  String? comment;
   String? timeStamp;
   bool? pyonye;
 
   Event({
      this.title,
-     this.description,
+     this.comment,
     this.timeStamp,
     this.pyonye,
   });
@@ -14,7 +14,7 @@ class Event {
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
       title: json['title'],
-      description: json['description'],
+      comment: json['comment'],
       timeStamp: json['timestamp'],
       pyonye: json['pyonye'],
     );
@@ -22,7 +22,7 @@ class Event {
 
   Map<String, dynamic> toJson() => {
         'title': title,
-        'description': description,
+        'comment': comment,
         'timeStamp': timeStamp,
         'pyonye': pyonye,
       };
@@ -30,13 +30,13 @@ class Event {
   // Add the copyWith method
   Event copyWith({
     String? title,
-    String? description,
     String? timeStamp,
     bool? pyonye,
+    String? comment
   }) {
     return Event(
       title: title ?? this.title, // If the new title is null, keep the old one
-      description: description ?? this.description,
+      comment: comment ?? this.comment,
       timeStamp: timeStamp ?? this.timeStamp,
       pyonye: pyonye ?? this.pyonye,
     );

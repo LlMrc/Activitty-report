@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:report/src/model/note.dart';
 
 import '../../local/local.dart';
@@ -51,6 +52,8 @@ class _DisplayNoteState extends State<DisplayNote> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          automaticallyImplyLeading: false,
+          title:  Text(DateFormat.yMMMMEEEEd().format(widget.note.createdAt)),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 14),
@@ -95,6 +98,7 @@ class _DisplayNoteState extends State<DisplayNote> {
                       ),
                     ),
                   ),
+            
                 ],
               ),
             ),
@@ -113,7 +117,7 @@ class _DisplayNoteState extends State<DisplayNote> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 10),
-                    child: Text('Update note'),
+                    child: Text('Korije Nòt la'),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 10),

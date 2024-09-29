@@ -31,7 +31,7 @@ final Event event;
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(event.description ?? 'Okenn deskripsyon',
+          child: Text(event.comment ?? 'Okenn deskripsyon',
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

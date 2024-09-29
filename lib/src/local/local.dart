@@ -5,7 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/event.dart';
 import '../model/note.dart';
 
+import '../model/report.dart';
 import '../model/student.dart';
+import '../model/timer.dart';
 
 class SharedPreferencesSingleton {
   static final SharedPreferencesSingleton _instance =
@@ -20,10 +22,10 @@ class SharedPreferencesSingleton {
   static const String keyEvents = 'events';
   static const String keyEventsRange = 'events_range';
   static const String keyStudent = 'students';
-  static const String keyRepo = 'repoList';
+  //static const String keyRepo = 'repoList';
   static const String keyNotification = 'notification';
   static const String keyTimer = 'timer';
-
+  static const String keyReport = 'repport_id';
   // Initialize SharedPreferences instance
   late SharedPreferences _prefs;
 
@@ -68,16 +70,36 @@ class SharedPreferencesSingleton {
     }
   }
 
+  Future<void> updateStudentComment(Student updatedStudent, String newComment) async {
+    final List<Student> students = await getAllStudents();
+    final int index =
+        students.indexWhere((student) => student.name == updatedStudent.name);
+
+    if (index != -1) {
+      // Get the current student
+      Student currentStudent = students[index];
+
+      // If the current dateAdded is different from now, update it
+      if (currentStudent.dateAdded != DateTime.now()) {
+        updatedStudent = updatedStudent.copyWith(comment: newComment);
+      }
+
+      // Update the student
+      students[index] = updatedStudent;
+      await _saveStudents(students); // Save the updated list
+    }
+  }
+
 // Get the count for a specific student by name
-  int? getStudentCount(Student student) {
+  int getStudentCount(Student student) {
     // Return the count if the student is found, otherwise return null
-    return student.lesson;
+    return student.lesson ?? 0;
   }
 
   // Remove a student by name
   Future<void> removeStudent(Student currentStudent) async {
     final List<Student> students = await getAllStudents();
-    students.removeWhere((student) => student == currentStudent);
+    students.removeWhere((student) => student.name == currentStudent.name);
     await _saveStudents(students);
   }
 
@@ -243,4 +265,176 @@ class SharedPreferencesSingleton {
   bool getNotification() {
     return _prefs.getBool(keyNotification) ?? false;
   }
+
+  // Save a list of Repports
+  Future<void> saveRepport(Repport repport) async {
+    List<Repport> repports = getAllRepports();
+    repports.add(repport);
+
+    // Convert the list of Repport objects to JSON and save it
+    String repportListJson =
+        jsonEncode(repports.map((e) => e.toMap()).toList());
+    await _prefs.setString(keyReport, repportListJson);
+  }
+
+  Future<void> updateRepport(Repport updatedRepport) async {
+  List<Repport> repports = getAllRepports();
+  final DateTime now = DateTime.now();
+
+  // Check if there is a report for the current month and year
+  int indexToUpdate = repports.indexWhere(
+    (repport) => repport.submitAt.month == now.month &&
+                 repport.submitAt.year == now.year
+  );
+
+  if (indexToUpdate != -1) {
+    // Update the existing report
+    repports[indexToUpdate] = updatedRepport;
+  } else {
+    // Optionally, handle the case where no report exists to update
+    debugPrint('No report found for update, adding new one.');
+    repports.add(updatedRepport); // Add a new report if no match found
+  }
+
+  // Save the updated list back to SharedPreferences
+  String updatedRepportJson = jsonEncode(repports.map((r) => r.toMap()).toList());
+  await _prefs.setString(SharedPreferencesSingleton.keyReport, updatedRepportJson);
+
+  debugPrint('Report updated successfully');
+}
+
+
+
+  // Delete a Repport by name and student ID
+ Future<void> deleteRepportByMonthAndYear(DateTime dateToDelete) async {
+  // Get the list of all reports
+  List<Repport> repports = getAllRepports();
+
+  if (repports.isNotEmpty) {
+    // Filter the list to remove reports that match the given month and year
+    repports.removeWhere((repport) =>
+        repport.submitAt.month == dateToDelete.month &&
+        repport.submitAt.year == dateToDelete.year);
+
+    // If no reports are left, remove the key from SharedPreferences
+    if (repports.isEmpty) {
+      await _prefs.remove(keyReport);
+    } else {
+      // Otherwise, save the updated list back to SharedPreferences
+      String updatedRepportJson = jsonEncode(repports.map((r) => r.toMap()).toList());
+      await _prefs.setString(keyReport, updatedRepportJson);
+    }
+
+    debugPrint('Reports for ${dateToDelete.month}/${dateToDelete.year} deleted successfully');
+  } else {
+    debugPrint('No reports found for deletion');
+  }
+}
+
+
+ Repport? getRepport() {
+    List<Repport> repports = getAllRepports();
+    final DateTime now = DateTime.now();
+
+    try {
+      return repports.firstWhere(
+        (repport) => repport.submitAt.month == now.month,
+      );
+    } catch (e) {
+      // You can log the error if needed
+      debugPrint('Exception: $e');
+    }
+
+    return null; // Return null if no report is found for the current month
+  }
+
+  // Retrieve all Repports
+  List<Repport> getAllRepports() {
+    String? repportListJson = _prefs.getString(keyReport);
+    if (repportListJson != null) {
+      List<dynamic> decodedList = jsonDecode(repportListJson);
+      return decodedList.map((item) => Repport.fromMap(item)).toList();
+    }
+    return [];
+  }
+//************************************ TIMER ************************** */
+   
+   
+    // Save TimerModel
+  Future<void> saveTimer(TimerModel timer) async {
+    List<TimerModel> allTimers = getAllTimers();
+    allTimers.add(timer);
+
+    String jsonTimers = jsonEncode(allTimers.map((t) => t.toMap()).toList());
+    await _prefs.setString('timerList', jsonTimers);
+  }
+
+ Future<void> updateTimerMinutAndHour(TimeOfDay time) async {
+    // Ensure getAllTimers is an async method if needed
+    List<TimerModel> allTimers =  getAllTimers();
+    int currentMonth = DateTime.now().month;
+
+    // Find timers with matching month and update them
+    List<TimerModel> updatedTimers = allTimers.map((timer) {
+      if (timer.month == currentMonth) {
+        return timer.copyWith(minut: time.minute, hour: time.hour);
+      }
+      return timer;
+    }).toList();
+
+    // Save updated list to SharedPreferences
+    String jsonTimers =
+        jsonEncode(updatedTimers.map((t) => t.toMap()).toList());
+    await _prefs.setString('timerList', jsonTimers);
+  }
+
+
+  // Delete TimerModel where month equals DateTime.now().month
+  Future<void> deleteTimer() async {
+ 
+
+    List<TimerModel> allTimers = getAllTimers();
+    int currentMonth = DateTime.now().month;
+
+    // Remove timers where the month matches the current month
+    allTimers.removeWhere((timer) => timer.month == currentMonth);
+
+    // Save updated list to SharedPreferences
+    String jsonTimers = jsonEncode(allTimers.map((t) => t.toMap()).toList());
+    await _prefs.setString('timerList', jsonTimers);
+  }
+
+  // Retrieve all TimerModel objects
+  List<TimerModel> getAllTimers() {
+
+    String? timerListJson = _prefs.getString('timerList');
+    if (timerListJson != null) {
+      List<dynamic> decodedList = jsonDecode(timerListJson);
+      return decodedList.map((item) => TimerModel.fromMap(item)).toList();
+    }
+    return [];
+  }
+
+  // Retrieve the TimerModel for the current month
+  TimerModel? getTimer() {
+    final date = DateTime.now();
+    String? timerListJson = _prefs.getString('timerList');
+
+    if (timerListJson != null) {
+      List<dynamic> decodedList = jsonDecode(timerListJson);
+      List<TimerModel> timerList =
+          decodedList.map((item) => TimerModel.fromMap(item)).toList();
+
+      try {
+        // Find the first TimerModel where the month matches the current month
+        return timerList.firstWhere((item) => item.month == date.month);
+      } catch (e) {
+        // Return null if no matching TimerModel is found
+        return null;
+      }
+    }
+
+    return null;
+  }
+
 }

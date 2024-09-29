@@ -395,7 +395,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
 
                 final selectedEvent = Event(
                   title: _titleController.text,
-                  description: _fromController.text,
+                  comment: _fromController.text,
                   timeStamp: DateFormat.MMMEd().format(date),
                 );
 
@@ -413,7 +413,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
 
                 final event = Event(
                   title: _titleController.text,
-                  description: _fromController.text,
+                  comment: _fromController.text,
                   timeStamp:
                       "${DateFormat.MMMEd().format(_rangeStart!)} - ${DateFormat.MMMEd().format(_rangeEnd!)}",
                 );

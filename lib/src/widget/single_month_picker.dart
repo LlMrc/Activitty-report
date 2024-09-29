@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
-import 'package:report/src/notifier/counter_state.dart';
+import 'package:report/src/notifier/my_notifier.dart';
 
 import '../feature/notification/local_notification.dart';
 import '../model/event.dart';
@@ -30,7 +30,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
             Text(
               _selectedMonth == DateTime.now()
                   ? DateFormat.yMMM().format(_selectedMonth) // Format the month
-                  : 'Poko chwazi', // Default text if no selection
+                  : 'Dat mwen chwazi', // Default text if no selection
             ),
             // Month Dropdown
             monthPickerWidget(
@@ -60,7 +60,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
             _scheduleSingleMonthNotification(
               event: Event(
                 title: 'Monthly Report',
-                description: 'Time to submit your activity report!',
+                comment: 'Time to submit your activity report!',
                 pyonye: true,
               ),
               scheduledDate: _selectedMonth,

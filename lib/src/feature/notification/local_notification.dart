@@ -142,7 +142,7 @@ if(event != null){
     await flutterLocalNotificationsPlugin.zonedSchedule(
       2,
       event.title,
-      event.description,
+      event.comment,
       scheduleTime,
       platformChannelSpecifics,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
