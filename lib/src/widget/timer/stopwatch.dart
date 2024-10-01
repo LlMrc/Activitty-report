@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:report/src/notifier/my_notifier.dart';
+import 'package:report/src/notifier/time_notifier.dart';
 import '../../local/local.dart';
 import '../../model/report.dart';
 import '../../notifier/repport_notifier.dart';
@@ -17,9 +18,14 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
   late Repport _repport;
 
+ 
+
   @override
   void initState() {
     _repport = currentReport();
+   // _duration = _timerPreferences(); // Retrieve duration from storage
+   // startTimer(); // Start timer with saved _duration
+
     super.initState();
   }
 
@@ -39,6 +45,8 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 
   @override
   Widget build(BuildContext context) {
+   // stopTimer();
+    //print(_duration.inSeconds);
     final color = Theme.of(context).colorScheme;
     final myNotifier = Provider.of<RepportNotifier>(context);
 
@@ -61,20 +69,16 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                 color: const Color.fromARGB(255, 129, 146, 99),
                 boxShadow: [boxShadow]),
             child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 5,
-                  color: const Color.fromARGB(255, 37, 138, 221),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 5,
+                    color: const Color.fromARGB(255, 37, 138, 221),
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  color: const Color.fromARGB(255, 121, 139, 89),
                 ),
-                borderRadius: BorderRadius.circular(14),
-                color: const Color.fromARGB(255, 121, 139, 89),
-              ),
-              child: Text(
-                '10:00:00',
-                style: GoogleFonts.pressStart2p(),
-              ),
-            ),
+                child: buildTimer(context)),
           ),
         ),
         const SizedBox(height: 25),
@@ -212,4 +216,25 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
       ),
     );
   }
+
+ 
+
+  Widget buildTimer(BuildContext context) {
+        final myNotifier = context.watch<TimerNotifier>();
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(myNotifier.duration.inHours);
+    final minutes = twoDigits(myNotifier.duration.inMinutes.remainder(60));
+    final seconds = twoDigits(myNotifier.duration.inSeconds.remainder(60));
+
+    return Consumer<TimerNotifier>(
+      builder: (context, timeNotifier, _) {
+        return Text(
+          '$hours:$minutes:$seconds',
+          style: GoogleFonts.pressStart2p(),
+        );
+      }
+    );
+  }
+
+ 
 }

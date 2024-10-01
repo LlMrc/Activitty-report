@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/model/student.dart';
@@ -13,7 +14,9 @@ class MyCounter extends StatelessWidget {
     return Row(
       children: [
         IconButton.filled(
+          splashColor: Colors.green,
           style: ButtonStyle(
+            elevation: const WidgetStatePropertyAll<double>(10),
               backgroundColor:
                   WidgetStatePropertyAll(Theme.of(context).cardColor)),
           iconSize: 14,
@@ -36,6 +39,7 @@ class MyCounter extends StatelessWidget {
         ),
         IconButton.filled(
           style: ButtonStyle(
+             elevation: const WidgetStatePropertyAll<double>(10),
               backgroundColor:
                   WidgetStatePropertyAll(Theme.of(context).cardColor)),
           iconSize: 14,

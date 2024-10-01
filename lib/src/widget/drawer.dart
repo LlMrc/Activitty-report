@@ -25,18 +25,29 @@ class _RepoDrawerState extends State<RepoDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text(
-              'konfigiration',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
-            ),
-          ),
+          // const DrawerHeader(
+          //   decoration: BoxDecoration(
+          //     color: Colors.blue,
+          //   ),
+          //   child: Text(
+          //     'konfigiration',
+          //     style: TextStyle(
+          //       color: Colors.white,
+          //       fontSize: 24,
+          //     ),
+          //   ),
+          // ),
+          Container(
+              alignment: Alignment.bottomCenter,
+              color: Theme.of(context).colorScheme.secondaryFixedDim,
+              height: 100,
+              child: Text(
+                'Konfigirasyon'.toUpperCase(),
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    letterSpacing: 1),
+              )),
+              const SizedBox(height: 16),
           SwitchListTile.adaptive(
             value: notification,
             title: const Text('Notifikasyon'),
@@ -49,7 +60,7 @@ class _RepoDrawerState extends State<RepoDrawer> {
           ),
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
-              title: const Text('Pran sevis Pyonye'),
+              title: const Text('Sèvis Pyonye'),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.restorablePushNamed(
@@ -95,13 +106,10 @@ class _RepoDrawerState extends State<RepoDrawer> {
           ),
           ListTile(
             leading: const Icon(Icons.history),
-            title: const Text('History'),
+            title: const Text('Rapò'),
             onTap: () {
-              
-                     Navigator.of(context).pop();
-              Navigator.restorablePushNamed(
-                  context, RepportScreen.routeName);
-               
+              Navigator.of(context).pop();
+              Navigator.restorablePushNamed(context, RepportScreen.routeName);
             },
           )
         ],

@@ -28,73 +28,84 @@ class _StudentListTileState extends State<StudentListTile> {
         debugPrint('THE SCREEN IS UPDATED'); // This should print when refreshed
       });
     }
-    return FutureBuilder(
-        future: SharedPreferencesSingleton().getAllStudents(),
-        builder: (context, snapshot) {
-          final data = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator.adaptive();
-          }
-          if (data == null || data.isEmpty) {
-            return emptyStudentList();
-          }
-          return Expanded(
-            child: ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (cntext, index) {
-                  final student = data[index];
-                  return Dismissible(
-                    background: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      color: Theme.of(context).colorScheme.error,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(
-                            Icons.delete_forever,
-                            color: Colors.white,
-                          ),
-                          Icon(Icons.delete_forever, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    key: Key(student.name),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Card(
-                        child: ExpansionTile(
-                          initiallyExpanded: myNotifier
-                              .isExpanded, // Control the expansion state
-                          key: UniqueKey(),
-                          dense: true,
-                          leading: GestureDetector(
-                              onTap: () {
-                                _makePhoneCall(student.phoneNumber);
-                              },
-                              child: const CircleAvatar(
-                                child: Icon(Icons.call),
-                              )),
-                          title: Text(student.name.toUpperCase()),
-                          subtitle: Text(
-                            student.address ?? '',
-                            overflow: TextOverflow.clip,
-                          ),
 
-                          children: [studentDetails(student, context)],
-                          onExpansionChanged: (value) {
-                            myNotifier.toggleExpansion(
-                                value); // Track the expansion state
-                          },
+    return FutureBuilder<List<Student>>(
+      future: SharedPreferencesSingleton().getAllStudents(),
+      builder: (context, snapshot) {
+        final data = snapshot.data;
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Wrap the CircularProgressIndicator in a SliverToBoxAdapter
+          return const SliverToBoxAdapter(
+            child: Center(child: CircularProgressIndicator.adaptive()),
+          );
+        }
+
+        if (data == null || data.isEmpty) {
+          // Wrap the emptyStudentList widget in a SliverToBoxAdapter
+          return SliverToBoxAdapter(
+            child: emptyStudentList(),
+          );
+        }
+
+        // SliverList for displaying students
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final student = data[index];
+              return Dismissible(
+                background: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  color: Theme.of(context).colorScheme.error,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.delete_forever,
+                        color: Colors.white,
+                      ),
+                      Icon(Icons.delete_forever, color: Colors.white),
+                    ],
+                  ),
+                ),
+                key: Key(student.name),
+                onDismissed: (direction) => _preference.removeStudent(student),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Card(
+                    child: ExpansionTile(
+                      initiallyExpanded: myNotifier.isExpanded,
+                      key: UniqueKey(),
+                      dense: true,
+                      leading: GestureDetector(
+                        onTap: () {
+                          _makePhoneCall(student.phoneNumber);
+                        },
+                        child: const CircleAvatar(
+                          child: Icon(Icons.call),
                         ),
                       ),
+                      title: Text(student.name.toUpperCase()),
+                      subtitle: Text(
+                        student.address ?? '',
+                        overflow: TextOverflow.clip,
+                      ),
+                      children: [studentDetails(student, context)],
+                      onExpansionChanged: (value) {
+                        myNotifier.toggleExpansion(value);
+                      },
                     ),
-                    onDismissed: (direction) =>
-                       _preference.removeStudent(student),
-                  );
-                }),
-          );
-        });
+                  ),
+                ),
+              );
+            },
+            childCount: data.length,
+          ),
+        );
+      },
+    );
   }
+
 
   Widget studentDetails(Student updatedStudent, context) {
     final Uri url = Uri.parse(
@@ -214,6 +225,7 @@ class _StudentListTileState extends State<StudentListTile> {
             onPressed: () {
               _preference.updateStudentComment(
                   updatedStudent, commentController.text);
+                    Navigator.pop(context);
               setState(() {});
             },
             child: const Text('Ajoute'))

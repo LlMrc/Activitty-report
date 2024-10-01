@@ -360,24 +360,38 @@ class SharedPreferencesSingleton {
 //************************************ TIMER ************************** */
    
    
-    // Save TimerModel
+   // Save or update TimerModel
   Future<void> saveTimer(TimerModel timer) async {
     List<TimerModel> allTimers = getAllTimers();
-    allTimers.add(timer);
+
+    // Check if the timer already exists
+    int index = allTimers.indexWhere(
+        (t) => t.day == timer.day); // Assuming 'day' is the unique identifier
+
+    if (index != -1) {
+      // Update the existing timer
+      allTimers[index] = timer;
+    } else {
+      // Add a new timer
+      allTimers.add(timer);
+    }
 
     String jsonTimers = jsonEncode(allTimers.map((t) => t.toMap()).toList());
     await _prefs.setString('timerList', jsonTimers);
   }
 
- Future<void> updateTimerMinutAndHour(TimeOfDay time) async {
-    // Ensure getAllTimers is an async method if needed
-    List<TimerModel> allTimers =  getAllTimers();
-    int currentMonth = DateTime.now().month;
 
-    // Find timers with matching month and update them
+  Future<void> updateTimeOfDay(TimeOfDay newTimeOfDay) async {
+    List<TimerModel> allTimers = getAllTimers();
+    int currentDay = DateTime.now().day;
+
+    // Find timers with matching day and update them
     List<TimerModel> updatedTimers = allTimers.map((timer) {
-      if (timer.month == currentMonth) {
-        return timer.copyWith(minut: time.minute, hour: time.hour);
+      if (timer.day == currentDay) {
+        return timer.copyWith(     
+          timeOfDay:
+              newTimeOfDay, // Update timeOfDay if provided
+        );
       }
       return timer;
     }).toList();
@@ -386,18 +400,44 @@ class SharedPreferencesSingleton {
     String jsonTimers =
         jsonEncode(updatedTimers.map((t) => t.toMap()).toList());
     await _prefs.setString('timerList', jsonTimers);
+
+    debugPrint('CURRENT TIMEOfDay IS SAFELY UPDATED ${newTimeOfDay.minute}');
+  }
+
+ Future<void> updateTimerMinutAndHour(Duration time,
+      {TimeOfDay? newTimeOfDay}) async {
+    List<TimerModel> allTimers = getAllTimers();
+    int currentDay = DateTime.now().day;
+
+    // Find timers with matching day and update them
+    List<TimerModel> updatedTimers = allTimers.map((timer) {
+      if (timer.day == currentDay) {
+        return timer.copyWith(
+          minut: time.inMinutes,
+          hour: time.inHours,
+          timeOfDay:
+              newTimeOfDay ?? timer.timeOfDay, // Update timeOfDay if provided
+        );
+      }
+      return timer;
+    }).toList();
+
+    // Save updated list to SharedPreferences
+    String jsonTimers =
+        jsonEncode(updatedTimers.map((t) => t.toMap()).toList());
+    await _prefs.setString('timerList', jsonTimers);
+
+    debugPrint('CURRENT TIMER IS SAFELY UPDATED ${time.inSeconds}');
   }
 
 
   // Delete TimerModel where month equals DateTime.now().month
   Future<void> deleteTimer() async {
- 
-
     List<TimerModel> allTimers = getAllTimers();
-    int currentMonth = DateTime.now().month;
+    int currentDay = DateTime.now().day;
 
     // Remove timers where the month matches the current month
-    allTimers.removeWhere((timer) => timer.month == currentMonth);
+    allTimers.removeWhere((timer) => timer.day == currentDay);
 
     // Save updated list to SharedPreferences
     String jsonTimers = jsonEncode(allTimers.map((t) => t.toMap()).toList());
@@ -427,7 +467,7 @@ class SharedPreferencesSingleton {
 
       try {
         // Find the first TimerModel where the month matches the current month
-        return timerList.firstWhere((item) => item.month == date.month);
+        return timerList.firstWhere((item) => item.day == date.day);
       } catch (e) {
         // Return null if no matching TimerModel is found
         return null;
@@ -436,5 +476,23 @@ class SharedPreferencesSingleton {
 
     return null;
   }
+
+
+  // Retrieve all TimerModel objects for a specific month
+  List<TimerModel> getTimersByMonth(int month) {
+    List<TimerModel> allTimers = getAllTimers();
+
+    // Filter timers that belong to the specified month
+    List<TimerModel> timersInMonth = allTimers.where((timer) {
+      // Convert the timer's 'day' to a DateTime object to get the month
+      DateTime timerDate = DateTime(DateTime.now().year, month, timer.day);
+
+      // Return true if the timer's month matches the specified month
+      return timerDate.month == month;
+    }).toList();
+
+    return timersInMonth;
+  }
+
 
 }

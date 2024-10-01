@@ -6,7 +6,7 @@ Widget emptyStudentList() {
           children: List.generate(
               3,
               (index) => ListTile(
-                    leading: const CircleAvatar(),
+                    leading:  CircleAvatar(backgroundColor: Colors.red.shade100,),
                     title: Container(
                         width: 70, height: 18, color: Colors.grey[300]),
                     subtitle: Container(

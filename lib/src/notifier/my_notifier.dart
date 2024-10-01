@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/model/student.dart';
 
-import '../model/report.dart';
 
 
 class PyonyeNotifier with ChangeNotifier {
@@ -64,7 +63,7 @@ class PyonyeNotifier with ChangeNotifier {
 
 
 
-   void updateTimer(TimeOfDay timer) async {
+   void updateTimer(Duration timer) async {
     // Save the updated student back to SharedPreferences
     await SharedPreferencesSingleton().updateTimerMinutAndHour(timer);
 
