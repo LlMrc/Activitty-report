@@ -23,6 +23,7 @@ class _RepportScreenState extends State<RepportScreen> {
 
   @override
   void initState() {
+    _loadRepports();
     super.initState();
   }
 
@@ -32,11 +33,18 @@ class _RepportScreenState extends State<RepportScreen> {
     });
   }
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
+
   Future<void> _addRepport() async {
+    var students = await _prefsInstance.getAllStudents();
     final newRepport = Repport(
-      name: 'New Report ${_repports.length + 1}',
-      student: _repports.length + 1000,
-      comment: 'This is a new report',
+      publication: null,
+      time: null,
+      vizit: null,
+      name: nameController.text,
+      student: students.length,
+      comment: commentController.text,
       submitAt: DateTime.now(),
     );
     await _prefsInstance.saveRepport(newRepport);
@@ -65,16 +73,16 @@ class _RepportScreenState extends State<RepportScreen> {
             headerWidget(),
             const SizedBox(height: 12),
             _repports.isEmpty
-                ?  Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 60),
-                    SvgPicture.asset(
-                      height: 200,
-                      width: 100,'assets/svg/no_repport.svg'),
-                const Text('Ou poko gen rapo')  ],
-                )
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 60),
+                      SvgPicture.asset(
+                          height: 200, width: 100, 'assets/svg/no_repport.svg'),
+                      const Text('Ou poko gen rapo')
+                    ],
+                  )
                 : Expanded(
                     child: ListView.builder(
                       itemCount: _repports.length,
@@ -115,7 +123,8 @@ class _RepportScreenState extends State<RepportScreen> {
                                       ],
                                     ),
                                   ),
-                           if (isPyonye.isPyonye == true) additionalDetail(repport),
+                                  if (isPyonye.isPyonye == true)
+                                    additionalDetail(repport),
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -169,7 +178,8 @@ class _RepportScreenState extends State<RepportScreen> {
                             Positioned(
                                 top: -4,
                                 right: 6,
-                                child: removeRepport(onPressed:()=> _deleteRepport(repport),
+                                child: removeRepport(
+                                  onPressed: () => _deleteRepport(repport),
                                 ))
                           ],
                         );

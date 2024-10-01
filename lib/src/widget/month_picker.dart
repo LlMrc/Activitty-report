@@ -96,7 +96,7 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
         ),
         const SizedBox(height: 30),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             final event = Event(
               title: 'Monthly Report',
               comment: 'Time to submit your activity report!',
@@ -113,13 +113,16 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                       'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedStartMonth!)}')));
-              pyonyeNotifier.updatePyonyeStatus(_selectedStartMonth!,
+              await pyonyeNotifier.updatePyonyeStatus(_selectedStartMonth!,
                   endDate: _selectedEndMonth);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Please select both start and end months')));
 
               // Handle cases where one or both months are not selected
+            }
+            if (context.mounted) {
+              Navigator.pop(context);
             }
           },
           child: const Text('Ajoute Sèvis la'),

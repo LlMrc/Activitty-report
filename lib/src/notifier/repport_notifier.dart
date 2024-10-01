@@ -15,7 +15,7 @@ class RepportNotifier with ChangeNotifier {
 
     // Increment the hour  count
     report.vizit = currentCount + 1;
-print(report.vizit);
+    print(report.vizit);
     // Save the updated student back to SharedPreferences
     await SharedPreferencesSingleton().updateRepport(report);
 

@@ -8,12 +8,12 @@ class TimerNotifier extends ChangeNotifier {
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
 
   Timer? timer;
-  bool isStarted = false;
+  bool isStarted = true;
   bool _isReset = false;
   Duration _duration; // Remove the initialization here
 
   bool get getStarted => isStarted;
-  bool get reset => _isReset;
+ // bool get reset => _isReset;
 
   void toggleStarted() {
     isStarted = !isStarted;
@@ -21,12 +21,12 @@ class TimerNotifier extends ChangeNotifier {
   }
 
   void didReset() {
-    _isReset = false;
+    _isReset = true;
     notifyListeners();
   }
 
   void didNotReset() {
-    _isReset = true;
+    _isReset = false;
     notifyListeners();
   }
 
@@ -142,24 +142,5 @@ class TimerNotifier extends ChangeNotifier {
     return result;
   }
 
-  TimeOfDay addTwoTimeOfDay(TimeOfDay t1, TimeOfDay t2) {
-    // Convert TimeOfDay to Duration
-    final t1Duration = Duration(hours: t1.hour, minutes: t1.minute);
-    final t2Duration = Duration(hours: t2.hour, minutes: t2.minute);
 
-    // Sum the two durations
-    final totalDuration = t1Duration + t2Duration;
-
-    // Ensure the result is within a 24-hour format
-    final totalMinutes = totalDuration.inMinutes %
-        (24 * 60); // Wrap around if it exceeds 24 hours
-
-    // Convert the total minutes back to TimeOfDay
-    final result = TimeOfDay(
-      hour: totalMinutes ~/ 60, // Integer division to get hours
-      minute: totalMinutes % 60, // Remainder to get minutes
-    );
-
-    return result;
-  }
 }

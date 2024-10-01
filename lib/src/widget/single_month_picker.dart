@@ -16,7 +16,7 @@ class SingleMonthPicker extends StatefulWidget {
 }
 
 class _SingleMonthPickerState extends State<SingleMonthPicker> {
-  DateTime _selectedMonth = DateTime.now();
+  DateTime? _selectedMonth;
   @override
   Widget build(BuildContext context) {
     final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
@@ -28,8 +28,9 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
           children: [
             // Year Dropdown
             Text(
-              _selectedMonth == DateTime.now()
-                  ? DateFormat.yMMM().format(_selectedMonth) // Format the month
+              _selectedMonth != null
+                  ? DateFormat.yMMM()
+                      .format(_selectedMonth!) // Format the month
                   : 'Dat mwen chwazi', // Default text if no selection
             ),
             // Month Dropdown
@@ -38,7 +39,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
                 // Show the month picker for end month
                 DateTime? picked = await showMonthYearPicker(
                   context: context,
-                  initialDate: _selectedMonth,
+                  initialDate: _selectedMonth ?? DateTime.now(),
                   firstDate: DateTime(2020),
                   lastDate: DateTime(2100),
                 );
@@ -56,16 +57,20 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.secondary),
-          onPressed: () {
+          onPressed: () async {
+        
             _scheduleSingleMonthNotification(
               event: Event(
                 title: 'Monthly Report',
                 comment: 'Time to submit your activity report!',
                 pyonye: true,
               ),
-              scheduledDate: _selectedMonth,
+              scheduledDate: _selectedMonth ?? DateTime.now(),
             );
-            pyonyeNotifier.updatePyonyeStatus(_selectedMonth);
+            await pyonyeNotifier.updatePyonyeStatus(_selectedMonth!);
+            if (context.mounted) {
+              Navigator.pop(context);
+            }
           },
           child: Text(
             'Ajoute Sèvis la',
@@ -95,7 +100,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-              'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedMonth)}')));
+              'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedMonth!)}')));
     }
   }
 

@@ -60,8 +60,5 @@ class TimerModel {
     );
   }
 
-  // Timer method returning '${hour} ${minut}'
-  String timer() {
-    return '${hour ?? 0.toDouble()}: ${minut.toDouble()}';
-  }
+
 }

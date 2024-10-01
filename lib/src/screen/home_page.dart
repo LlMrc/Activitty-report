@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/feature/student/student_tile.dart';
 import 'package:report/src/local/local.dart';
-import 'package:report/src/model/timer.dart';
+import 'package:report/src/notifier/my_notifier.dart';
 import 'package:report/src/notifier/time_notifier.dart';
+import '../model/report.dart';
+import '../model/timer.dart';
 import '../shape/custom_shape.dart';
 import '../model/modules.dart';
 import '../feature/calender/calender.dart';
@@ -18,9 +20,6 @@ Widget buildItem(Modules item, BuildContext context) {
   return InkWell(
     key: Key(item.id.toString()),
     onTap: () {
-      // Navigate to the details page. If the user leaves and returns to
-      // the app after it has been killed while running in the
-      // background, the navigation stack is restored.
       Navigator.restorablePushNamed(
         context,
         item.routeName,
@@ -89,9 +88,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    checkForMonthlyReport();
+  }
+
+  DateTime date = DateTime.now();
 
   bool started = false;
-  bool isPyonye = false;
+
   @override
   Widget build(BuildContext context) {
     final timeNotifier = Provider.of<TimerNotifier>(context);
@@ -100,7 +106,6 @@ class _HomePageState extends State<HomePage> {
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         timeNotifier.saveTimer();
-     
       },
       child: Scaffold(
         endDrawer: const RepoDrawer(),
@@ -142,36 +147,39 @@ class _HomePageState extends State<HomePage> {
                                 Positioned(
                                   left: 10,
                                   top: 20,
-                                  child: SizedBox(
-                                    width: 200,
-                                    child: isPyonye
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  height: 60,
-                                                  width: 60,
-                                                  'assets/svg/welcome.svg'),
-                                              const SizedBox(height: 15),
-                                              Text(
-                                                'Solisyon efikas pou jere ak swiv aktivite ou yo byen fasil',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .copyWith(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .surfaceContainerHigh,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      letterSpacing: 2,
-                                                    ),
-                                              ),
-                                            ],
-                                          )
-                                        : const StopwatchWidget(),
-                                  ),
+                                  child: Consumer<PyonyeNotifier>(
+                                      builder: (context, notifier, _) {
+                                    return SizedBox(
+                                        width: 200,
+                                        child: notifier.isPyonye == true
+                                            ? const StopwatchWidget()
+                                            : Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      height: 60,
+                                                      width: 60,
+                                                      'assets/svg/welcome.svg'),
+                                                  const SizedBox(height: 15),
+                                                  Text(
+                                                    'Solisyon efikas pou jere ak swiv aktivite ou yo byen fasil',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge!
+                                                        .copyWith(
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .colorScheme
+                                                              .surfaceContainerHigh,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          letterSpacing: 2,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ));
+                                  }),
                                 ),
                               ],
                             ),
@@ -220,62 +228,72 @@ class _HomePageState extends State<HomePage> {
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniEndDocked,
         floatingActionButton:
-            Consumer<TimerNotifier>(builder: (context, timer, child) {
-          return FloatingActionButton(
-              onPressed: () {
-                timer.toggleStarted();
-                timer.isStarted ? timer.stopTimer() : timer.startTimer();
-              },
-              child: timer.isStarted
-                  ? const Icon(Icons.timer_outlined)
-                  : const Icon(Icons.timer_off_outlined));
+            Consumer<PyonyeNotifier>(builder: (context, n, _) {
+          if (n.isPyonye == true) {
+            return Consumer<TimerNotifier>(builder: (context, timer, child) {
+              return FloatingActionButton(
+                  onPressed: () {
+                    timer.toggleStarted();
+                    timer.isStarted ? timer.stopTimer() : timer.startTimer();
+                  },
+                  child: timer.isStarted
+                      ? const Icon(Icons.timer_outlined)
+                      : const Icon(Icons.timer_off_outlined));
+            });
+          } else {
+            return const SizedBox.shrink();
+          }
         }),
-        bottomNavigationBar: AnimatedOpacity(
-          duration: Durations.medium1,
-          opacity: 1,
-          child: Consumer<TimerNotifier>(builder: (context, notifier, _) {
-            return BottomAppBar(
-              padding: const EdgeInsets.symmetric(vertical: 0),
-              shape: const CircularNotchedRectangle(),
-              height: 60,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  BottomAppBarIcon(
-                    icon: Icons.delete,
-                    label: 'Delete',
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => deleteDialog(context));
-                    },
-                  ),
-                  BottomAppBarIcon(
-                    icon: Icons.refresh,
-                    label: 'Reset',
-                    onPressed: () {
-                      notifier.resetTimer();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50)),
-                          content: const Text('kontè a rekòmanse a zero!')));
-                    },
-                  ),
-                  BottomAppBarIcon(
-                    icon: Icons.save,
-                    label: 'Save',
-                    onPressed: () {
-                      notifier.saveTimer();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Ou anrejistre lè a!')));
-                    },
-                  )
-                ],
-              ),
-            );
-          }),
-        ),
+        bottomNavigationBar:
+            Consumer<PyonyeNotifier>(builder: (context, isPyonye, _) {
+          if (isPyonye.isPyonye == true) {
+            return Consumer<TimerNotifier>(builder: (context, notifier, _) {
+              return BottomAppBar(
+                padding: const EdgeInsets.symmetric(vertical: 0),
+                shape: const CircularNotchedRectangle(),
+                height: 60,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    BottomAppBarIcon(
+                      icon: Icons.delete,
+                      label: 'Delete',
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => deleteDialog(context));
+                      },
+                    ),
+                    BottomAppBarIcon(
+                      icon: Icons.refresh,
+                      label: 'Reset',
+                      onPressed: () {
+                        notifier.resetTimer();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            content: const Text('kontè a rekòmanse a zero!')));
+                      },
+                    ),
+                    BottomAppBarIcon(
+                      icon: Icons.save,
+                      label: 'Save',
+                      onPressed: () {
+                        notifier.saveTimer();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Ou anrejistre lè a!')));
+                      },
+                    )
+                  ],
+                ),
+              );
+            });
+          } else {
+            return const SizedBox.shrink();
+          }
+        }),
       ),
     );
   }
@@ -311,4 +329,85 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
+
+  Map<String, int> getTotalPublicationAndVizit() {
+    // Get all the reports from the _preference
+    List<Repport> allRepports = _preference.getAllRepports();
+
+    // Initialize counters for publication and vizit
+    int totalPublication = 0;
+    int totalVizit = 0;
+
+    // Loop through each report and sum the publication and vizit values
+    for (Repport repport in allRepports) {
+      totalPublication +=
+          repport.publication ?? 0; // If publication is null, add 0
+      totalVizit += repport.vizit ?? 0; // If vizit is null, add 0
+    }
+
+    // Return a map containing the total values
+    return {
+      'totalPublication': totalPublication,
+      'totalVizit': totalVizit,
+    };
+  }
+
+  Duration getTotalDuration() {
+    // Get all timers from the _preference
+    List<TimerModel> allTimers = _preference.getAllTimers();
+
+    // Initialize total hours and minutes
+    int totalHours = 0;
+    int totalMinutes = 0;
+
+    // Loop through each TimerModel to accumulate hours and minutes
+    for (TimerModel timer in allTimers) {
+      totalHours += timer.hour ?? 0; // Add hours (default to 0 if null)
+      totalMinutes += timer.minut; // Add minutes
+    }
+
+    // Convert extra minutes into hours
+    totalHours +=
+        totalMinutes ~/ 60; // Integer division to convert minutes to hours
+    totalMinutes = totalMinutes % 60; // Get remaining minutes
+
+    // Return the total duration as a Duration object
+    return Duration(hours: totalHours, minutes: totalMinutes);
+  }
+
+  Future<void> _addRepport() async {
+    var currentRapport = _preference.getAllRepports();
+    // Get all students and reports from the _preference
+
+    var students = await _preference.getAllStudents();
+    var repport = getTotalPublicationAndVizit();
+    var duration = getTotalDuration();
+    var time = _preference.getAllTimers();
+
+    final newRepport = Repport(
+      time: '${duration.inHours}:${duration.inMinutes.remainder(60)}',
+      publication: repport.isNotEmpty ? repport['totalPublication'] : 0,
+      vizit: repport.isNotEmpty ? repport['totalVizit'] : 0,
+      name: currentRapport.first.name,
+      student: students.length,
+      comment: 'Rapport du mois',
+      submitAt: DateTime.now(),
+    );
+    await _preference.saveRepport(newRepport);
+    currentRapport.clear();
+    time.clear();
+  }
+
+  void checkForMonthlyReport() {
+    DateTime now = DateTime.now();
+    if (now.day == 1) {
+      _addRepport(); // Run the report at the start of the month
+    }
+  }
+
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2774828870.
+  TextEditingController nameController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
+
+  final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
 }
