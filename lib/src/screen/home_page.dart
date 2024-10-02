@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:report/src/feature/student/student_tile.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/notifier/my_notifier.dart';
+import 'package:report/src/notifier/repport_notifier.dart';
 import 'package:report/src/notifier/time_notifier.dart';
 import '../model/report.dart';
 import '../model/timer.dart';
@@ -88,10 +89,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Repport? repport;
+
   @override
   void initState() {
     super.initState();
     checkForMonthlyReport();
+    repport = _preference.getRepport();
   }
 
   DateTime date = DateTime.now();
@@ -101,6 +105,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final timeNotifier = Provider.of<TimerNotifier>(context);
+    final rNotifier = Provider.of<RepportNotifier>(context);
 
     return PopScope(
       canPop: true,
@@ -147,11 +152,11 @@ class _HomePageState extends State<HomePage> {
                                 Positioned(
                                   left: 10,
                                   top: 20,
-                                  child: Consumer<PyonyeNotifier>(
+                                  child: Consumer<RepportNotifier>(
                                       builder: (context, notifier, _) {
                                     return SizedBox(
                                         width: 200,
-                                        child: notifier.isPyonye == true
+                                        child: repport?.isPyonye == true
                                             ? const StopwatchWidget()
                                             : Column(
                                                 crossAxisAlignment:
@@ -228,8 +233,8 @@ class _HomePageState extends State<HomePage> {
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniEndDocked,
         floatingActionButton:
-            Consumer<PyonyeNotifier>(builder: (context, n, _) {
-          if (n.isPyonye == true) {
+            Consumer<RepportNotifier>(builder: (context, n, _) {
+          if (repport?.isPyonye == true) {
             return Consumer<TimerNotifier>(builder: (context, timer, child) {
               return FloatingActionButton(
                   onPressed: () {
@@ -245,8 +250,8 @@ class _HomePageState extends State<HomePage> {
           }
         }),
         bottomNavigationBar:
-            Consumer<PyonyeNotifier>(builder: (context, isPyonye, _) {
-          if (isPyonye.isPyonye == true) {
+            Consumer<RepportNotifier>(builder: (context, isPyonye, _) {
+          if (repport?.isPyonye == true) {
             return Consumer<TimerNotifier>(builder: (context, notifier, _) {
               return BottomAppBar(
                 padding: const EdgeInsets.symmetric(vertical: 0),
@@ -318,6 +323,11 @@ class _HomePageState extends State<HomePage> {
         TextButton(
             onPressed: () {
               Navigator.pop(context);
+              if (repport != null) {
+                var newRepport = repport!.copyWith(isPyonye: false);
+                _preference.updateRepport(newRepport);
+                setState(() => repport = newRepport);
+              }
             },
             child: Text(
               'Wi',
@@ -391,6 +401,7 @@ class _HomePageState extends State<HomePage> {
       name: currentRapport.first.name,
       student: students.length,
       comment: 'Rapport du mois',
+      isPyonye: false,
       submitAt: DateTime.now(),
     );
     await _preference.saveRepport(newRepport);
@@ -404,10 +415,6 @@ class _HomePageState extends State<HomePage> {
       _addRepport(); // Run the report at the start of the month
     }
   }
-
-// Suggested code may be subject to a license. Learn more: ~LicenseLog:2774828870.
-  TextEditingController nameController = TextEditingController();
-  TextEditingController commentController = TextEditingController();
 
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
 }

@@ -16,15 +16,7 @@ class PyonyeNotifier with ChangeNotifier {
     notifyListeners(); // Notify listeners to rebuild the UI
   }
 
-  // Function to update the boolean and notify listeners
-  Future<void> updatePyonyeStatus(DateTime targetDate,
-      {DateTime? endDate}) async {
-    bool? result = await SharedPreferencesSingleton()
-        .getPyonye(targetDate, endDate: endDate);
-    _isPyonye = result; // Set the new value
-    print(result);
-    notifyListeners(); // Notify listeners to rebuild the UI
-  }
+ 
 
   void increment(Student student) async {
     // Retrieve the current count from the student's lesson field

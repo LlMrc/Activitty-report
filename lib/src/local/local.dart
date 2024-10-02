@@ -194,7 +194,7 @@ class SharedPreferencesSingleton {
   Future<void> saveEventsWithDateRange(
       Map<List<DateTime>, Event> events) async {
     final eventsJson = _encodeEventsWithDateRange(events);
-    debugPrint("Saving events with date range: $eventsJson");
+    //debugPrint("Saving events with date range: $eventsJson");
     await _prefs.setString(keyEventsRange, eventsJson); // Use a different key
   }
 
@@ -224,35 +224,6 @@ class SharedPreferencesSingleton {
     });
   }
 
-  Future<bool?> getPyonye(DateTime targetDate, {DateTime? endDate}) async {
-    final eventsJson = _prefs.getString(keyEventsRange);
-    if (eventsJson == null) return null; // No events saved
-
-    // Decode the stored events
-    final events = _decodeEventsWithDateRange(eventsJson);
-
-    // Check if it's a single date event
-    if (endDate == null) {
-      // Look for the event with a single target date
-      for (List<DateTime> dateRange in events.keys) {
-        if (dateRange.length == 1 && dateRange.first == targetDate) {
-          // Return the pyonye value from the Event
-          return events[dateRange]?.pyonye;
-        }
-      }
-    } else {
-      // Look for the event with a date range
-      for (List<DateTime> dateRange in events.keys) {
-        if (dateRange.first == targetDate && dateRange.last == endDate) {
-          // Return the pyonye value from the Event
-          return events[dateRange]?.pyonye;
-        }
-      }
-    }
-
-    return null; // No event found for the single date or date range
-  }
-
   Map<List<DateTime>, Event> getEventsWithDateRange() {
     final eventsJson = _prefs.getString(keyEventsRange);
     return eventsJson != null ? _decodeEventsWithDateRange(eventsJson) : {};
@@ -277,6 +248,9 @@ class SharedPreferencesSingleton {
     await _prefs.setString(keyReport, repportListJson);
   }
 
+
+ 
+
   Future<void> updateRepport(Repport updatedRepport) async {
     List<Repport> repports = getAllRepports();
     final DateTime now = DateTime.now();
@@ -288,11 +262,12 @@ class SharedPreferencesSingleton {
 
     if (indexToUpdate != -1) {
       // Update the existing report
-      repports[indexToUpdate] = updatedRepport;
+
+     repports[indexToUpdate] = updatedRepport;
     } else {
       // Optionally, handle the case where no report exists to update
       debugPrint('No report found for update, adding new one.');
-      repports.add(updatedRepport); // Add a new report if no match found
+     repports.add(updatedRepport); // Add a new report if no match found
     }
 
     // Save the updated list back to SharedPreferences
@@ -303,6 +278,8 @@ class SharedPreferencesSingleton {
 
     debugPrint('Report updated successfully');
   }
+
+
 
   // Delete a Repport by name and student ID
   Future<void> deleteRepportByMonthAndYear(DateTime dateToDelete) async {
@@ -470,5 +447,4 @@ class SharedPreferencesSingleton {
     }
     return null;
   }
-
 }

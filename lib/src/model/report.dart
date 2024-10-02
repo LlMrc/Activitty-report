@@ -5,6 +5,7 @@ class Repport {
   String? time;
   final int student;
   String? comment;
+  bool isPyonye;
   final DateTime submitAt;
 
   Repport({
@@ -12,9 +13,10 @@ class Repport {
     this.publication,
     this.time,
     this.vizit,
+    required this.isPyonye,
     required this.student,
     this.comment,
-   required this.submitAt,
+    required this.submitAt,
   });
 
   // Method to convert Repport to a Map (for saving to databases or preferences)
@@ -23,6 +25,7 @@ class Repport {
       'name': name,
       'publication': publication,
       'time': time,
+      'isPyonye': isPyonye,
       'vizit': vizit,
       'student': student,
       'comment': comment,
@@ -34,6 +37,7 @@ class Repport {
   factory Repport.fromMap(Map<String, dynamic> map) {
     return Repport(
       name: map['name'],
+      isPyonye: map['isPyonye'],
       publication: map['publication'],
       time: map['time'],
       vizit: map['vizit'],
@@ -44,23 +48,26 @@ class Repport {
   }
 
   // CopyWith method for updating fields
+   // Add the copyWith method
   Repport copyWith({
     String? name,
     int? publication,
-    String? time,
     int? vizit,
+    String? time,
     int? student,
     String? comment,
     DateTime? submitAt,
+    bool? isPyonye, // For updating status
   }) {
     return Repport(
       name: name ?? this.name,
       publication: publication ?? this.publication,
-      time: time ?? this.time,
       vizit: vizit ?? this.vizit,
+      time: time ?? this.time,
       student: student ?? this.student,
       comment: comment ?? this.comment,
       submitAt: submitAt ?? this.submitAt,
+      isPyonye: isPyonye ?? this.isPyonye, // Update the isPyonye field
     );
   }
 }

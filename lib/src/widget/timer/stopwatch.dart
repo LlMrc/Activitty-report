@@ -23,9 +23,6 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   @override
   void initState() {
     _repport = currentReport();
-   // _duration = _timerPreferences(); // Retrieve duration from storage
-   // startTimer(); // Start timer with saved _duration
-
     super.initState();
   }
 
@@ -39,14 +36,14 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
           student: 0,
           vizit: 0,
           publication: 0,
+          isPyonye: true,
           submitAt: DateTime.now());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-   // stopTimer();
-    //print(_duration.inSeconds);
+
     final color = Theme.of(context).colorScheme;
     final myNotifier = Provider.of<RepportNotifier>(context);
 

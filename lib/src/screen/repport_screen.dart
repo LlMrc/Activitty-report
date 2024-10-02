@@ -39,6 +39,7 @@ class _RepportScreenState extends State<RepportScreen> {
   Future<void> _addRepport() async {
     var students = await _prefsInstance.getAllStudents();
     final newRepport = Repport(
+      isPyonye: false,
       publication: null,
       time: null,
       vizit: null,

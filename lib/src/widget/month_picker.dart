@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
-import 'package:report/src/notifier/my_notifier.dart';
-
+import 'package:report/src/model/report.dart';
+import 'package:report/src/notifier/repport_notifier.dart';
 import '../feature/notification/local_notification.dart';
 import '../model/event.dart'; // Import the month_picker package
 
@@ -17,11 +17,23 @@ class MonthRangePickerScreen extends StatefulWidget {
 
 class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
   DateTime? _selectedStartMonth; // For storing the selected start month
-  DateTime? _selectedEndMonth; // For storing the selected end month
+  DateTime? _selectedEndMonth;
+
+  final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
+    final myNotifier = Provider.of<RepportNotifier>(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -97,14 +109,17 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
         const SizedBox(height: 30),
         ElevatedButton(
           onPressed: () async {
+           await myNotifier.repportPyonyeNotifier();
             final event = Event(
               title: 'Monthly Report',
               comment: 'Time to submit your activity report!',
               pyonye: true,
             );
+
             // Handle the saving or processing logic for the selected months
             if (_selectedStartMonth != null && _selectedEndMonth != null) {
               // Perform the action with the selected months
+
               saveAndScheduleMonthRange(
                   event: event,
                   startMonth: _selectedStartMonth!,
@@ -113,14 +128,12 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                       'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedStartMonth!)}')));
-              await pyonyeNotifier.updatePyonyeStatus(_selectedStartMonth!,
-                  endDate: _selectedEndMonth);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Please select both start and end months')));
-
               // Handle cases where one or both months are not selected
             }
+
             if (context.mounted) {
               Navigator.pop(context);
             }

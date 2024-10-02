@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
-import 'package:report/src/notifier/my_notifier.dart';
-
+import 'package:report/src/notifier/repport_notifier.dart';
 import '../feature/notification/local_notification.dart';
 import '../model/event.dart';
+
 
 class SingleMonthPicker extends StatefulWidget {
   const SingleMonthPicker({super.key});
@@ -17,9 +17,11 @@ class SingleMonthPicker extends StatefulWidget {
 
 class _SingleMonthPickerState extends State<SingleMonthPicker> {
   DateTime? _selectedMonth;
+
+
   @override
   Widget build(BuildContext context) {
-    final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
+    final myNotifier = Provider.of<RepportNotifier>(context);
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -58,7 +60,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
           style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.secondary),
           onPressed: () async {
-        
+        await  myNotifier.repportPyonyeNotifier(); // Schedule the notification for the selected month
             _scheduleSingleMonthNotification(
               event: Event(
                 title: 'Monthly Report',
@@ -67,7 +69,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
               ),
               scheduledDate: _selectedMonth ?? DateTime.now(),
             );
-            await pyonyeNotifier.updatePyonyeStatus(_selectedMonth!);
+
             if (context.mounted) {
               Navigator.pop(context);
             }
