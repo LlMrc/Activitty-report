@@ -87,7 +87,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
                   children: [
                     Text(AppLocalizations.of(context)!.visit,
                         style: Theme.of(context).textTheme.bodySmall),
-                    const SizedBox(width: 50),
+                    const SizedBox(width: 20),
                     Row(
                       children: [
                         counterButton(

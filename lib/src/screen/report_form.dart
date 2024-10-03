@@ -65,7 +65,8 @@ class _ReportFormState extends State<ReportForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+      constraints: const BoxConstraints(maxHeight: 600),
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       child: Column(
         children: [
           Container(
@@ -97,7 +98,7 @@ class _ReportFormState extends State<ReportForm> {
               increment: () => student.value + 1,
               decrement: () => student.value > 0 ? student.value - 1 : null,
               value: student),
-          const SizedBox(height: 10),
+          const SizedBox(height: 30),
           TextFormField(
               maxLines: 3,
               onChanged: (value) => setState(
@@ -106,23 +107,39 @@ class _ReportFormState extends State<ReportForm> {
               decoration: InputDecoration(
                   label:
                       Text(AppLocalizations.of(context)!.comment), //'Kòmantè'
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))))),
-          const SizedBox(height: 10),
-          ElevatedButton.icon(
-              onPressed: () async {
-                if (widget.isUpdate && widget.repport != null) {
-                  await _updateCommentRepport(widget.repport!);
-                } else {
-                  await _saveRepport();
-                }
+          const SizedBox(height: 30),
 
-                if (widget.rcontext.mounted) {
-                  Navigator.of(widget.rcontext).pop();
-                }
-              },
-              label:
-                  Text(AppLocalizations.of(context)!.saveButton)) //'Anregistre'
+          GestureDetector(
+            onTap: () async {
+              if (widget.isUpdate && widget.repport != null) {
+                await _updateCommentRepport(widget.repport!);
+              } else {
+                await _saveRepport();
+              }
+
+              if (widget.rcontext.mounted) {
+                Navigator.of(widget.rcontext).pop();
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Theme.of(context).colorScheme.primary),
+              child: Text(
+                textAlign: TextAlign.center,
+                AppLocalizations.of(context)!.saveButton.toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.white),
+              ),
+            ),
+          )
+          //'Anregistre'
         ],
       ),
     );
@@ -133,45 +150,40 @@ class _ReportFormState extends State<ReportForm> {
       required ValueListenable<dynamic> value,
       required VoidCallback increment,
       required VoidCallback decrement}) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(text),
-            const SizedBox(width: 16),
-            GestureDetector(
-              onTap: decrement,
-              child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100)),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.remove),
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ValueListenableBuilder(
-                  valueListenable: value,
-                  builder: (context, value, _) => Text('$value')),
-            ),
-            GestureDetector(
-              onTap: increment,
-              child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100)),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.add),
-                  )),
-            ),
-          ],
-        ),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Row(
+        children: [
+          Text(text),
+          const SizedBox(width: 24),
+          GestureDetector(
+            onTap: decrement,
+            child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100)),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.remove),
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ValueListenableBuilder(
+                valueListenable: value,
+                builder: (context, value, _) => Text('$value')),
+          ),
+          GestureDetector(
+            onTap: increment,
+            child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100)),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.add),
+                )),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -7,7 +7,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../local/local.dart';
 import '../model/event.dart';
 
-class ReportNification {
+class ReportNofication {
   static Future<void> initNotification() async {
     // Initialize timezone data
     tz.initializeTimeZones();
@@ -183,5 +183,7 @@ class ReportNification {
         'The counter is running',
         platformChannelSpecifics, // Notifikasyon Lè a ap mache
         payload: '2');
+
+    debugPrint('SHOW LOCAL NOTIFICATION');
   }
 }

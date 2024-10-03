@@ -95,11 +95,18 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    initNotification();
     checkForMonthlyReport();
+
     repport = _preference.getRepport();
   }
 
   bool started = false;
+
+  Future<void> initNotification() async {
+    bool isGranted = await ReportNofication.requestPermissions();
+    if (isGranted) ReportNofication.initNotification();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +117,9 @@ class _HomePageState extends State<HomePage> {
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         timeNotifier.saveTimer();
-        if (timeNotifier.getStarted) ReportNification.showLocalNotification();
+        if (timeNotifier.getStarted) {
+          ReportNofication.showLocalNotification();
+        }
       },
       child: Scaffold(
         endDrawer: const RepoDrawer(),

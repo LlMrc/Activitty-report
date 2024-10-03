@@ -161,7 +161,7 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
       eventMap[[DateTime(currentMonth.year, currentMonth.month)]] = event;
 
       // Schedule notification for the current month
-      await ReportNification.scheduleLocalEventNotification(
+      await ReportNofication.scheduleLocalEventNotification(
         event: event,
         scheduledDate: DateTime(currentMonth.year, currentMonth.month, 1),
       );

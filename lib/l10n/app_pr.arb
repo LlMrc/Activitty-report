@@ -127,7 +127,7 @@
   "@student": {
    "description": "Exibir estudante"
   },
-   "publication": "publicação",
+   "publication": "Publicação",
   "@publication": {
    "description": "Exibir publicação"
   },
@@ -170,20 +170,7 @@
    "description": "Texto exibido na lista de menus"
   },
 
-  "eng": "Inglês",
-  "@eng": {
-   "description": "Exibir inglês"
-  },
 
-  "es": "Espanhol",
-  "@es": {
-   "description": "Exibir espanhol"
-  },
-
-  "fr": "Francês",
-  "@fr": {
-   "description": "Exibir francês"
-  },
 
   "pioneer": "Serviço de Pioneiro",
   "@Pioneer Service": {

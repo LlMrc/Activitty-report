@@ -235,7 +235,7 @@ class SharedPreferencesSingleton {
   }
 
   bool getNotification() {
-    return _prefs.getBool(keyNotification) ?? false;
+    return _prefs.getBool(keyNotification) ?? true;
   }
 
   // Save a list of Repports

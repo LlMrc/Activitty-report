@@ -51,7 +51,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
                   });
                 }
               },
-              text: AppLocalizations.of(context)!.chooseDate,
+              text: AppLocalizations.of(context)!.chooseMonth,
             ),
           ],
         ),
@@ -89,7 +89,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
     required Event event,
     required DateTime scheduledDate,
   }) async {
-    await ReportNification.scheduleLocalEventNotification(
+    await ReportNofication.scheduleLocalEventNotification(
       event: event,
       scheduledDate: scheduledDate,
     );

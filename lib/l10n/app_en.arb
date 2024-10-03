@@ -112,6 +112,7 @@
   "@pioneerTitle": {
    "description": "Display no"
   },
+
    
   "pioneerforOneMonth": "Pioneering for a month!",
   "@pioneerforOneMonth": {
@@ -132,7 +133,7 @@
   "@student": {
    "description": "Display student"
   },
-   "publication": "publication",
+   "publication": "Publication",
   "@publication": {
    "description": "Display publication"
   },
@@ -176,25 +177,14 @@
    "description": "Text to display in the drawer list"
   },
 
-   "eng": "English",
-  "@eng": {
-   "description": "Display english "
-  },
 
- "es": "Spanish",
-  "@es": {
-   "description": "Display Spanish "
-  },
-
-   "fr": "French",
-  "@fr": {
-   "description": "Display french "
-  },
-
-
-  
   "pioneer": "Pioneer Service",
   "@Pioneer Service": {
+   "description": "Display Pioneer Service"
+  },
+
+    "share": "Share the app",
+  "@share": {
    "description": "Display Pioneer Service"
   },
 

@@ -38,6 +38,7 @@ class TimerNotifier extends ChangeNotifier {
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+    _isStarted = true;
   }
 
   void stopTimer() {
@@ -54,6 +55,7 @@ class TimerNotifier extends ChangeNotifier {
           isReset: false,
           timeOfDay: TimeOfDay.now()));
     }
+    _isStarted = false;
   }
 
   void resetTimer() {
@@ -68,6 +70,7 @@ class TimerNotifier extends ChangeNotifier {
         timeOfDay: TimeOfDay.now()));
     didReset();
     notifyListeners(); // Notify listeners about the change
+    _isStarted = false;
   }
 
   void saveTimer() {
@@ -82,6 +85,7 @@ class TimerNotifier extends ChangeNotifier {
 
     timer?.cancel();
     notifyListeners(); // Notify listeners about the change
+    _isStarted = false;
   }
 
   void addTime() {
