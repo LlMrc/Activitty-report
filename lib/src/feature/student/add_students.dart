@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting the Date and Time
 import 'package:provider/provider.dart';
 import 'package:report/src/notifier/my_notifier.dart';
-// Import your SharedPreferences singleton
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../local/local.dart';
 import '../../model/student.dart'; // Import your Student model
 
@@ -111,14 +111,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   Widget build(BuildContext context) {
     final refreshPageNotifier = Provider.of<PyonyeNotifier>(context);
     return GestureDetector(
-        onTap: () {
+      onTap: () {
         // Dismiss the keyboard when tapping outside of the Form
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text('Ajoute etidyan'.toUpperCase()),
+          title: Text(AppLocalizations.of(context)!.addStudent.toUpperCase()),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -137,19 +137,21 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16,),
+                const SizedBox(
+                  height: 16,
+                ),
                 TextFormField(
                   controller: _phoneNumberController,
                   decoration: const InputDecoration(labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value != null && value.isNotEmpty && value.length < 7) {
-                      return 'Please enter a valid phone number';
+                      return AppLocalizations.of(context)!.validNumber;
                     }
                     return null;
                   },
                 ),
-                 const SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 TextFormField(
@@ -157,13 +159,11 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   decoration: const InputDecoration(labelText: 'Address'),
                 ),
                 const SizedBox(height: 30),
-             
                 TextFormField(
                   maxLines: 3,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Comment'),
                   controller: _commentController,
-            
                 ),
                 const SizedBox(height: 20),
                 ListTile(
@@ -178,12 +178,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: (){
+                  onPressed: () {
                     _addStudent();
-                 refreshPageNotifier.refreshThisPage(true);
-                   Navigator.pop(context);
+                    refreshPageNotifier.refreshThisPage(true);
+                    Navigator.pop(context);
                   },
-                  child: const Text('Ajoute'),
+                  child: Text(AppLocalizations.of(context)!.add),
                 ),
               ],
             ),

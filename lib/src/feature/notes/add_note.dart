@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:uuid/uuid.dart';
-
 import '../../local/local.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../model/note.dart';
 
 class AddNote extends StatefulWidget {
@@ -39,7 +38,7 @@ class AddNoteState extends State<AddNote> {
       _contentController.clear();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Note saved successfully!')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.noteSnackBar)),
         );
       }
     }
@@ -68,20 +67,19 @@ class AddNoteState extends State<AddNote> {
           key: _formKey,
           child: Column(children: [
             const SizedBox(height: 25),
-            labelText('Title'),
+            labelText(AppLocalizations.of(context)!.noteTitle),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
               child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a title';
+                      return AppLocalizations.of(context)!.notePlaceHolder;
                     }
                     return null;
                   },
                   controller: _titleController,
                   decoration: InputDecoration(
                     isDense: true,
-                
                     prefixIcon: Icon(Icons.edit, color: Colors.grey[400]),
                     hintText: 'Title...',
                   )),
@@ -125,7 +123,7 @@ class AddNoteState extends State<AddNote> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    'Add note',
+                    AppLocalizations.of(context)!.addNoteButton,
                     style: TextStyle(
                         color: Theme.of(context).scaffoldBackgroundColor),
                   ),

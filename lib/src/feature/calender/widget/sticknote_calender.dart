@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-
 import '../../../model/event.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StickyNoteCalendar extends StatelessWidget {
   const StickyNoteCalendar({super.key, required this.event});
-final Event event;
+  final Event event;
   @override
   Widget build(BuildContext context) {
-  
     return Container(
       constraints: const BoxConstraints(minHeight: 150, maxWidth: 300),
       decoration: const BoxDecoration(
@@ -19,7 +18,8 @@ final Event event;
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           width: double.maxFinite,
           color: const Color.fromARGB(255, 234, 235, 176),
-          child: Text(event.title  ?? 'Okenn tit'.toUpperCase(),
+          child: Text(
+              event.title ?? AppLocalizations.of(context)!.calendarTitle,
               textAlign: TextAlign.start,
               style: const TextStyle(
                   color: Colors.black,
@@ -31,7 +31,8 @@ final Event event;
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(event.comment ?? 'Okenn deskripsyon',
+          child: Text(
+              event.comment ?? AppLocalizations.of(context)!.calendarDescrition,
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -40,4 +41,4 @@ final Event event;
       ]),
     );
   }
-  }
+}

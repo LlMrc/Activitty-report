@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/model/student.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -53,6 +53,10 @@ class _StudentListTileState extends State<StudentListTile> {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               final student = data[index];
+
+              // Ensure that the expansion states are initialized with the correct item count
+              myNotifier.initializeExpansionStates(data.length);
+
               return Dismissible(
                 background: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -74,7 +78,7 @@ class _StudentListTileState extends State<StudentListTile> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Card(
                     child: ExpansionTile(
-                      initiallyExpanded: myNotifier.isExpanded,
+                      initiallyExpanded: myNotifier.isExpand(index),
                       key: UniqueKey(),
                       dense: true,
                       leading: GestureDetector(
@@ -92,7 +96,7 @@ class _StudentListTileState extends State<StudentListTile> {
                       ),
                       children: [studentDetails(student, context)],
                       onExpansionChanged: (value) {
-                        myNotifier.toggleExpansion(value);
+                        myNotifier.toggleExpansion(value, index);
                       },
                     ),
                   ),
@@ -105,7 +109,6 @@ class _StudentListTileState extends State<StudentListTile> {
       },
     );
   }
-
 
   Widget studentDetails(Student updatedStudent, context) {
     final Uri url = Uri.parse(
@@ -152,8 +155,8 @@ class _StudentListTileState extends State<StudentListTile> {
                 children: [
                   Row(
                     children: [
-                      const Text('Leson:',
-                          style: TextStyle(fontWeight: FontWeight.w600)),
+                      Text(AppLocalizations.of(context)!.lesson,
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
                       const SizedBox(width: 20),
                       MyCounter(student: updatedStudent),
                     ],
@@ -173,7 +176,10 @@ class _StudentListTileState extends State<StudentListTile> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: Colors.grey)),
-                        child: Text('${updatedStudent.comment}', style:  TextStyle(color: Colors.grey.shade700),)),
+                        child: Text(
+                          '${updatedStudent.comment}',
+                          style: TextStyle(color: Colors.grey.shade700),
+                        )),
                   ),
                 ],
               ),
@@ -183,8 +189,6 @@ class _StudentListTileState extends State<StudentListTile> {
       ),
     );
   }
-
-
 
   Future<void> _makePhoneCall(String? phoneNumber) async {
     if (phoneNumber == null) return;
@@ -217,18 +221,18 @@ class _StudentListTileState extends State<StudentListTile> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text(
-              'Anile',
-              style: TextStyle(color: Colors.red),
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
+              style: const TextStyle(color: Colors.red),
             )),
         TextButton(
             onPressed: () {
               _preference.updateStudentComment(
                   updatedStudent, commentController.text);
-                    Navigator.pop(context);
+              Navigator.pop(context);
               setState(() {});
             },
-            child: const Text('Ajoute'))
+            child: Text(AppLocalizations.of(context)!.add))
       ],
     );
   }

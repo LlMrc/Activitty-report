@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:report/src/notifier/time_notifier.dart';
 import '../../local/local.dart';
 import '../../model/report.dart';
 import '../../notifier/repport_notifier.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StopwatchWidget extends StatefulWidget {
   const StopwatchWidget({super.key});
@@ -17,8 +17,6 @@ class StopwatchWidget extends StatefulWidget {
 class _StopwatchWidgetState extends State<StopwatchWidget> {
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
   late Repport _repport;
-
- 
 
   @override
   void initState() {
@@ -43,7 +41,6 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     final color = Theme.of(context).colorScheme;
     final myNotifier = Provider.of<RepportNotifier>(context);
 
@@ -88,7 +85,8 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
               children: [
                 Row(
                   children: [
-                    Text('Vizit', style: Theme.of(context).textTheme.bodySmall),
+                    Text(AppLocalizations.of(context)!.visit,
+                        style: Theme.of(context).textTheme.bodySmall),
                     const SizedBox(width: 50),
                     Row(
                       children: [
@@ -124,7 +122,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
             const SizedBox(height: 15),
             Row(
               children: [
-                Text('Piblikasyon',
+                Text(AppLocalizations.of(context)!.publication, //'Piblikasyon',
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(width: 10),
                 Row(
@@ -214,24 +212,18 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
     );
   }
 
- 
-
   Widget buildTimer(BuildContext context) {
-        final myNotifier = context.watch<TimerNotifier>();
+    final myNotifier = context.watch<TimerNotifier>();
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final hours = twoDigits(myNotifier.duration.inHours);
     final minutes = twoDigits(myNotifier.duration.inMinutes.remainder(60));
     final seconds = twoDigits(myNotifier.duration.inSeconds.remainder(60));
 
-    return Consumer<TimerNotifier>(
-      builder: (context, timeNotifier, _) {
-        return Text(
-          '$hours:$minutes:$seconds',
-          style: GoogleFonts.pressStart2p(),
-        );
-      }
-    );
+    return Consumer<TimerNotifier>(builder: (context, timeNotifier, _) {
+      return Text(
+        '$hours:$minutes:$seconds',
+        style: GoogleFonts.pressStart2p(),
+      );
+    });
   }
-
- 
 }

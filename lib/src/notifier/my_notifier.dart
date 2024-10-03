@@ -7,16 +7,15 @@ class PyonyeNotifier with ChangeNotifier {
   bool isExpanded = false; // Track whether the ExpansionTile is expanded
   bool? get isPyonye => _isPyonye;
   bool get pageRefresh => _refresh;
-
+  List<bool>? _expansionStates;
   bool _refresh = false;
+
   void refreshThisPage(bool newValue) {
     _refresh = newValue;
     debugPrint('refreshThisPage called, _refresh: $_refresh');
 
     notifyListeners(); // Notify listeners to rebuild the UI
   }
-
- 
 
   void increment(Student student) async {
     // Retrieve the current count from the student's lesson field
@@ -51,9 +50,20 @@ class PyonyeNotifier with ChangeNotifier {
     notifyListeners(); // Notify listeners to rebuild the UI
   }
 
-  // Toggle the expansion state
-  void toggleExpansion(bool value) {
-    isExpanded = value;
-    notifyListeners();
+  // Initialize the list dynamically based on the item count
+  void initializeExpansionStates(int itemCount) {
+    _expansionStates ??= List<bool>.filled(itemCount, false);
+  }
+
+  bool isExpand(int index) {
+    // Ensure that _expansionStates is initialized before use
+    return _expansionStates?[index] ?? false;
+  }
+
+  void toggleExpansion(bool isExpanded, int index) {
+    if (_expansionStates != null) {
+      _expansionStates![index] = isExpanded;
+      notifyListeners(); // Notify listeners to update the UI.
+    }
   }
 }

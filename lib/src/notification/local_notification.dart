@@ -4,8 +4,8 @@ import 'package:report/main.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart' as tz;
-import '../../local/local.dart';
-import '../../model/event.dart';
+import '../local/local.dart';
+import '../model/event.dart';
 
 class ReportNification {
   static Future<void> initNotification() async {
@@ -15,7 +15,7 @@ class ReportNification {
     // Set up Android initialization settings
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings(
-            'ic_launcher'); // Ensure you have an app icon
+            '@mipmap/ic_launcher'); // Ensure you have an app icon
 
     // Set up iOS initialization settings
     const DarwinInitializationSettings initializationSettingsIOS =
@@ -77,7 +77,7 @@ class ReportNification {
     return grantedNotificationPermission ?? false;
   }
 
- static void showEventAlarm() async {
+  static void showEventAlarm() async {
     // Retrieve single-date events
     Map<DateTime, List<Event>> map = SharedPreferencesSingleton().getEvents();
     var eventList = map.keys.toList();
@@ -85,8 +85,7 @@ class ReportNification {
     // Schedule notifications for single-date events
     for (var date in eventList) {
       for (var event in map[date]!) {
-        await scheduleLocalEventNotification(
-            event: event, scheduledDate: date);
+        await scheduleLocalEventNotification(event: event, scheduledDate: date);
       }
     }
 
@@ -99,20 +98,18 @@ class ReportNification {
       DateTime startDate = dateRange.first;
       DateTime endDate = dateRange.last;
       var event = mapRange[dateRange];
-          // Schedule notifications for each day within the date range
+      // Schedule notifications for each day within the date range
 
-if(event != null){
+      if (event != null) {
         for (var date = startDate;
             date.isBefore(endDate.add(const Duration(days: 1)));
             date = date.add(const Duration(days: 1))) {
           await scheduleLocalEventNotification(
               event: event, scheduledDate: date);
         }
-}
-    
+      }
     }
   }
-
 
   // Show event in local notification
   static Future<void> scheduleLocalEventNotification(
@@ -146,13 +143,45 @@ if(event != null){
       scheduleTime,
       platformChannelSpecifics,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      matchDateTimeComponents: event.pyonye == true? DateTimeComponents.dayOfMonthAndTime: DateTimeComponents.dayOfWeekAndTime,
+      matchDateTimeComponents: event.pyonye == true
+          ? DateTimeComponents.dayOfMonthAndTime
+          : DateTimeComponents.dayOfWeekAndTime,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
       payload: '1',
     );
   }
 
+  // Show local notification
+  static Future showLocalNotification() async {
+    // Check if notification is enabled
+    bool isNotificationEnabled = SharedPreferencesSingleton().getNotification();
+    if (!isNotificationEnabled) return;
 
-  
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails('local', 'your channel name',
+            channelDescription: 'Local notification',
+            importance: Importance.max,
+            priority: Priority.high,
+            autoCancel: true,
+            channelShowBadge: true,
+            playSound: false
+            // color: Color.fromARGB(255, 18, 233, 90),
+            );
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidNotificationDetails,
+      iOS: DarwinNotificationDetails(
+        presentSound: true,
+        presentAlert: true,
+        presentBadge: true,
+      ),
+    );
+
+    await FlutterLocalNotificationsPlugin().show(
+        2,
+        'Notification',
+        'The counter is running',
+        platformChannelSpecifics, // Notifikasyon Lè a ap mache
+        payload: '2');
+  }
 }

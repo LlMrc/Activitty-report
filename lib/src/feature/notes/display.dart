@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:report/src/model/note.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../local/local.dart';
 
@@ -53,7 +54,7 @@ class _DisplayNoteState extends State<DisplayNote> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          title:  Text(DateFormat.yMMMMEEEEd().format(widget.note.createdAt)),
+          title: Text(DateFormat.yMMMMEEEEd().format(widget.note.createdAt)),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 14),
@@ -98,7 +99,6 @@ class _DisplayNoteState extends State<DisplayNote> {
                       ),
                     ),
                   ),
-            
                 ],
               ),
             ),
@@ -115,9 +115,10 @@ class _DisplayNoteState extends State<DisplayNote> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text('Korije Nòt la'),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(AppLocalizations.of(context)!
+                        .editNoteButton), //Korije Nòt la
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 10),

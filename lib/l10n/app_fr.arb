@@ -1,0 +1,195 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Mon Application Géniale",
+  "@appTitle": {
+    "description": "Le titre de l'application"
+  },
+  "welcomeMessage": "Une solution efficace pour gérer et suivre toutes vos activités !",
+  "@welcomeMessage": {
+    "description": "Un message affiché pour saluer l'utilisateur"
+  },
+  "addEventButton": "Événement",
+  "@addEventButton": {
+    "description": "Le texte affiché sur le bouton d'ajout d'événement"
+  },
+  "calendarTitle": "Pas de titre",
+  "@calendarTitle": {
+     "description": "Le texte affiché sur le calendrier comme titre en cas de null"
+  },
+  "calendarDescrition": "Pas de description",
+  "@calendarDesc": {
+     "description": "Le texte affiché sur le calendrier comme description en cas de null"
+  },
+  "noteTitle": "Titre",
+  "@noteTitle": {
+     "description": "Le texte comme titre pour la note"
+  },
+  "noteSnackBar": "Note enregistrée avec succès !",
+  "@noteSnackBar": {
+     "description": "Le texte affiché dans la snackbar après que l'utilisateur ajoute une note"
+  },
+  "notePlaceHolder": "Veuillez entrer un titre",
+  "@notePlaceHolder": {
+     "description": "Le texte affiché lorsqu'il n'y a pas de note"
+  },
+  "addNoteButton": "Ajouter une note",
+  "@addNoteButton": {
+     "description": "Le texte affiché pour ajouter une note"
+  },
+  "add": "Ajouter",
+  "@add": {
+     "description": "Le texte affiché pour ajouter"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+     "description": "Le texte affiché pour annuler"
+  },
+  "editNoteButton": "Modifier la note",
+  "@editNoteButton": {
+     "description": "Le texte affiché pour modifier la note"
+  },
+  "addStudent": "Ajouter un étudiant",
+  "@addStudent": {
+     "description": "Le texte affiché pour ajouter un étudiant"
+  },
+  "homepageTitle": "Une solution efficace pour gérer et suivre toutes vos activités",
+  "@notificationTitle": {
+     "description": "Le texte affiché comme titre de notification"
+  },
+  "cancelPionner": "Êtes-vous sûr de vouloir annuler le service de pionnier ?",
+  "@notificationDes": {
+     "description": "Message d'alerte pour confirmer l'intention de l'utilisateur"
+  },
+  "validNumber": "Veuillez entrer un numéro de téléphone valide",
+  "@validNumber": {
+     "description": "Le texte affiché lorsqu'un utilisateur entre un numéro incorrect"
+  },
+  "lesson": "Leçon",
+  "@lesson": {
+     "description": "Le texte affiché avant le numéro de la leçon"
+  },
+  "timerCount": "L'heure actuelle a été enregistrée.",
+  "@timerCount": {
+     "description": "Texte affiché dans la snackbar lorsque l'utilisateur enregistre l'heure actuelle"
+  },
+  "resetCounter": "Le compteur redémarre à zéro.",
+  "@resetCounter": {
+     "description": "Texte affiché dans la snackbar lorsque le minuteur est réinitialisé"
+  },
+  "yes": "Oui",
+  "@yes": {
+     "description": "Affichage de oui"
+  },
+  "no": "Non",
+  "@no": {
+     "description": "Affichage de non"
+  },
+  "pioneerTitle": "Choisissez quand vous commencerez",
+  "@pioneerTitle": {
+     "description": "Affichage du titre pour la sélection du pionnier"
+  },
+  "pioneerforOneMonth": "Pionnier pour un mois !",
+  "@pioneerforOneMonth": {
+     "description": "Texte affiché pour le choix d'un mois"
+  },
+  "pioneerforTwoMonth": "Pionnier pour plusieurs mois !",
+  "@pioneerforTwoMonth": {
+     "description": "Texte affiché pour le choix de plusieurs mois"
+  },
+  "time": "Temps",
+  "@time": {
+     "description": "Affichage du temps"
+  },
+  "student": "Étudiant",
+  "@student": {
+     "description": "Affichage de l'étudiant"
+  },
+  "publication": "Publication",
+  "@publication": {
+     "description": "Affichage de la publication"
+  },
+  "visit": "Nouvelle visite",
+  "@visit": {
+     "description": "Affichage de la nouvelle visite"
+  },
+  "saveButton": "Enregistrer",
+  "@saveButton": {
+     "description": "Texte affiché pour le bouton d'enregistrement"
+  },
+  "comment": "Commentaire",
+  "@comment": {
+     "description": "Texte affiché dans le champ de commentaire"
+  },
+  "report": "Vous n'avez pas encore de rapport",
+  "@report": {
+     "description": "Texte affiché lorsque la liste des rapports est vide"
+  },
+  "studentCount": "Nombre d'étudiants",
+  "@studentCount": {
+     "description": "Texte affiché avant le nombre d'étudiants"
+  },
+  "monthReport": "Rapport mensuel",
+  "@monthReport": {
+     "description": "Texte affiché pour le rapport mensuel"
+  },
+  "configuration": "Configuration",
+  "@configuration": {
+     "description": "Texte affiché dans l'en-tête du menu"
+  },
+  "notification": "Notification",
+  "@notification": {
+     "description": "Texte affiché dans la liste du menu"
+  },
+  "eng": "Anglais",
+  "@eng": {
+     "description": "Affichage de l'anglais"
+  },
+  "es": "Espagnol",
+  "@es": {
+     "description": "Affichage de l'espagnol"
+  },
+  "fr": "Français",
+  "@fr": {
+     "description": "Affichage du français"
+  },
+  "pioneer": "Service de pionnier",
+  "@Pioneer Service": {
+     "description": "Affichage du service de pionnier"
+  },
+  "language": "Choisissez une langue",
+  "@language": {
+     "description": "Texte affiché pour demander à l'utilisateur de choisir une langue"
+  },
+  "reportSrvce": "Rapport",
+  "@reportSrvce": {
+     "description": "Affichage du rapport"
+  },
+  "chooseDate": "Date choisie",
+  "@chooseDate": {
+     "description": "Texte affiché pour choisir une date"
+  },
+  "chooseMonth": "Choisissez un mois",
+  "@chooseMonth": {
+     "description": "Texte affiché pour choisir un mois"
+  },
+  "addService": "Ajouter un service",
+  "@addService": {
+     "description": "Texte affiché dans un bouton pour ajouter un service de pionnier"
+  },
+  "firstMonth": "Premier mois",
+  "@firstMonth": {
+     "description": "Texte affiché pour choisir le premier mois"
+  },
+  "lastMonth": "Dernier mois",
+  "@lastMonth": {
+     "description": "Texte affiché pour choisir le dernier mois"
+  },
+  "serviceBegin": "Bravo 👏!! le service va commencer",
+  "@serviceBegin": {
+      "description": "Texte affiché dans la snackbar"
+  },
+  "monthFilter": "Veuillez sélectionner à la fois les mois de début et de fin",
+  "@monthFilter": {
+     "description": "Texte affiché lorsque l'utilisateur sélectionne les mois dans le mauvais ordre"
+  }
+}

@@ -4,8 +4,9 @@ import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/model/report.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:report/src/notifier/repport_notifier.dart';
-import '../feature/notification/local_notification.dart';
+import '../notification/local_notification.dart';
 import '../model/event.dart'; // Import the month_picker package
 
 class MonthRangePickerScreen extends StatefulWidget {
@@ -19,27 +20,17 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
   DateTime? _selectedStartMonth; // For storing the selected start month
   DateTime? _selectedEndMonth;
 
-  final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final myNotifier = Provider.of<RepportNotifier>(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text('Premye mwa:'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            AppLocalizations.of(context)!.firstMonth,
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -49,7 +40,8 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
               _selectedStartMonth != null
                   ? DateFormat.yMMM()
                       .format(_selectedStartMonth!) // Format the month
-                  : 'Dat mwen chwazi', // Default text if no selection
+                  : AppLocalizations.of(context)!
+                      .chooseDate, //Dat mwen chwazi', // Default text if no selection
             ),
             monthPickerWidget(
               color: Colors.red,
@@ -67,14 +59,16 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
                   });
                 }
               },
-              text: 'Chwazi yon mwa',
+              text: AppLocalizations.of(context)!.chooseMonth,
             ),
           ],
         ),
         const SizedBox(height: 40),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text('Dènye mwa:'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            AppLocalizations.of(context)!.lastMonth,
+          ), //Dènye mwa:
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -84,7 +78,8 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
               _selectedEndMonth != null
                   ? DateFormat.yMMM()
                       .format(_selectedEndMonth!) // Format the month
-                  : 'Dat mwen chwazi', // Default text if no selection
+                  : AppLocalizations.of(context)!
+                      .chooseDate, // Default text if no selection
             ),
             monthPickerWidget(
               color: Colors.blue,
@@ -102,49 +97,55 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
                   });
                 }
               },
-              text: 'Chwazi yon mwa',
+              text: AppLocalizations.of(context)!
+                  .chooseMonth, // 'Chwazi yon mwa',
             ),
           ],
         ),
         const SizedBox(height: 30),
         ElevatedButton(
-          onPressed: () async {
-           await myNotifier.repportPyonyeNotifier();
-            final event = Event(
-              title: 'Monthly Report',
-              comment: 'Time to submit your activity report!',
-              pyonye: true,
-            );
+            onPressed: () async {
+              final event = Event(
+                title: 'Monthly Report',
+                comment: 'Time to submit your activity report!',
+                pyonye: true,
+              );
 
-            // Handle the saving or processing logic for the selected months
-            if (_selectedStartMonth != null && _selectedEndMonth != null) {
-              // Perform the action with the selected months
+              // Handle the saving or processing logic for the selected months
+              if (_selectedStartMonth != null && _selectedEndMonth != null) {
+                // Perform the action with the selected months
 
-              saveAndScheduleMonthRange(
-                  event: event,
-                  startMonth: _selectedStartMonth!,
-                  endMonth: _selectedEndMonth!);
+                saveAndScheduleMonthRange(
+                    event: event,
+                    startMonth: _selectedStartMonth!,
+                    endMonth: _selectedEndMonth!);
 
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedStartMonth!)}')));
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Please select both start and end months')));
-              // Handle cases where one or both months are not selected
-            }
-
-            if (context.mounted) {
-              Navigator.pop(context);
-            }
-          },
-          child: const Text('Ajoute Sèvis la'),
-        ),
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    content: Text(
+                        '${AppLocalizations.of(context)!.serviceBegin} ${DateFormat.MMMM().format(_selectedStartMonth!)}')));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    content: Text(AppLocalizations.of(context)!.monthFilter)));
+                // Handle cases where one or both months are not selected
+              }
+              myNotifier.refreshThisPage(true);
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
+            },
+            child: Text(
+                AppLocalizations.of(context)!.addService) //'Ajoute Sèvis la'),
+            ),
       ],
     );
   }
 
-  // Function to schedule a notification for a single month
   Future<void> saveAndScheduleMonthRange({
     required Event event,
     required DateTime startMonth,
@@ -165,8 +166,21 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
         scheduledDate: DateTime(currentMonth.year, currentMonth.month, 1),
       );
 
-      // Move to the next month
-      currentMonth = DateTime(currentMonth.year, currentMonth.month + 1);
+      // Save report for the current month
+      final report = Repport(
+        name: '',
+        isPyonye: true,
+        student: 0,
+        submitAt: DateTime(currentMonth.year, currentMonth.month, 1),
+      );
+      await SharedPreferencesSingleton().saveRepport(report);
+
+      // Move to the next month, handling year transitions
+      if (currentMonth.month == 12) {
+        currentMonth = DateTime(currentMonth.year + 1, 1);
+      } else {
+        currentMonth = DateTime(currentMonth.year, currentMonth.month + 1);
+      }
     }
 
     // Save all the events for the range using saveEventsWithDateRange

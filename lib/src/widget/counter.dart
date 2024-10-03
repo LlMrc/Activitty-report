@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:report/src/model/student.dart';
 import 'package:report/src/notifier/my_notifier.dart';
+
+import '../model/student.dart';
 
 class MyCounter extends StatelessWidget {
   const MyCounter({super.key, required this.student});
@@ -16,7 +16,7 @@ class MyCounter extends StatelessWidget {
         IconButton.filled(
           splashColor: Colors.green,
           style: ButtonStyle(
-            elevation: const WidgetStatePropertyAll<double>(10),
+              elevation: const WidgetStatePropertyAll<double>(10),
               backgroundColor:
                   WidgetStatePropertyAll(Theme.of(context).cardColor)),
           iconSize: 14,
@@ -28,7 +28,7 @@ class MyCounter extends StatelessWidget {
             pyonyeNotifier.decrement(student);
           },
         ),
-         Padding(
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           // Using Consumer to listen to PyonyeNotifier and update UI when lesson count changes
           child: Consumer<PyonyeNotifier>(
@@ -39,13 +39,13 @@ class MyCounter extends StatelessWidget {
         ),
         IconButton.filled(
           style: ButtonStyle(
-             elevation: const WidgetStatePropertyAll<double>(10),
+              elevation: const WidgetStatePropertyAll<double>(10),
               backgroundColor:
                   WidgetStatePropertyAll(Theme.of(context).cardColor)),
           iconSize: 14,
           icon: const Icon(Icons.add, color: Colors.black),
           onPressed: () {
-           pyonyeNotifier.increment(student);
+            pyonyeNotifier.increment(student);
           },
         )
       ],

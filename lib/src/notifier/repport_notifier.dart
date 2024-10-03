@@ -5,12 +5,14 @@ import '../model/report.dart';
 
 class RepportNotifier with ChangeNotifier {
   //*********************************************************
-Repport? getRepport() {
- final repport =  SharedPreferencesSingleton().getRepport();
-  notifyListeners();
- return repport;
- 
-}
+  Repport? getRepport() {
+    final repport = SharedPreferencesSingleton().getRepport();
+    notifyListeners();
+    return repport;
+  }
+
+  bool refresh = false;
+
   void incrementVizit(Repport report) async {
     // Retrieve the current count from the Report model's vizit field
     int currentCount = report.vizit ?? 0;
@@ -89,6 +91,13 @@ Repport? getRepport() {
     }
     // Save the updated student back to SharedPreferences
     await SharedPreferencesSingleton().updateRepport(report);
+    notifyListeners(); // Notify listeners to rebuild the UI
+  }
+
+  void refreshThisPage(bool newValue) {
+    refresh = newValue;
+    debugPrint('refreshThisPage called, _refresh: $refresh');
+
     notifyListeners(); // Notify listeners to rebuild the UI
   }
 }

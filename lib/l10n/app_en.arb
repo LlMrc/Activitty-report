@@ -1,0 +1,246 @@
+{
+  "@@locale": "en",
+  "appTitle": "My Awesome App",
+  "@appTitle": {
+    "description": "The title of the app"
+  },
+  "welcomeMessage": "An effective solution to managing and tracking all your activities!",
+  "@welcomeMessage": {
+    "description": "A message shown to greet the user"
+  },
+
+  "addEventButton": "event",
+  "@addEventButton": {
+    "description": "The text shown on the add event button"
+  },
+
+  "calendarTitle": "No title",
+  "@calendarTitle": {
+     "description": "The text shown on the calendar as title in case it's null"
+  },
+
+  "calendarDescrition": "No Descrition",
+  "@calendarDesc": {
+     "description": "The text shown on the calendar as description in case it's null"
+  },
+
+  "noteTitle": "Title",
+  "@noteTitle": {
+     "description": "The text as title for the sticky note"
+  },
+
+  "noteSnackBar": "Note saved successfully!",
+  "@noteSnackBar": {
+     "description": "The text shown on the snackbar after user add a note"
+  },
+
+  "notePlaceHolder": "Please enter a title",
+  "@notePlaceHolder": {
+     "description": "The text shown when there is no note"
+  },
+
+  "addNoteButton": "Add note",
+  "@addNoteButton": {
+     "description": "The text shown for adding note"
+  },
+  
+  "add": "Add",
+  "@add": {
+     "description": "The text shown for adding"
+  },
+
+  "cancel": "Cancel",
+  "@cancel": {
+     "description": "The text shown for cancel"
+  },
+  
+  
+  "editNoteButton": "Edit note",
+  "@editNoteButton": {
+     "description": "The text shown for editting note"
+  },
+
+
+ "addStudent": "Add Student",
+  "@addStudent": {
+     "description": "The text shown for add student"
+  },
+
+"homepageTitle": "An effective solution to managing and tracking all your activities",
+ "@notificationTitle":{
+    "description": "text to show the notification title"
+ },
+
+ "cancelPionner": "Are you sure you want to cancel the Pioneer Service ?",
+ "@notificationDes":{
+    "description": "alert dialog text message to confirm the user intention"
+ },
+
+ "validNumber": "Please enter a valid phone number",
+   "@validNumber": {
+     "description": "The text to show when a user enter an incorect number "
+  },
+  
+  "lesson": "Lesson",
+   "@lesson": {
+     "description": "The text to show before the lesson number "
+  },
+
+  "timerCount": "The current time as been saved.",
+   "@timerCount": {
+     "description": "Display snackBar text message when user save the current time"
+  },
+
+  "resetCounter": "The counter restarts to zero.",
+  "@resetCounter": {
+   "description": "Display snackBar text message when timer is reset"
+  },
+
+
+  "yes": "Yes",
+  "@yes": {
+   "description": "Display yes"
+  },
+
+  
+  "no": "No",
+  "@no": {
+   "description": "Display no"
+  },
+
+  "pioneerTitle": "choose when you'll start",
+  "@pioneerTitle": {
+   "description": "Display no"
+  },
+   
+  "pioneerforOneMonth": "Pioneering for a month!",
+  "@pioneerforOneMonth": {
+   "description": "text to show the user's choice between one or two month"
+  },
+
+  "pioneerforTwoMonth": "Pioneering for many month!",
+  "@pioneerforTwoMonth": {
+   "description": "text to show the user's choice between one or two month"
+  },
+
+
+   "time": "Time",
+  "@time": {
+   "description": "Display time"
+  },
+   "student": "Student",
+  "@student": {
+   "description": "Display student"
+  },
+   "publication": "publication",
+  "@publication": {
+   "description": "Display publication"
+  },
+   "visit": "New visit",
+  "@visit": {
+   "description": "Display new visit"
+  },
+
+     "saveButton": "Save",
+  "@saveButton": {
+   "description": "text to show save in a button"
+  },
+   "comment": "Comment",
+  "@comment": {
+   "description": "Text to show comment in a form field"
+  
+},
+
+ "report": "You do not have a report yet",
+  "@report": {
+   "description": "Text to display when the report list is empty"
+  },
+
+   "studentCount": "Students count",
+  "@studentCount": {
+   "description": "Text to display before the student count"
+  },
+   "monthReport": " Monthly Report",
+  "@monthReport": {
+   "description": "Text to display for the monthly report "
+  },
+
+  
+ "configuration": "Configuration",
+  "@configuration": {
+   "description": "Text to display in the drawer header"
+  },
+  
+   "notification": "Notification",
+  "@notification": {
+   "description": "Text to display in the drawer list"
+  },
+
+   "eng": "English",
+  "@eng": {
+   "description": "Display english "
+  },
+
+ "es": "Spanish",
+  "@es": {
+   "description": "Display Spanish "
+  },
+
+   "fr": "French",
+  "@fr": {
+   "description": "Display french "
+  },
+
+
+  
+  "pioneer": "Pioneer Service",
+  "@Pioneer Service": {
+   "description": "Display Pioneer Service"
+  },
+
+   "language": "Choose a language",
+  "@language": {
+   "description": "Display a text to ask the user to choose a language"
+  },
+
+   "reportSrvce": "Report",
+  "@reportSrvce": {
+   "description": "Display Report"
+  },
+
+  "chooseDate": "Date I choose",
+  "@chooseDate": {
+   "description": "Text to display to choose date"
+  },
+
+  "chooseMonth": "Choose a month",
+  "@chooseMonth": {
+   "description": "Text to display to choose month"
+  },
+
+  "addService":"Add Service",
+  "@addService": {
+   "description": "text to display in a button to add pionner service"
+  },
+
+  "firstMonth": "First month",
+  "@firstMonth": {
+   "description": "Text to display to choose month"
+  },
+
+  "lastMonth": "Last month",
+  "@lastMonth": {
+   "description": "Text to display to choose month"
+  },
+
+   "serviceBegin": "Bravo 👏!! service will begin",
+   "@serviceBegin": {
+      "description": "Text to display in the snackbar"
+   },
+
+   "monthFilter": "Please select both start and end months",
+   "@monthFilter": {
+      "description": "text to when the user choose month in incorect order"
+   }
+}
+

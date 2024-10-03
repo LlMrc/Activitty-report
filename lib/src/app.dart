@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
         MonthYearPickerLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en', ''), // English, no country code
+        Locale('en', 'US'),
+        Locale('fr', ''),
+        Locale('es', ''),
       ],
 
       // Use AppLocalizations to configure the correct application title
@@ -78,7 +80,7 @@ class MyApp extends StatelessWidget {
                 return const CalenderScreen();
               case PyonyeServicesDataPicker.routeName:
                 return const PyonyeServicesDataPicker();
-               case RepportScreen.routeName:
+              case RepportScreen.routeName:
                 return const RepportScreen();
               case HomePage.routeName:
               default:

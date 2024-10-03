@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/notifier/my_notifier.dart';
-
+import 'package:report/src/screen/report_form.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../local/local.dart';
 import '../model/report.dart';
 
@@ -17,6 +19,10 @@ class RepportScreen extends StatefulWidget {
 }
 
 class _RepportScreenState extends State<RepportScreen> {
+  void callBack() {
+    setState(() {});
+  }
+
   final SharedPreferencesSingleton _prefsInstance =
       SharedPreferencesSingleton();
   List<Repport> _repports = [];
@@ -28,37 +34,20 @@ class _RepportScreenState extends State<RepportScreen> {
   }
 
   void _loadRepports() {
-    setState(() {
-      _repports = _prefsInstance.getAllRepports();
-    });
+    final repports = _prefsInstance.getAllRepports();
+    _repports = repports.where((item) => item.isSubmited == true).toList();
   }
 
   TextEditingController nameController = TextEditingController();
   TextEditingController commentController = TextEditingController();
-
-  Future<void> _addRepport() async {
-    var students = await _prefsInstance.getAllStudents();
-    final newRepport = Repport(
-      isPyonye: false,
-      publication: null,
-      time: null,
-      vizit: null,
-      name: nameController.text,
-      student: students.length,
-      comment: commentController.text,
-      submitAt: DateTime.now(),
-    );
-    await _prefsInstance.saveRepport(newRepport);
-    _loadRepports(); // Reload the list after adding
-  }
 
   Future<void> _deleteRepport(Repport repport) async {
     await _prefsInstance.deleteRepportByMonthAndYear(repport.submitAt);
     _loadRepports(); // Reload the list after deleting
   }
 
-  Future<void> _updateRepport(Repport repport) async {
-    final updatedRepport = repport.copyWith(comment: 'Updated comment');
+  Future<void> _updateCommentRepport(Repport repport) async {
+    final updatedRepport = repport.copyWith(comment: commentController.text);
     await _prefsInstance.updateRepport(updatedRepport);
     _loadRepports(); // Reload the list after updating
   }
@@ -81,7 +70,8 @@ class _RepportScreenState extends State<RepportScreen> {
                       const SizedBox(height: 60),
                       SvgPicture.asset(
                           height: 200, width: 100, 'assets/svg/no_repport.svg'),
-                      const Text('Ou poko gen rapo')
+                      Text(AppLocalizations.of(context)!
+                          .report) //Ou poko gen rapo
                     ],
                   )
                 : Expanded(
@@ -89,6 +79,7 @@ class _RepportScreenState extends State<RepportScreen> {
                       itemCount: _repports.length,
                       itemBuilder: (context, index) {
                         final repport = _repports[index];
+
                         return Stack(
                           children: [
                             Container(
@@ -103,23 +94,30 @@ class _RepportScreenState extends State<RepportScreen> {
                                   ListTile(
                                     contentPadding: EdgeInsets.zero,
                                     title: Text(
-                                        'Rapo pou mwa ${DateFormat.yMMM().format(DateTime.now())}'),
+                                        '${AppLocalizations.of(context)!.monthReport}: ${DateFormat.yMMM().format(repport.submitAt)}'), //Rapo pou mwa
                                     subtitle: Text(
-                                        'Kantite etidyan: ${repport.student}'),
+                                        '${AppLocalizations.of(context)!.studentCount}: ${repport.student}'), //Kantite etidyan
                                     trailing: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         IconButton(
-                                          icon: const Icon(Icons.edit),
-                                          onPressed: () =>
-                                              _updateRepport(repport),
-                                        ),
+                                            icon: const Icon(Icons.edit),
+                                            onPressed: () =>
+                                                showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        ReportForm(
+                                                            repport: repport,
+                                                            rcontext: context,
+                                                            callback: callBack,
+                                                            isUpdate: true))),
                                         IconButton(
                                           icon: Icon(Icons.share,
                                               color: Theme.of(context)
                                                   .primaryColor),
                                           onPressed: () =>
-                                              _deleteRepport(repport),
+                                              _shareRepport(repport),
                                         ),
                                       ],
                                     ),
@@ -138,7 +136,7 @@ class _RepportScreenState extends State<RepportScreen> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          'Komante',
+                                          AppLocalizations.of(context)!.comment,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -156,20 +154,29 @@ class _RepportScreenState extends State<RepportScreen> {
                                   ),
                                   if (repport.comment != null ||
                                       repport.comment!.isNotEmpty)
-                                    Container(
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondaryContainer,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: TextFormField(
-                                          decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: '${repport.comment}'),
+                                    InkWell(
+                                      onLongPress: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                alertDialog(repport));
+                                      },
+                                      splashColor: Colors.green,
+                                      child: Container(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondaryContainer,
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: '${repport.comment}'),
+                                          ),
                                         ),
                                       ),
                                     )
@@ -190,7 +197,11 @@ class _RepportScreenState extends State<RepportScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _addRepport,
+          onPressed: () => showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (context) => ReportForm(
+                  rcontext: context, callback: callBack, isUpdate: false)),
           child: const Icon(Icons.add),
         ),
       ),
@@ -198,19 +209,28 @@ class _RepportScreenState extends State<RepportScreen> {
   }
 
   Widget headerWidget() {
+    var name = SharedPreferencesSingleton().getName();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(
-            Icons.check,
+          const SizedBox(width: 10),
+          Card(
             color: Theme.of(context).primaryColor,
-            size: 30,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.check,
+                color: Theme.of(context).scaffoldBackgroundColor,
+                size: 40,
+              ),
+            ),
           ),
-          const SizedBox(
-            width: 12,
-          ),
+          const SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -222,7 +242,12 @@ class _RepportScreenState extends State<RepportScreen> {
                     .copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text('Name lastName'),
+              if (name != null)
+                Text(name.toUpperCase(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontWeight: FontWeight.bold)),
               Text('Komanse ${DateFormat.yMMM().format(DateTime.now())}')
             ],
           ),
@@ -252,13 +277,71 @@ class _RepportScreenState extends State<RepportScreen> {
       children: [
         Row(
           children: [
-            Text('Vizit: ${report.time}'),
+            Text(
+                '${AppLocalizations.of(context)!.visit}: ${report.time}'), //Nouvèl vizit
             const SizedBox(width: 10),
-            Text('piblikasyon: ${report.time}'),
+            Text(
+                '${AppLocalizations.of(context)!.publication}: ${report.time}'), //Piblikasyon
           ],
         ),
-        Text('time: ${report.time}'),
+        Text('${AppLocalizations.of(context)!.time}: ${report.time}'), //lè
       ],
     );
   }
+
+  alertDialog(Repport report) {
+    return AlertDialog.adaptive(
+      content: TextField(
+        controller: commentController,
+        decoration: InputDecoration(
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            hintText: '${report.comment}'),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
+              style: TextStyle(color: Colors.red),
+            )),
+        TextButton(
+            onPressed: () => _updateCommentRepport,
+            child: Text(AppLocalizations.of(context)!.add))
+      ],
+    );
+  }
+
+  Future<void> _shareRepport(Repport r) async {
+    String? name = SharedPreferencesSingleton().getName();
+    await Share.share(
+      '''
+
+Mwen espere ke mesaj sa a jwenn ou byen!
+Tanpri resevwa rapò a pou mwa  ${DateFormat.yMMMM().format(r.submitAt)}. Rapò sa a gen ladan detay sa yo:
+- Non: $name
+- Lè: ${r.time}
+- Etidyan: ${r.student}
+${r.publication != null ? '- Piblikasyon: ${r.publication}' : ''} 
+${r.vizit != null ? '- Nouvèl vizit: ${r.vizit}' : ''} 
+
+Mèsi pou atansyon ou sou sa!
+
+      ''',
+      subject: 'Soumèt rapo',
+    );
+  }
 }
+
+
+
+// I hope this message finds you well!
+// Please find attached the report for the month of ${DateFormat.yMMMM().format(r.submitAt)}. This report includes the following details:
+// - Non: $name
+// - Le: ${r.time}
+// - Etidyan: ${r.student}
+// ${r.publication != null ? '- Piblikasyon: ${r.publication}' : ''} 
+// ${r.vizit != null ? '- Nouvel vizit: ${r.vizit}' : ''} 
+
+// Thank you for your attention to this matter!

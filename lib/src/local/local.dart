@@ -248,9 +248,6 @@ class SharedPreferencesSingleton {
     await _prefs.setString(keyReport, repportListJson);
   }
 
-
- 
-
   Future<void> updateRepport(Repport updatedRepport) async {
     List<Repport> repports = getAllRepports();
     final DateTime now = DateTime.now();
@@ -263,11 +260,11 @@ class SharedPreferencesSingleton {
     if (indexToUpdate != -1) {
       // Update the existing report
 
-     repports[indexToUpdate] = updatedRepport;
+      repports[indexToUpdate] = updatedRepport;
     } else {
       // Optionally, handle the case where no report exists to update
       debugPrint('No report found for update, adding new one.');
-     repports.add(updatedRepport); // Add a new report if no match found
+      repports.add(updatedRepport); // Add a new report if no match found
     }
 
     // Save the updated list back to SharedPreferences
@@ -279,7 +276,30 @@ class SharedPreferencesSingleton {
     debugPrint('Report updated successfully');
   }
 
+  // Delete a Repport by name and student ID
+  Future<void> deleteUnsubmitedReport() async {
+    // Get the list of all reports
+    List<Repport> repports = getAllRepports();
 
+    if (repports.isNotEmpty) {
+      // Filter the list to remove reports that match the given month and year
+      repports.removeWhere((repport) => repport.isSubmited != true);
+
+      // If no reports are left, remove the key from SharedPreferences
+      if (repports.isEmpty) {
+        await _prefs.remove(keyReport);
+      } else {
+        // Otherwise, save the updated list back to SharedPreferences
+        String updatedRepportJson =
+            jsonEncode(repports.map((r) => r.toMap()).toList());
+        await _prefs.setString(keyReport, updatedRepportJson);
+      }
+
+      debugPrint('Reports  deleted successfully');
+    } else {
+      debugPrint('No reports found for deletion');
+    }
+  }
 
   // Delete a Repport by name and student ID
   Future<void> deleteRepportByMonthAndYear(DateTime dateToDelete) async {
@@ -311,11 +331,10 @@ class SharedPreferencesSingleton {
 
   Repport? getRepport() {
     List<Repport> repports = getAllRepports();
-    final DateTime now = DateTime.now();
-
+    DateTime date = DateTime.now();
     try {
-      return repports.firstWhere(
-        (repport) => repport.submitAt.month == now.month,
+      return repports.lastWhere(
+        (repport) => repport.submitAt.month == date.month,
       );
     } catch (e) {
       // You can log the error if needed
@@ -446,5 +465,18 @@ class SharedPreferencesSingleton {
       }
     }
     return null;
+  }
+
+  void saveName(String name) {
+    _prefs.setString('user_name', name);
+  }
+
+  String? getName() {
+    return _prefs.getString('user_name');
+  }
+
+  Future<void> updateName(String newName) async {
+    _prefs.setString('user_name', newName);
+    saveName(newName);
   }
 }

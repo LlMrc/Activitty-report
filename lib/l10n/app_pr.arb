@@ -1,0 +1,237 @@
+{
+  "@@locale": "pt",
+  "appTitle": "Meu Aplicativo Incrível",
+  "@appTitle": {
+    "description": "O título do aplicativo"
+  },
+  "welcomeMessage": "Uma solução eficaz para gerenciar e acompanhar todas as suas atividades!",
+  "@welcomeMessage": {
+    "description": "Uma mensagem exibida para saudar o usuário"
+  },
+
+  "addEventButton": "evento",
+  "@addEventButton": {
+    "description": "O texto exibido no botão de adicionar evento"
+  },
+
+  "calendarTitle": "Sem título",
+  "@calendarTitle": {
+     "description": "O texto exibido no calendário como título quando for nulo"
+  },
+
+  "calendarDescrition": "Sem descrição",
+  "@calendarDesc": {
+     "description": "O texto exibido no calendário como descrição quando for nulo"
+  },
+
+  "noteTitle": "Título",
+  "@noteTitle": {
+     "description": "O texto como título do post-it"
+  },
+
+  "noteSnackBar": "Nota salva com sucesso!",
+  "@noteSnackBar": {
+     "description": "O texto exibido na barra de mensagens após o usuário adicionar uma nota"
+  },
+
+  "notePlaceHolder": "Por favor insira um título",
+  "@notePlaceHolder": {
+     "description": "O texto exibido quando não há nota"
+  },
+
+  "addNoteButton": "Adicionar nota",
+  "@addNoteButton": {
+     "description": "O texto exibido para adicionar nota"
+  },
+  
+  "add": "Adicionar",
+  "@add": {
+     "description": "O texto exibido para adicionar"
+  },
+
+  "cancel": "Cancelar",
+  "@cancel": {
+     "description": "O texto exibido para cancelar"
+  },
+  
+  "editNoteButton": "Editar nota",
+  "@editNoteButton": {
+     "description": "O texto exibido para editar a nota"
+  },
+
+  "addStudent": "Adicionar estudante",
+  "@addStudent": {
+     "description": "O texto exibido para adicionar estudante"
+  },
+
+  "homepageTitle": "Uma solução eficaz para gerenciar e acompanhar todas as suas atividades",
+  "@notificationTitle": {
+    "description": "Texto exibido como título da notificação"
+  },
+
+  "cancelPionner": "Tem certeza de que deseja cancelar o Serviço de Pioneiro?",
+  "@notificationDes": {
+    "description": "Mensagem de diálogo de alerta para confirmar a intenção do usuário"
+  },
+
+  "validNumber": "Por favor insira um número de telefone válido",
+   "@validNumber": {
+     "description": "O texto exibido quando um usuário insere um número incorreto"
+  },
+  
+  "lesson": "Lição",
+   "@lesson": {
+     "description": "O texto exibido antes do número da lição"
+  },
+
+  "timerCount": "O tempo atual foi salvo.",
+   "@timerCount": {
+     "description": "Texto da barra de mensagens quando o usuário salva o tempo atual"
+  },
+
+  "resetCounter": "O contador foi reiniciado para zero.",
+  "@resetCounter": {
+   "description": "Texto da barra de mensagens quando o cronômetro é reiniciado"
+  },
+
+  "yes": "Sim",
+  "@yes": {
+   "description": "Exibir sim"
+  },
+
+  "no": "Não",
+  "@no": {
+   "description": "Exibir não"
+  },
+
+  "pioneerTitle": "Escolha quando começar",
+  "@pioneerTitle": {
+   "description": "Exibir o texto"
+  },
+   
+  "pioneerforOneMonth": "Pioneiro por um mês!",
+  "@pioneerforOneMonth": {
+   "description": "Texto exibido para a escolha do usuário entre um ou dois meses"
+  },
+
+  "pioneerforTwoMonth": "Pioneiro por vários meses!",
+  "@pioneerforTwoMonth": {
+   "description": "Texto exibido para a escolha do usuário entre um ou dois meses"
+  },
+
+   "time": "Hora",
+  "@time": {
+   "description": "Exibir hora"
+  },
+   "student": "Estudante",
+  "@student": {
+   "description": "Exibir estudante"
+  },
+   "publication": "publicação",
+  "@publication": {
+   "description": "Exibir publicação"
+  },
+   "visit": "Nova visita",
+  "@visit": {
+   "description": "Exibir nova visita"
+  },
+
+  "saveButton": "Salvar",
+  "@saveButton": {
+   "description": "Texto exibido para salvar em um botão"
+  },
+   "comment": "Comentário",
+  "@comment": {
+   "description": "Texto exibido como comentário em um campo de formulário"
+  
+  },
+
+  "report": "Você ainda não tem um relatório",
+  "@report": {
+   "description": "Texto exibido quando a lista de relatórios está vazia"
+  },
+
+  "studentCount": "Número de estudantes",
+  "@studentCount": {
+   "description": "Texto exibido antes do número de estudantes"
+  },
+  "monthReport": "Relatório Mensal",
+  "@monthReport": {
+   "description": "Texto exibido para o relatório mensal"
+  },
+
+  "configuration": "Configurações",
+  "@configuration": {
+   "description": "Texto exibido no cabeçalho do menu"
+  },
+  
+  "notification": "Notificação",
+  "@notification": {
+   "description": "Texto exibido na lista de menus"
+  },
+
+  "eng": "Inglês",
+  "@eng": {
+   "description": "Exibir inglês"
+  },
+
+  "es": "Espanhol",
+  "@es": {
+   "description": "Exibir espanhol"
+  },
+
+  "fr": "Francês",
+  "@fr": {
+   "description": "Exibir francês"
+  },
+
+  "pioneer": "Serviço de Pioneiro",
+  "@Pioneer Service": {
+   "description": "Exibir Serviço de Pioneiro"
+  },
+
+  "language": "Escolha um idioma",
+  "@language": {
+   "description": "Exibir um texto para pedir ao usuário que escolha um idioma"
+  },
+
+  "reportSrvce": "Relatório",
+  "@reportSrvce": {
+   "description": "Exibir Relatório"
+  },
+
+  "chooseDate": "Data escolhida",
+  "@chooseDate": {
+   "description": "Texto exibido para escolher a data"
+  },
+
+  "chooseMonth": "Escolha um mês",
+  "@chooseMonth": {
+   "description": "Texto exibido para escolher o mês"
+  },
+
+  "addService": "Adicionar Serviço",
+  "@addService": {
+   "description": "Texto exibido em um botão para adicionar serviço de pioneiro"
+  },
+
+  "firstMonth": "Primeiro mês",
+  "@firstMonth": {
+   "description": "Texto exibido para escolher o mês"
+  },
+
+  "lastMonth": "Último mês",
+  "@lastMonth": {
+   "description": "Texto exibido para escolher o mês"
+  },
+
+  "serviceBegin": "Bravo 👏! o serviço começará",
+  "@serviceBegin": {
+      "description": "Texto exibido na barra de mensagens"
+  },
+
+  "monthFilter": "Por favor selecione tanto o mês inicial quanto o final",
+  "@monthFilter": {
+      "description": "Texto exibido quando o usuário escolhe o mês em ordem incorreta"
+  }
+}

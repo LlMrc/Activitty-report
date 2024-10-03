@@ -3,11 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/feature/student/student_tile.dart';
 import 'package:report/src/local/local.dart';
-import 'package:report/src/notifier/my_notifier.dart';
 import 'package:report/src/notifier/repport_notifier.dart';
 import 'package:report/src/notifier/time_notifier.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../model/report.dart';
 import '../model/timer.dart';
+import '../notification/local_notification.dart';
 import '../shape/custom_shape.dart';
 import '../model/modules.dart';
 import '../feature/calender/calender.dart';
@@ -98,19 +99,18 @@ class _HomePageState extends State<HomePage> {
     repport = _preference.getRepport();
   }
 
-  DateTime date = DateTime.now();
-
   bool started = false;
 
   @override
   Widget build(BuildContext context) {
     final timeNotifier = Provider.of<TimerNotifier>(context);
-    final rNotifier = Provider.of<RepportNotifier>(context);
-
+    final repportListener = context.watch<RepportNotifier>();
+    if (repportListener.refresh) refreshThisPage();
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         timeNotifier.saveTimer();
+        if (timeNotifier.getStarted) ReportNification.showLocalNotification();
       },
       child: Scaffold(
         endDrawer: const RepoDrawer(),
@@ -168,7 +168,9 @@ class _HomePageState extends State<HomePage> {
                                                       'assets/svg/welcome.svg'),
                                                   const SizedBox(height: 15),
                                                   Text(
-                                                    'Solisyon efikas pou jere ak swiv aktivite ou yo byen fasil',
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .welcomeMessage, //Yon solisyon efikas pou jere epi swiv tout aktivite\'w yo
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodyLarge!
@@ -239,9 +241,9 @@ class _HomePageState extends State<HomePage> {
               return FloatingActionButton(
                   onPressed: () {
                     timer.toggleStarted();
-                    timer.isStarted ? timer.stopTimer() : timer.startTimer();
+                    timer.getStarted ? timer.stopTimer() : timer.startTimer();
                   },
-                  child: timer.isStarted
+                  child: timer.getStarted
                       ? const Icon(Icons.timer_outlined)
                       : const Icon(Icons.timer_off_outlined));
             });
@@ -276,9 +278,11 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         notifier.resetTimer();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50)),
-                            content: const Text('kontè a rekòmanse a zero!')));
+                            content: Text(AppLocalizations.of(context)!
+                                .resetCounter))); //'kontè a rekòmanse a zero!'
                       },
                     ),
                     BottomAppBarIcon(
@@ -286,9 +290,12 @@ class _HomePageState extends State<HomePage> {
                       label: 'Save',
                       onPressed: () {
                         notifier.saveTimer();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Ou anrejistre lè a!')));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            content: Text(AppLocalizations.of(context)!
+                                .timerCount))); //'Ou anrejistre lè a!'
                       },
                     )
                   ],
@@ -307,14 +314,16 @@ class _HomePageState extends State<HomePage> {
     return AlertDialog.adaptive(
       iconColor: Theme.of(context).colorScheme.error,
       icon: const Icon(Icons.question_mark),
-      content: Text('Ou vle anile sevis pyonye a ?'.toUpperCase()),
+      content: Text(AppLocalizations.of(context)!
+          .cancelPionner
+          .toUpperCase()), //Ou vle anile sevis pyonye a ?
       actions: [
         TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
             child: Text(
-              'Non',
+              AppLocalizations.of(context)!.no, // 'Non',
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium!
@@ -330,7 +339,7 @@ class _HomePageState extends State<HomePage> {
               }
             },
             child: Text(
-              'Wi',
+              AppLocalizations.of(context)!.yes, //'Wi',
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium!
@@ -402,9 +411,11 @@ class _HomePageState extends State<HomePage> {
       student: students.length,
       comment: 'Rapport du mois',
       isPyonye: false,
-      submitAt: DateTime.now(),
+      isSubmited: true,
+      submitAt: currentRapport.last.submitAt,
     );
     await _preference.saveRepport(newRepport);
+    await _preference.deleteUnsubmitedReport();
     currentRapport.clear();
     time.clear();
   }
@@ -414,6 +425,12 @@ class _HomePageState extends State<HomePage> {
     if (now.day == 1) {
       _addRepport(); // Run the report at the start of the month
     }
+  }
+
+  void refreshThisPage() {
+    setState(() {
+      repport = _preference.getRepport();
+    });
   }
 
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();

@@ -1,0 +1,237 @@
+{
+  "@@locale": "es",
+  "appTitle": "Mi Aplicación Asombrosa",
+  "@appTitle": {
+    "description": "El título de la aplicación"
+  },
+  "welcomeMessage": "¡Una solución eficaz para gestionar y hacer un seguimiento de todas tus actividades!",
+  "@welcomeMessage": {
+    "description": "Un mensaje que se muestra para saludar al usuario"
+  },
+
+  "addEventButton": "evento",
+  "@addEventButton": {
+    "description": "El texto que se muestra en el botón de añadir evento"
+  },
+
+  "calendarTitle": "Sin título",
+  "@calendarTitle": {
+     "description": "El texto que se muestra en el calendario como título en caso de que sea nulo"
+  },
+
+  "calendarDescrition": "Sin Descripción",
+  "@calendarDesc": {
+     "description": "El texto que se muestra en el calendario como descripción en caso de que sea nulo"
+  },
+
+  "noteTitle": "Título",
+  "@noteTitle": {
+     "description": "El texto como título de la nota adhesiva"
+  },
+
+  "noteSnackBar": "¡Nota guardada con éxito!",
+  "@noteSnackBar": {
+     "description": "El texto que se muestra en la barra de mensajes después de que el usuario añada una nota"
+  },
+
+  "notePlaceHolder": "Por favor ingresa un título",
+  "@notePlaceHolder": {
+     "description": "El texto que se muestra cuando no hay nota"
+  },
+
+  "addNoteButton": "Añadir nota",
+  "@addNoteButton": {
+     "description": "El texto que se muestra para añadir nota"
+  },
+  
+  "add": "Añadir",
+  "@add": {
+     "description": "El texto que se muestra para añadir"
+  },
+
+  "cancel": "Cancelar",
+  "@cancel": {
+     "description": "El texto que se muestra para cancelar"
+  },
+  
+  "editNoteButton": "Editar nota",
+  "@editNoteButton": {
+     "description": "El texto que se muestra para editar la nota"
+  },
+
+  "addStudent": "Añadir estudiante",
+  "@addStudent": {
+     "description": "El texto que se muestra para añadir estudiante"
+  },
+
+  "homepageTitle": "Una solución eficaz para gestionar y hacer un seguimiento de todas tus actividades",
+  "@notificationTitle": {
+    "description": "Texto que se muestra como título de la notificación"
+  },
+
+  "cancelPionner": "¿Estás seguro de que deseas cancelar el Servicio de Pionero?",
+  "@notificationDes": {
+    "description": "Mensaje de diálogo de alerta para confirmar la intención del usuario"
+  },
+
+  "validNumber": "Por favor ingresa un número de teléfono válido",
+   "@validNumber": {
+     "description": "El texto que se muestra cuando un usuario ingresa un número incorrecto"
+  },
+  
+  "lesson": "Lección",
+   "@lesson": {
+     "description": "El texto que se muestra antes del número de la lección"
+  },
+
+  "timerCount": "El tiempo actual ha sido guardado.",
+   "@timerCount": {
+     "description": "Texto de la barra de mensajes cuando el usuario guarda el tiempo actual"
+  },
+
+  "resetCounter": "El contador se reinicia a cero.",
+  "@resetCounter": {
+   "description": "Texto de la barra de mensajes cuando el temporizador se reinicia"
+  },
+
+  "yes": "Sí",
+  "@yes": {
+   "description": "Mostrar sí"
+  },
+
+  "no": "No",
+  "@no": {
+   "description": "Mostrar no"
+  },
+
+  "pioneerTitle": "Elige cuándo empezarás",
+  "@pioneerTitle": {
+   "description": "Mostrar el texto"
+  },
+   
+  "pioneerforOneMonth": "¡Pionero por un mes!",
+  "@pioneerforOneMonth": {
+   "description": "Texto que se muestra para la elección del usuario entre uno o dos meses"
+  },
+
+  "pioneerforTwoMonth": "¡Pionero por varios meses!",
+  "@pioneerforTwoMonth": {
+   "description": "Texto que se muestra para la elección del usuario entre uno o dos meses"
+  },
+
+   "time": "Hora",
+  "@time": {
+   "description": "Mostrar hora"
+  },
+   "student": "Estudiante",
+  "@student": {
+   "description": "Mostrar estudiante"
+  },
+   "publication": "publicación",
+  "@publication": {
+   "description": "Mostrar publicación"
+  },
+   "visit": "Nueva visita",
+  "@visit": {
+   "description": "Mostrar nueva visita"
+  },
+
+  "saveButton": "Guardar",
+  "@saveButton": {
+   "description": "Texto que se muestra para guardar en un botón"
+  },
+   "comment": "Comentario",
+  "@comment": {
+   "description": "Texto que se muestra como comentario en un campo de formulario"
+  
+  },
+
+  "report": "Aún no tienes un informe",
+  "@report": {
+   "description": "Texto que se muestra cuando la lista de informes está vacía"
+  },
+
+  "studentCount": "Cantidad de estudiantes",
+  "@studentCount": {
+   "description": "Texto que se muestra antes de la cantidad de estudiantes"
+  },
+  "monthReport": "Informe Mensual",
+  "@monthReport": {
+   "description": "Texto que se muestra para el informe mensual"
+  },
+
+  "configuration": "Configuración",
+  "@configuration": {
+   "description": "Texto que se muestra en el encabezado del menú"
+  },
+  
+  "notification": "Notificación",
+  "@notification": {
+   "description": "Texto que se muestra en la lista del menú"
+  },
+
+  "eng": "Inglés",
+  "@eng": {
+   "description": "Mostrar inglés"
+  },
+
+  "es": "Español",
+  "@es": {
+   "description": "Mostrar español"
+  },
+
+  "fr": "Francés",
+  "@fr": {
+   "description": "Mostrar francés"
+  },
+
+  "pioneer": "Servicio de Pionero",
+  "@Pioneer Service": {
+   "description": "Mostrar Servicio de Pionero"
+  },
+
+  "language": "Elige un idioma",
+  "@language": {
+   "description": "Mostrar un texto para pedir al usuario que elija un idioma"
+  },
+
+  "reportSrvce": "Informe",
+  "@reportSrvce": {
+   "description": "Mostrar Informe"
+  },
+
+  "chooseDate": "Fecha que elijo",
+  "@chooseDate": {
+   "description": "Texto que se muestra para elegir la fecha"
+  },
+
+  "chooseMonth": "Elige un mes",
+  "@chooseMonth": {
+   "description": "Texto que se muestra para elegir el mes"
+  },
+
+  "addService": "Añadir Servicio",
+  "@addService": {
+   "description": "Texto que se muestra en un botón para añadir servicio de pionero"
+  },
+
+  "firstMonth": "Primer mes",
+  "@firstMonth": {
+   "description": "Texto que se muestra para elegir el mes"
+  },
+
+  "lastMonth": "Último mes",
+  "@lastMonth": {
+   "description": "Texto que se muestra para elegir el mes"
+  },
+
+  "serviceBegin": "¡Bravo 👏! el servicio comenzará",
+  "@serviceBegin": {
+      "description": "Texto que se muestra en la barra de mensajes"
+  },
+
+  "monthFilter": "Por favor selecciona tanto el mes de inicio como el de fin",
+  "@monthFilter": {
+      "description": "Texto que se muestra cuando el usuario elige el mes en orden incorrecto"
+  }
+}

@@ -4,9 +4,9 @@ import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/notifier/repport_notifier.dart';
-import '../feature/notification/local_notification.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../notification/local_notification.dart';
 import '../model/event.dart';
-
 
 class SingleMonthPicker extends StatefulWidget {
   const SingleMonthPicker({super.key});
@@ -17,7 +17,6 @@ class SingleMonthPicker extends StatefulWidget {
 
 class _SingleMonthPickerState extends State<SingleMonthPicker> {
   DateTime? _selectedMonth;
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,8 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
               _selectedMonth != null
                   ? DateFormat.yMMM()
                       .format(_selectedMonth!) // Format the month
-                  : 'Dat mwen chwazi', // Default text if no selection
+                  : AppLocalizations.of(context)!
+                      .chooseDate, // Default text if no selection
             ),
             // Month Dropdown
             monthPickerWidget(
@@ -51,7 +51,7 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
                   });
                 }
               },
-              text: 'Chwazi yon mwa',
+              text: AppLocalizations.of(context)!.chooseDate,
             ),
           ],
         ),
@@ -60,7 +60,8 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
           style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.secondary),
           onPressed: () async {
-        await  myNotifier.repportPyonyeNotifier(); // Schedule the notification for the selected month
+            await myNotifier
+                .repportPyonyeNotifier(); // Schedule the notification for the selected month
             _scheduleSingleMonthNotification(
               event: Event(
                 title: 'Monthly Report',
@@ -69,13 +70,13 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
               ),
               scheduledDate: _selectedMonth ?? DateTime.now(),
             );
-
+            myNotifier.refreshThisPage(true);
             if (context.mounted) {
               Navigator.pop(context);
             }
           },
           child: Text(
-            'Ajoute Sèvis la',
+            AppLocalizations.of(context)!.addService, //  'Ajoute Sèvis la',
             style: TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
           ),
         ),
@@ -101,8 +102,11 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
     await SharedPreferencesSingleton().saveEvents(events);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           content: Text(
-              'Bravo 👏!! sèvis la ap komanse ${DateFormat.MMMM().format(_selectedMonth!)}')));
+              '${AppLocalizations.of(context)!.serviceBegin} ${DateFormat.MMMM().format(_selectedMonth!)}')));
     }
   }
 

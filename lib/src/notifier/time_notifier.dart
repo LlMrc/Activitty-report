@@ -8,20 +8,21 @@ class TimerNotifier extends ChangeNotifier {
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
 
   Timer? timer;
-  bool isStarted = true;
+  bool _isStarted = true;
   bool _isReset = false;
   Duration _duration; // Remove the initialization here
 
-  bool get getStarted => isStarted;
- // bool get reset => _isReset;
+  bool get getStarted => _isStarted;
+  // bool get reset => _isReset;
 
   void toggleStarted() {
-    isStarted = !isStarted;
+    _isStarted = !_isStarted;
     notifyListeners();
   }
 
   void didReset() {
     _isReset = true;
+    _isStarted = false;
     notifyListeners();
   }
 
@@ -63,7 +64,7 @@ class TimerNotifier extends ChangeNotifier {
         minut: _duration.inMinutes
             .remainder(60), // Fix the minute to be in the range of 0-59
         day: DateTime.now().day,
-        isReset: false,
+        isReset: true,
         timeOfDay: TimeOfDay.now()));
     didReset();
     notifyListeners(); // Notify listeners about the change
@@ -77,7 +78,9 @@ class TimerNotifier extends ChangeNotifier {
         day: DateTime.now().day,
         isReset: _isReset,
         timeOfDay: TimeOfDay.now()));
-    didNotReset();
+    _duration = const Duration(); // Reset the timer to zero
+
+    timer?.cancel();
     notifyListeners(); // Notify listeners about the change
   }
 
@@ -141,6 +144,4 @@ class TimerNotifier extends ChangeNotifier {
 
     return result;
   }
-
-
 }

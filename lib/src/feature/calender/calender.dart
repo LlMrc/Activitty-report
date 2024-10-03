@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:report/src/feature/calender/widget/sticknote_calender.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../local/local.dart';
 import '../../model/event.dart';
 
@@ -309,7 +310,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                       context: context,
                       builder: (BuildContext context) => myDialog(context));
                 },
-                label: const Text('Add Events'),
+                label: Text(AppLocalizations.of(context)!.addEventButton),
                 icon: const Icon(Icons.add),
               ),
             );
