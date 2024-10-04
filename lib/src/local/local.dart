@@ -246,6 +246,8 @@ class SharedPreferencesSingleton {
     String repportListJson =
         jsonEncode(repports.map((e) => e.toMap()).toList());
     await _prefs.setString(keyReport, repportListJson);
+          debugPrint('No report found for saved');
+
   }
 
   Future<void> updateRepport(Repport updatedRepport) async {

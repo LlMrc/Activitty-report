@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
         Locale('en', 'US'),
         Locale('fr', ''),
         Locale('es', ''),
+        Locale('pt', ''),
       ],
 
       // Use AppLocalizations to configure the correct application title

@@ -166,6 +166,15 @@
    "description": "Text to display for the monthly report "
   },
 
+  "reportList": "My report list",
+  "@reportList": {
+   "description": "Text to display for the report list "
+  },
+
+  "url": "https://www.jw.org/finder?srcid=jwlshare&wtlocale=E&prefer=lang&pub=lff",
+  "@url": {
+   "description": "Text to display for the study book"
+  },
   
  "configuration": "Configuration",
   "@configuration": {

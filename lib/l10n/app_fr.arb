@@ -191,5 +191,20 @@
   "monthFilter": "Veuillez sélectionner à la fois les mois de début et de fin",
   "@monthFilter": {
      "description": "Texte affiché lorsque l'utilisateur sélectionne les mois dans le mauvais ordre"
+  },
+  "share": "Partager l'application",
+  "@share": {
+    "description": "Afficher le service pionnier"
+  },
+  "reportList": "Ma liste de rapports",
+  "@reportList": {
+    "description": "Texte à afficher pour la liste des rapports"
+  },
+  
+  "url": "https://www.jw.org/finder?srcid=jwlshare&wtlocale=F&prefer=lang&pub=lff",
+  "@url": {
+    "description": "Texte à afficher pour le livre d'étude"
   }
+  
+
 }

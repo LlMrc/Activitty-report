@@ -91,6 +91,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Repport? repport;
+  late TimerNotifier timerNotifier;
 
   @override
   void initState() {
@@ -98,6 +99,9 @@ class _HomePageState extends State<HomePage> {
     initNotification();
     checkForMonthlyReport();
 
+    // Move the timeNotifier call here with listen: false
+    final timeNotifier = Provider.of<TimerNotifier>(context, listen: false);
+    timeNotifier.startTimer(); // Start the timer when the page is displayed
     repport = _preference.getRepport();
   }
 
@@ -109,17 +113,29 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    final timeNotifier = Provider.of<TimerNotifier>(context, listen: false);
+    timeNotifier.stopTimer(); // Cancel the timer to avoid leaks
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final timeNotifier = Provider.of<TimerNotifier>(context);
+
     final repportListener = context.watch<RepportNotifier>();
+
     if (repportListener.refresh) refreshThisPage();
+
     return PopScope(
-      canPop: true,
+      canPop: (timeNotifier.getStarted) ? false : true,
       onPopInvokedWithResult: (didPop, result) {
+        ReportNofication.showLocalNotification();
         timeNotifier.saveTimer();
-        if (timeNotifier.getStarted) {
-          ReportNofication.showLocalNotification();
+        if (didPop) {
+          Navigator.pop(context);
         }
+       
       },
       child: Scaffold(
         endDrawer: const RepoDrawer(),
@@ -250,7 +266,6 @@ class _HomePageState extends State<HomePage> {
               return FloatingActionButton(
                   onPressed: () {
                     timer.toggleStarted();
-                    timer.getStarted ? timer.stopTimer() : timer.startTimer();
                   },
                   child: timer.getStarted
                       ? const Icon(Icons.timer_outlined)

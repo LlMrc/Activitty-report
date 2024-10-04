@@ -111,8 +111,7 @@ class _StudentListTileState extends State<StudentListTile> {
   }
 
   Widget studentDetails(Student updatedStudent, context) {
-    final Uri url = Uri.parse(
-        'https://www.jw.org/finder?srcid=jwlshare&wtlocale=CR&prefer=lang&docid=1102021811');
+    final Uri url = Uri.parse(AppLocalizations.of(context)!.url);
     return Container(
       color: Theme.of(context).colorScheme.secondaryContainer,
       child: Padding(

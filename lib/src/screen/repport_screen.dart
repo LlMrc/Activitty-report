@@ -20,7 +20,7 @@ class RepportScreen extends StatefulWidget {
 
 class _RepportScreenState extends State<RepportScreen> {
   void callBack() {
-    setState(() {});
+    setState(() => _loadRepports());
   }
 
   final SharedPreferencesSingleton _prefsInstance =
@@ -43,7 +43,7 @@ class _RepportScreenState extends State<RepportScreen> {
 
   Future<void> _deleteRepport(Repport repport) async {
     await _prefsInstance.deleteRepportByMonthAndYear(repport.submitAt);
-    _loadRepports(); // Reload the list after deleting
+    callBack(); // Reload the list after deleting
   }
 
   Future<void> _updateCommentRepport(Repport repport) async {
@@ -90,11 +90,20 @@ class _RepportScreenState extends State<RepportScreen> {
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(8)),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Text(
+                                      '${AppLocalizations.of(context)!.monthReport}:  ${DateFormat.yMMM().format(repport.submitAt)}'
+                                          .toUpperCase(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold)),
                                   ListTile(
                                     contentPadding: EdgeInsets.zero,
                                     title: Text(
-                                        '${AppLocalizations.of(context)!.monthReport}: ${DateFormat.yMMM().format(repport.submitAt)}'), //Rapo pou mwa
+                                        '${AppLocalizations.of(context)!.time}: ${repport.time}'), //Rapo pou mwa
                                     subtitle: Text(
                                         '${AppLocalizations.of(context)!.studentCount}: ${repport.student}'), //Kantite etidyan
                                     trailing: Row(
@@ -152,8 +161,7 @@ class _RepportScreenState extends State<RepportScreen> {
                                           )),
                                     ],
                                   ),
-                                  if (repport.comment != null ||
-                                      repport.comment!.isNotEmpty)
+                                  if (repport.comment != null)
                                     InkWell(
                                       onLongPress: () {
                                         showDialog(
@@ -175,7 +183,8 @@ class _RepportScreenState extends State<RepportScreen> {
                                           child: TextFormField(
                                             decoration: InputDecoration(
                                                 border: InputBorder.none,
-                                                hintText: '${repport.comment}'),
+                                                hintText:
+                                                    repport.comment ?? ''),
                                           ),
                                         ),
                                       ),
@@ -199,6 +208,7 @@ class _RepportScreenState extends State<RepportScreen> {
         floatingActionButton: FloatingActionButton(
           onPressed: () => showModalBottomSheet(
               isScrollControlled: true,
+              enableDrag: true,
               context: context,
               builder: (context) => ReportForm(
                   rcontext: context, callback: callBack, isUpdate: false)),
@@ -235,7 +245,7 @@ class _RepportScreenState extends State<RepportScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'List Rapo',
+                AppLocalizations.of(context)!.reportList,
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
@@ -246,9 +256,15 @@ class _RepportScreenState extends State<RepportScreen> {
                 Text(name.toUpperCase(),
                     style: Theme.of(context)
                         .textTheme
-                        .headlineSmall!
+                        .bodyLarge!
                         .copyWith(fontWeight: FontWeight.bold)),
-              Text('Komanse ${DateFormat.yMMM().format(DateTime.now())}')
+              Text(
+                '--- ${DateFormat.yMMMM().format(DateTime.now())} ---',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
+              )
             ],
           ),
         ],
@@ -304,7 +320,7 @@ class _RepportScreenState extends State<RepportScreen> {
             },
             child: Text(
               AppLocalizations.of(context)!.cancel,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             )),
         TextButton(
             onPressed: () => _updateCommentRepport,
@@ -316,25 +332,32 @@ class _RepportScreenState extends State<RepportScreen> {
   Future<void> _shareRepport(Repport r) async {
     String? name = SharedPreferencesSingleton().getName();
     await Share.share(
-      '''
+      '''I hope this message finds you well!
+Please find attached the report for the month of ${DateFormat.yMMMM().format(r.submitAt)}. This report includes the following details:
+- Name: $name
+- ${AppLocalizations.of(context)!.time}: ${r.time}
+- ${AppLocalizations.of(context)!.student}: ${r.student}
+${r.publication != null ? '- ${AppLocalizations.of(context)!.publication}: ${r.publication}' : ''} 
+${r.vizit != null ? '- ${AppLocalizations.of(context)!.visit}: ${r.vizit}' : ''} 
 
-Mwen espere ke mesaj sa a jwenn ou byen!
-Tanpri resevwa rapò a pou mwa  ${DateFormat.yMMMM().format(r.submitAt)}. Rapò sa a gen ladan detay sa yo:
-- Non: $name
-- Lè: ${r.time}
-- Etidyan: ${r.student}
-${r.publication != null ? '- Piblikasyon: ${r.publication}' : ''} 
-${r.vizit != null ? '- Nouvèl vizit: ${r.vizit}' : ''} 
-
-Mèsi pou atansyon ou sou sa!
-
-      ''',
-      subject: 'Soumèt rapo',
+Thank you for your attention to this matter!''',
+      subject: 'rapo Submit',
+      sharePositionOrigin: const Rect.fromLTWH(0, 0, 0, 0),
     );
   }
 }
 
+//  '''Hello!
+// Mwen espere ke mesaj sa a jwenn ou byen!
+// Tanpri resevwa rapò a pou mwa  ${DateFormat.yMMMM().format(r.submitAt)}. Rapò sa a gen ladan detay sa yo:
+// - Non: $name
+// - Lè: ${r.time}
+// - Etidyan: ${r.student}
+// ${r.publication != null ? '- Piblikasyon: ${r.publication}' : ''} 
+// ${r.vizit != null ? '- Nouvèl vizit: ${r.vizit}' : ''} 
 
+// Mèsi pou atansyon ou sou sa!''',
+//       subject: 'Soumèt rapo',
 
 // I hope this message finds you well!
 // Please find attached the report for the month of ${DateFormat.yMMMM().format(r.submitAt)}. This report includes the following details:

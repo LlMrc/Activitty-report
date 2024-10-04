@@ -8,7 +8,7 @@ class TimerNotifier extends ChangeNotifier {
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
 
   Timer? timer;
-  bool _isStarted = true;
+  bool _isStarted = false;
   bool _isReset = false;
   Duration _duration; // Remove the initialization here
 
@@ -16,8 +16,12 @@ class TimerNotifier extends ChangeNotifier {
   // bool get reset => _isReset;
 
   void toggleStarted() {
-    _isStarted = !_isStarted;
-    notifyListeners();
+    if (_isStarted) {
+      stopTimer();
+    } else {
+      startTimer();
+    }
+    notifyListeners(); // Notify listeners after toggling
   }
 
   void didReset() {
@@ -39,21 +43,22 @@ class TimerNotifier extends ChangeNotifier {
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
     _isStarted = true;
+  
   }
 
   void stopTimer() {
     if (timer != null && timer!.isActive) {
       timer!.cancel(); // Only stop the timer without resetting _duration
-      _preference.updateTimerMinutAndHour(_duration);
+      // _preference.updateTimerMinutAndHour(_duration);
 
-      // Save the updated timer state
-      _preference.saveTimer(TimerModel(
-          hour: _duration.inHours,
-          minut: _duration.inMinutes
-              .remainder(60), // Fix the minute to be in the range of 0-59
-          day: DateTime.now().day,
-          isReset: false,
-          timeOfDay: TimeOfDay.now()));
+      // // Save the updated timer state
+      // _preference.saveTimer(TimerModel(
+      //     hour: _duration.inHours,
+      //     minut: _duration.inMinutes
+      //         .remainder(60), // Fix the minute to be in the range of 0-59
+      //     day: DateTime.now().day,
+      //     isReset: false,
+      //     timeOfDay: TimeOfDay.now()));
     }
     _isStarted = false;
   }
@@ -83,7 +88,7 @@ class TimerNotifier extends ChangeNotifier {
         timeOfDay: TimeOfDay.now()));
     _duration = const Duration(); // Reset the timer to zero
 
-    timer?.cancel();
+  
     notifyListeners(); // Notify listeners about the change
     _isStarted = false;
   }
@@ -106,6 +111,8 @@ class TimerNotifier extends ChangeNotifier {
           hours: time.hour ?? 0, // Fallback to 0 if `hour` is null
           minutes: time.minut);
     }
+
+   
 
     if (time != null && !time.isReset) {
       // Sum the current time with the saved time

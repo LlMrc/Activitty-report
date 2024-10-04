@@ -13,7 +13,7 @@ class PyonyeServicesDataPicker extends StatefulWidget {
 }
 
 class _PyonyeServicesDataPickerState extends State<PyonyeServicesDataPicker> {
-  bool isSingleDate = false; // Toggle between single date and date range
+  bool isSingleDate = true; // Toggle between single date and date range
 
   @override
   Widget build(BuildContext context) {

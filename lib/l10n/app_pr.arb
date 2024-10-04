@@ -220,5 +220,22 @@
   "monthFilter": "Por favor selecione tanto o mês inicial quanto o final",
   "@monthFilter": {
       "description": "Texto exibido quando o usuário escolhe o mês em ordem incorreta"
-  }
+  },
+
+  "share": "Compartilhar o aplicativo",
+"@share": {
+  "description": "Exibir o serviço pioneiro"
+},
+
+"reportList": "Minha lista de relatórios",
+"@reportList": {
+  "description": "Texto a ser exibido para a lista de relatórios"
+},
+
+"url": "https://www.jw.org/finder?srcid=jwlshare&wtlocale=T&prefer=lang&pub=lff",
+"@url": {
+  "description": "Texto a ser exibido para o livro de estudo"
+}
+
+
 }

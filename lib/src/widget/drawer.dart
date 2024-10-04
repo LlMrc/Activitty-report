@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/screen/repport_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:share_plus/share_plus.dart';
 import '../screen/pyonye_screen.dart';
 
 class RepoDrawer extends StatefulWidget {
@@ -66,8 +67,7 @@ class _RepoDrawerState extends State<RepoDrawer> {
                   Text(AppLocalizations.of(context)!.share), //'Pataje app la'
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.restorablePushNamed(
-                    context, PyonyeServicesDataPicker.routeName);
+              Share.share('check out my this app on playstore  https://example.com');
               }),
         ],
       ),
