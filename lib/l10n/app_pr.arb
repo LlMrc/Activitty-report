@@ -235,7 +235,19 @@
 "url": "https://www.jw.org/finder?srcid=jwlshare&wtlocale=T&prefer=lang&pub=lff",
 "@url": {
   "description": "Texto a ser exibido para o livro de estudo"
+},
+
+
+"note": "Notas",
+"@note": {
+  "description": "Exibir a nota do pioneiro"
+},
+
+"agenda": "Agenda",
+"@agenda": {
+  "description": "Exibir o serviço do pioneiro"
 }
+
 
 
 }

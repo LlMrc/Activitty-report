@@ -66,10 +66,7 @@
      "description": "The text shown for add student"
   },
 
-"homepageTitle": "An effective solution to managing and tracking all your activities",
- "@notificationTitle":{
-    "description": "text to show the notification title"
- },
+
 
  "cancelPionner": "Are you sure you want to cancel the Pioneer Service ?",
  "@notificationDes":{
@@ -240,6 +237,17 @@
    "monthFilter": "Please select both start and end months",
    "@monthFilter": {
       "description": "text to when the user choose month in incorect order"
+   },
+
+
+   "note": "Notes",
+   "@note": {
+    "description": "Display Pioneer note"
+   },
+ 
+     "agenda": "Agenda",
+   "@ajenda": {
+    "description": "Display Pioneer Service"
    }
 }
 

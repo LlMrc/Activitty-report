@@ -235,7 +235,18 @@
 "url": "https://www.jw.org/finder?srcid=jwlshare&wtlocale=S&prefer=lang&pub=lff",
 "@url": {
   "description": "Texto para mostrar para el libro de estudio"
+},
+
+"note": "Notas",
+"@note": {
+  "description": "Mostrar la nota del precursor"
+},
+
+"agenda": "Agenda",
+"@agenda": {
+  "description": "Mostrar el servicio del precursor"
 }
+
 
 
 }

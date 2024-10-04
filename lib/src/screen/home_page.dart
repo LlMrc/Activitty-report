@@ -67,17 +67,17 @@ class HomePage extends StatefulWidget {
       Modules(
           1,
           'assets/images/user.png',
-          'Etidyan',
+          'Students',
           AddStudentScreen
               .routeName), //<a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Freepik - Flaticon</a>
       Modules(
           2,
           'assets/images/note.png',
-          'Nòt',
+          'Notes',
           NoteScreen
               .routeName), //<a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Pixel perfect - Flaticon</a>
       Modules(
-          3, 'assets/images/calendar.png', 'Ajanda', CalenderScreen.routeName)
+          3, 'assets/images/calendar.png', 'Agenda', CalenderScreen.routeName)
     ], //<a href="https://www.flaticon.com/free-icons/agenda" title="agenda icons">Agenda icons created by Freepik - Flaticon</a>
   });
 
@@ -135,7 +135,6 @@ class _HomePageState extends State<HomePage> {
         if (didPop) {
           Navigator.pop(context);
         }
-       
       },
       child: Scaffold(
         endDrawer: const RepoDrawer(),
@@ -359,6 +358,7 @@ class _HomePageState extends State<HomePage> {
               if (repport != null) {
                 var newRepport = repport!.copyWith(isPyonye: false);
                 _preference.updateRepport(newRepport);
+                _preference.deleteTimer();
                 setState(() => repport = newRepport);
               }
             },

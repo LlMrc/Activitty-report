@@ -74,8 +74,9 @@ class TimerNotifier extends ChangeNotifier {
         isReset: true,
         timeOfDay: TimeOfDay.now()));
     didReset();
-    notifyListeners(); // Notify listeners about the change
     _isStarted = false;
+    notifyListeners(); // Notify listeners about the change
+    
   }
 
   void saveTimer() {
@@ -90,6 +91,7 @@ class TimerNotifier extends ChangeNotifier {
 
   
     notifyListeners(); // Notify listeners about the change
+    timer!.cancel();
     _isStarted = false;
   }
 

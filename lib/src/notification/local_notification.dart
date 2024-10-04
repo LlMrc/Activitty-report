@@ -15,7 +15,7 @@ class ReportNofication {
     // Set up Android initialization settings
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings(
-            '@mipmap/ic_launcher'); // Ensure you have an app icon
+            'app_icon'); // Ensure you have an app icon
 
     // Set up iOS initialization settings
     const DarwinInitializationSettings initializationSettingsIOS =
@@ -165,8 +165,8 @@ class ReportNofication {
             priority: Priority.high,
             autoCancel: true,
             channelShowBadge: true,
-            playSound: false
-            // color: Color.fromARGB(255, 18, 233, 90),
+            playSound: false,
+             color: Color.fromARGB(255, 18, 233, 90),
             );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidNotificationDetails,

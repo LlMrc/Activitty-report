@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
-
+        
     // Retrieves the default theme for the platform
     //TextTheme textTheme = Theme.of(context).textTheme;
 
@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
       // directory.
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context)!.appTitle,
+          
 
       // Define a light and dark color theme. Then, read the user's
       // preferred ThemeMode (light, dark, or system default) from the

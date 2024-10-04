@@ -204,7 +204,17 @@
   "url": "https://www.jw.org/finder?srcid=jwlshare&wtlocale=F&prefer=lang&pub=lff",
   "@url": {
     "description": "Texte à afficher pour le livre d'étude"
-  }
+  },
   
+  "note": "Notes",
+"@note": {
+  "description": "Afficher la note du pionnier"
+},
+
+"agenda": "Agenda",
+"@agenda": {
+  "description": "Afficher le service des pionniers"
+}
+
 
 }

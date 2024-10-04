@@ -246,8 +246,7 @@ class SharedPreferencesSingleton {
     String repportListJson =
         jsonEncode(repports.map((e) => e.toMap()).toList());
     await _prefs.setString(keyReport, repportListJson);
-          debugPrint('No report found for saved');
-
+    debugPrint('No report found for saved');
   }
 
   Future<void> updateRepport(Repport updatedRepport) async {
@@ -426,13 +425,22 @@ class SharedPreferencesSingleton {
   }
 
   // Delete TimerModel where month equals DateTime.now().month
-  Future<void> deleteTimer() async {
+  Future<void> deletetCurrentTimer() async {
     List<TimerModel> allTimers = getAllTimers();
     int currentDay = DateTime.now().day;
 
     // Remove timers where the month matches the current month
     allTimers.removeWhere((timer) => timer.day == currentDay);
 
+    // Save updated list to SharedPreferences
+    String jsonTimers = jsonEncode(allTimers.map((t) => t.toMap()).toList());
+    await _prefs.setString('timerList', jsonTimers);
+  }
+
+  Future<void> deleteTimer() async {
+    List<TimerModel> allTimers = getAllTimers();
+    // Remove all TimerModel objects
+    allTimers.clear();
     // Save updated list to SharedPreferences
     String jsonTimers = jsonEncode(allTimers.map((t) => t.toMap()).toList());
     await _prefs.setString('timerList', jsonTimers);
