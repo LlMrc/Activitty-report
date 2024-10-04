@@ -112,12 +112,12 @@ class _HomePageState extends State<HomePage> {
     if (isGranted) ReportNofication.initNotification();
   }
 
-  @override
-  void dispose() {
-    final timeNotifier = Provider.of<TimerNotifier>(context, listen: false);
-    timeNotifier.stopTimer(); // Cancel the timer to avoid leaks
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   final timeNotifier = Provider.of<TimerNotifier>(context, listen: false);
+  //   timeNotifier.stopTimer(); // Cancel the timer to avoid leaks
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
