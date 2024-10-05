@@ -50,7 +50,7 @@ class _ReportFormState extends State<ReportForm> {
     final repport = Repport(
         name: '$name',
         student: student.value,
-        isPyonye: false,
+        isPyonye: true,
         comment: comment,
         time: '${time.value}',
         publication: pub.value,
@@ -58,16 +58,17 @@ class _ReportFormState extends State<ReportForm> {
         isSubmited: true,
         submitAt: DateTime.now());
     if (r.isNotEmpty) {
-      var date = r.last.submitAt;
-
-      if (date.month == repport.submitAt.month) {
-        await _prefsInstance.updateRepport(repport);
+      for (Repport element in r) {
+        if (element.submitAt.month == repport.submitAt.month &&
+            element.submitAt.year == repport.submitAt.year) {
+          await _prefsInstance.updateRepport(repport);
+        }
       }
     } else {
       await _prefsInstance.saveRepport(repport);
     }
 
-     if (name != null) {
+    if (name != null) {
       _prefsInstance.saveName(name ?? '');
     }
   }
@@ -96,15 +97,16 @@ class _ReportFormState extends State<ReportForm> {
                 )),
             counterWidget(context,
                 text: AppLocalizations.of(context)!.time, //'Lè',
-        
+
                 val: time),
             counterWidget(context,
-                text: AppLocalizations.of(context)!.publication, //'Piblikasyon',
-        
+                text:
+                    AppLocalizations.of(context)!.publication, //'Piblikasyon',
+
                 val: pub),
             counterWidget(context,
                 text: AppLocalizations.of(context)!.visit, //'nouvèl vizit',
-        
+
                 val: vizit),
             counterWidget(context,
                 text: AppLocalizations.of(context)!.student, //'Etidyan',
@@ -119,24 +121,24 @@ class _ReportFormState extends State<ReportForm> {
                     border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))))),
             const SizedBox(height: 30),
-        
+
             GestureDetector(
               onTap: () async {
                 if (widget.isUpdate && widget.repport != null) {
                   await _updateCommentRepport(widget.repport!);
                 } else {
                   await _saveRepport();
-                 
                 }
                 if (widget.rcontext.mounted) {
                   Navigator.of(widget.rcontext).pop();
                 }
-        
+
                 widget.callback();
               },
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Theme.of(context).colorScheme.primary),

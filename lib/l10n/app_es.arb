@@ -123,15 +123,18 @@
   "@time": {
    "description": "Mostrar hora"
   },
-   "student": "Estudiante",
+
+  "student": "Estudiante",
   "@student": {
    "description": "Mostrar estudiante"
   },
-   "publication": "Publicación",
+
+  "publication": "Publicación",
   "@publication": {
    "description": "Mostrar publicación"
   },
-   "visit": "Nueva visita",
+
+  "visit": "Nueva visita",
   "@visit": {
    "description": "Mostrar nueva visita"
   },
@@ -140,10 +143,10 @@
   "@saveButton": {
    "description": "Texto que se muestra para guardar en un botón"
   },
-   "comment": "Comentario",
+
+  "comment": "Comentario",
   "@comment": {
    "description": "Texto que se muestra como comentario en un campo de formulario"
-  
   },
 
   "report": "Aún no tienes un informe",
@@ -155,6 +158,7 @@
   "@studentCount": {
    "description": "Texto que se muestra antes de la cantidad de estudiantes"
   },
+
   "monthReport": "Informe Mensual",
   "@monthReport": {
    "description": "Texto que se muestra para el informe mensual"
@@ -170,16 +174,9 @@
    "description": "Texto que se muestra en la lista del menú"
   },
 
-
-
   "pioneer": "Servicio de Pionero",
   "@Pioneer Service": {
    "description": "Mostrar Servicio de Pionero"
-  },
-
-  "language": "Elige un idioma",
-  "@language": {
-   "description": "Mostrar un texto para pedir al usuario que elija un idioma"
   },
 
   "reportSrvce": "Informe",
@@ -245,8 +242,22 @@
 "agenda": "Agenda",
 "@agenda": {
   "description": "Mostrar el servicio del precursor"
-}
+},
 
+   "history": "Historia",
+   "@history": {
+      "description": "Mostrar historia en la lista del menú"
+   },
+
+   "myHistory": "Mi Historia",
+   "@myHistory": {
+      "description": "Mostrar historia en la pantalla MiActividad"
+   },
+
+   "activity": "Mi actividad actual",
+   "@activity": {
+      "description": "Texto para mostrar en la pantalla MiActividad"
+   }
 
 
 }

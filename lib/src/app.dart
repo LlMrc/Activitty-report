@@ -6,6 +6,7 @@ import 'package:report/src/screen/repport_screen.dart';
 import 'package:report/src/theme/theme.dart';
 import 'package:report/src/theme/util.dart';
 import 'feature/calender/calender.dart';
+import 'screen/history.dart';
 import 'screen/pyonye_screen.dart';
 import 'screen/home_page.dart';
 import 'feature/notes/note_screen.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
-        
+
     // Retrieves the default theme for the platform
     //TextTheme textTheme = Theme.of(context).textTheme;
 
@@ -60,7 +61,6 @@ class MyApp extends StatelessWidget {
       // directory.
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context)!.appTitle,
-          
 
       // Define a light and dark color theme. Then, read the user's
       // preferred ThemeMode (light, dark, or system default) from the
@@ -84,6 +84,8 @@ class MyApp extends StatelessWidget {
                 return const PyonyeServicesDataPicker();
               case RepportScreen.routeName:
                 return const RepportScreen();
+              case MyActivity.routeName:
+                return const MyActivity();
               case HomePage.routeName:
               default:
                 return const HomePage();

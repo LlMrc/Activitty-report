@@ -6,7 +6,7 @@
 
 
     <application
-        android:label="report"
+        android:label="Taskflow planner"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

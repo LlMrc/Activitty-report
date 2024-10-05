@@ -66,8 +66,6 @@
      "description": "The text shown for add student"
   },
 
-
-
  "cancelPionner": "Are you sure you want to cancel the Pioneer Service ?",
  "@notificationDes":{
     "description": "alert dialog text message to confirm the user intention"
@@ -110,7 +108,6 @@
    "description": "Display no"
   },
 
-   
   "pioneerforOneMonth": "Pioneering for a month!",
   "@pioneerforOneMonth": {
    "description": "text to show the user's choice between one or two month"
@@ -121,44 +118,47 @@
    "description": "text to show the user's choice between one or two month"
   },
 
-
    "time": "Time",
   "@time": {
    "description": "Display time"
   },
+
    "student": "Student",
   "@student": {
    "description": "Display student"
   },
+
    "publication": "Publication",
   "@publication": {
    "description": "Display publication"
   },
-   "visit": "New visit",
+
+  "visit": "New visit",
   "@visit": {
    "description": "Display new visit"
   },
 
-     "saveButton": "Save",
+  "saveButton": "Save",
   "@saveButton": {
    "description": "text to show save in a button"
   },
-   "comment": "Comment",
+
+  "comment": "Comment",
   "@comment": {
    "description": "Text to show comment in a form field"
-  
-},
+  },
 
  "report": "You do not have a report yet",
   "@report": {
    "description": "Text to display when the report list is empty"
   },
 
-   "studentCount": "Students count",
+  "studentCount": "Students count",
   "@studentCount": {
    "description": "Text to display before the student count"
   },
-   "monthReport": " Monthly Report",
+
+  "monthReport": " Monthly Report",
   "@monthReport": {
    "description": "Text to display for the monthly report "
   },
@@ -173,33 +173,27 @@
    "description": "Text to display for the study book"
   },
   
- "configuration": "Configuration",
+  "configuration": "Configuration",
   "@configuration": {
    "description": "Text to display in the drawer header"
   },
   
-   "notification": "Notification",
+  "notification": "Notification",
   "@notification": {
    "description": "Text to display in the drawer list"
   },
-
 
   "pioneer": "Pioneer Service",
   "@Pioneer Service": {
    "description": "Display Pioneer Service"
   },
 
-    "share": "Share the app",
+  "share": "Share the app",
   "@share": {
    "description": "Display Pioneer Service"
   },
 
-   "language": "Choose a language",
-  "@language": {
-   "description": "Display a text to ask the user to choose a language"
-  },
-
-   "reportSrvce": "Report",
+  "reportSrvce": "Report",
   "@reportSrvce": {
    "description": "Display Report"
   },
@@ -240,14 +234,19 @@
    },
 
 
-   "note": "Notes",
-   "@note": {
-    "description": "Display Pioneer note"
+   "history": "History",
+   "@history": {
+    "description": "Display History in Drawer list"
+   },
+
+   "myHistory": "My History",
+   "@myHistory": {
+    "description": "Display History in MyActivity screen"
    },
  
-     "agenda": "Agenda",
-   "@ajenda": {
-    "description": "Display Pioneer Service"
+   "activity": "My current activity",
+   "@activity": {
+    "description": "Text to show in MyActivity screen"
    }
 }
 

@@ -119,18 +119,21 @@
    "description": "Texto exibido para a escolha do usuário entre um ou dois meses"
   },
 
-   "time": "Hora",
+  "time": "Hora",
   "@time": {
    "description": "Exibir hora"
   },
-   "student": "Estudante",
+
+  "student": "Estudante",
   "@student": {
    "description": "Exibir estudante"
   },
-   "publication": "Publicação",
+
+  "publication": "Publicação",
   "@publication": {
    "description": "Exibir publicação"
   },
+
    "visit": "Nova visita",
   "@visit": {
    "description": "Exibir nova visita"
@@ -140,10 +143,11 @@
   "@saveButton": {
    "description": "Texto exibido para salvar em um botão"
   },
-   "comment": "Comentário",
+
+
+  "comment": "Comentário",
   "@comment": {
    "description": "Texto exibido como comentário em um campo de formulário"
-  
   },
 
   "report": "Você ainda não tem um relatório",
@@ -155,6 +159,7 @@
   "@studentCount": {
    "description": "Texto exibido antes do número de estudantes"
   },
+
   "monthReport": "Relatório Mensal",
   "@monthReport": {
    "description": "Texto exibido para o relatório mensal"
@@ -170,16 +175,9 @@
    "description": "Texto exibido na lista de menus"
   },
 
-
-
   "pioneer": "Serviço de Pioneiro",
   "@Pioneer Service": {
    "description": "Exibir Serviço de Pioneiro"
-  },
-
-  "language": "Escolha um idioma",
-  "@language": {
-   "description": "Exibir um texto para pedir ao usuário que escolha um idioma"
   },
 
   "reportSrvce": "Relatório",
@@ -222,7 +220,7 @@
       "description": "Texto exibido quando o usuário escolhe o mês em ordem incorreta"
   },
 
-  "share": "Compartilhar o aplicativo",
+"share": "Compartilhar o aplicativo",
 "@share": {
   "description": "Exibir o serviço pioneiro"
 },
@@ -246,8 +244,23 @@
 "agenda": "Agenda",
 "@agenda": {
   "description": "Exibir o serviço do pioneiro"
+},
+
+
+
+   "history": "História",
+   "@history": {
+      "description": "Exibir o histórico na lista de menu"
+   },
+
+   "myHistory": "Meu Histórico",
+   "@myHistory": {
+      "description": "Exibir o histórico na tela MinhaAtividade"
+   },
+
+   "activity": "Minha atividade atual",
+   "@activity": {
+      "description": "Texto para exibir na tela MinhaAtividade"
 }
-
-
 
 }
