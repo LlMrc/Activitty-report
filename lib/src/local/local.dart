@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../model/event.dart';
 import '../model/note.dart';
-
 import '../model/report.dart';
 import '../model/student.dart';
 import '../model/timer.dart';
@@ -278,29 +276,26 @@ class SharedPreferencesSingleton {
   }
 
   // Delete a Repport by name and student ID
-  Future<void> deleteUnsubmitedReport() async {
-    // Get the list of all reports
-    List<Repport> repports = getAllRepports();
+  // Future<void> deleteUnsubmitedReport(List<Repport> repports) async {
+  //   if (repports.isNotEmpty) {
+  //     // Filter the list to remove reports that match the given month and year
+  //     repports.clear();
 
-    if (repports.isNotEmpty) {
-      // Filter the list to remove reports that match the given month and year
-      repports.removeWhere((repport) => repport.isSubmited != true);
+  //     // If no reports are left, remove the key from SharedPreferences
+  //     if (repports.isEmpty) {
+  //       await _prefs.remove(keyReport);
+  //     } else {
+  //       // Otherwise, save the updated list back to SharedPreferences
+  //       String updatedRepportJson =
+  //           jsonEncode(repports.map((r) => r.toMap()).toList());
+  //       await _prefs.setString(keyReport, updatedRepportJson);
+  //     }
 
-      // If no reports are left, remove the key from SharedPreferences
-      if (repports.isEmpty) {
-        await _prefs.remove(keyReport);
-      } else {
-        // Otherwise, save the updated list back to SharedPreferences
-        String updatedRepportJson =
-            jsonEncode(repports.map((r) => r.toMap()).toList());
-        await _prefs.setString(keyReport, updatedRepportJson);
-      }
-
-      debugPrint('Reports  deleted successfully');
-    } else {
-      debugPrint('No reports found for deletion');
-    }
-  }
+  //     debugPrint('Reports  deleted successfully');
+  //   } else {
+  //     debugPrint('No reports found for deletion');
+  //   }
+  // }
 
   // Delete a Repport by name and student ID
   Future<void> deleteRepportByMonthAndYear(DateTime dateToDelete) async {

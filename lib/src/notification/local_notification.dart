@@ -137,7 +137,7 @@ class ReportNofication {
     tz.TZDateTime scheduleTime = tz.TZDateTime.from(scheduledDate, tz.local);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      2,
+      1,
       event.title,
       event.comment,
       scheduleTime,
@@ -148,7 +148,7 @@ class ReportNofication {
           : DateTimeComponents.dayOfWeekAndTime,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
-      payload: '1',
+      payload: 'event',
     );
   }
 
@@ -159,15 +159,17 @@ class ReportNofication {
     if (!isNotificationEnabled) return;
 
     const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails('local', 'your channel name',
-            channelDescription: 'Local notification',
-            importance: Importance.max,
-            priority: Priority.high,
-            autoCancel: true,
-            channelShowBadge: true,
-            playSound: false,
-             color: Color.fromARGB(255, 18, 233, 90),
-            );
+        AndroidNotificationDetails(
+      'local',
+      'your channel name',
+      channelDescription: 'Local notification',
+      importance: Importance.max,
+      priority: Priority.high,
+      autoCancel: true,
+      channelShowBadge: true,
+      playSound: false,
+      color: Color.fromARGB(255, 18, 233, 90),
+    );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidNotificationDetails,
       iOS: DarwinNotificationDetails(

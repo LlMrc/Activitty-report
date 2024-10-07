@@ -418,10 +418,8 @@ class _HomePageState extends State<HomePage> {
     return Duration(hours: totalHours, minutes: totalMinutes);
   }
 
-  Future<void> _addRepport() async {
-    var currentRapport = _preference.getAllRepports();
-    // Get all students and reports from the _preference
-
+  Future<void> _addRepport(List<Repport> reports) async {
+    var sRepports = reports.where((item) => item.isSubmited == true).toList();
     var students = await _preference.getAllStudents();
     var repport = getTotalPublicationAndVizit();
     var duration = getTotalDuration();
@@ -431,23 +429,28 @@ class _HomePageState extends State<HomePage> {
       time: '${duration.inHours}:${duration.inMinutes.remainder(60)}',
       publication: repport.isNotEmpty ? repport['totalPublication'] : 0,
       vizit: repport.isNotEmpty ? repport['totalVizit'] : 0,
-      name: currentRapport.first.name,
+      name: reports.first.name,
       student: students.length,
-      comment: 'Rapport du mois',
       isPyonye: false,
       isSubmited: true,
-      submitAt: currentRapport.last.submitAt,
+      submitAt: reports.last.submitAt,
     );
-    await _preference.saveRepport(newRepport);
-    await _preference.deleteUnsubmitedReport();
-    currentRapport.clear();
-    time.clear();
+    if (sRepports.contains(newRepport)) {
+      return;
+    } else {
+      await _preference.saveRepport(newRepport);
+      sRepports.clear();
+      time.clear();
+    }
   }
 
   void checkForMonthlyReport() {
-    DateTime now = DateTime.now();
-    if (now.day == 1) {
-      _addRepport(); // Run the report at the start of the month
+    DateTime dateTime = DateTime.now();
+    var reportList = _preference.getAllRepports();
+    // Get all students and reports from the _preference
+
+    if (dateTime.month > reportList.last.submitAt.month) {
+      _addRepport(reportList); // Run the report at the start of the month
     }
   }
 
