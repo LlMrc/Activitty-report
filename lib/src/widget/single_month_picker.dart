@@ -45,11 +45,9 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
                   firstDate: DateTime(2020),
                   lastDate: DateTime(2100),
                 );
-                if (picked != null) {
-                  setState(() {
-                    _selectedMonth = picked;
-                  });
-                }
+                setState(() {
+                  _selectedMonth = picked;
+                });
               },
               text: AppLocalizations.of(context)!.chooseMonth,
             ),

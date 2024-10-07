@@ -52,7 +52,6 @@ class Repport {
   }
 
   // CopyWith method for updating fields
-  // Add the copyWith method
   Repport copyWith({
     String? name,
     int? publication,
@@ -62,7 +61,7 @@ class Repport {
     bool? isSubmited,
     String? comment,
     DateTime? submitAt,
-    bool? isPyonye, // For updating status
+    bool? isPyonye,
   }) {
     return Repport(
       name: name ?? this.name,
@@ -73,7 +72,38 @@ class Repport {
       student: student ?? this.student,
       comment: comment ?? this.comment,
       submitAt: submitAt ?? this.submitAt,
-      isPyonye: isPyonye ?? this.isPyonye, // Update the isPyonye field
+      isPyonye: isPyonye ?? this.isPyonye,
     );
+  }
+
+  // Overriding == to compare based on field values
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Repport) return false;
+
+    return other.name == name &&
+        other.publication == publication &&
+        other.vizit == vizit &&
+        other.time == time &&
+        other.student == student &&
+        other.isPyonye == isPyonye &&
+        other.isSubmited == isSubmited &&
+        other.submitAt == submitAt &&
+        other.comment == comment;
+  }
+
+  // Overriding hashCode to ensure that objects with the same field values produce the same hashCode
+  @override
+  int get hashCode {
+    return name.hashCode ^
+        publication.hashCode ^
+        vizit.hashCode ^
+        time.hashCode ^
+        student.hashCode ^
+        isPyonye.hashCode ^
+        isSubmited.hashCode ^
+        submitAt.hashCode ^
+        comment.hashCode;
   }
 }

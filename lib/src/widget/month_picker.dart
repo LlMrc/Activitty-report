@@ -53,11 +53,9 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
                   firstDate: DateTime(2020),
                   lastDate: DateTime(2100),
                 );
-                if (picked != null) {
-                  setState(() {
-                    _selectedStartMonth = picked;
-                  });
-                }
+                setState(() {
+                  _selectedStartMonth = picked;
+                });
               },
               text: AppLocalizations.of(context)!.chooseMonth,
             ),
@@ -91,11 +89,9 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
                   firstDate: DateTime(2020),
                   lastDate: DateTime(2100),
                 );
-                if (picked != null) {
-                  setState(() {
-                    _selectedEndMonth = picked;
-                  });
-                }
+                setState(() {
+                  _selectedEndMonth = picked;
+                });
               },
               text: AppLocalizations.of(context)!
                   .chooseMonth, // 'Chwazi yon mwa',

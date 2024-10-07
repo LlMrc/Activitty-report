@@ -435,12 +435,12 @@ class _HomePageState extends State<HomePage> {
       isSubmited: true,
       submitAt: reports.last.submitAt,
     );
-    if (sRepports.contains(newRepport)) {
-      return;
-    } else {
-      await _preference.saveRepport(newRepport);
+
+    // Ensure Repport has proper equality logic for this to work
+    if (!sRepports.any((report) => report == newRepport)) {
       sRepports.clear();
       time.clear();
+      await _preference.saveRepport(newRepport);
     }
   }
 
