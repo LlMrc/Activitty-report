@@ -6,7 +6,7 @@ import '../model/report.dart';
 class RepportNotifier with ChangeNotifier {
   //*********************************************************
   Repport? getRepport() {
-    final repport = SharedPreferencesSingleton().getRepport();
+    final repport = SharedPreferencesSingleton().getLastRepport();
     notifyListeners();
     return repport;
   }
@@ -32,7 +32,7 @@ class RepportNotifier with ChangeNotifier {
   }
 
   Future<void> repportPyonyeNotifier() async {
-    Repport? repport = SharedPreferencesSingleton().getRepport();
+    Repport? repport = SharedPreferencesSingleton().getLastRepport();
     if (repport != null) {
       final nwRepport = repport.copyWith(isPyonye: true);
       await SharedPreferencesSingleton().updateRepport(nwRepport);

@@ -25,7 +25,7 @@ class _StopwatchWidgetState extends State<StopwatchWidget> {
   }
 
   Repport currentReport() {
-    Repport? repport = _preference.getRepport();
+    Repport? repport = _preference.getLastRepport();
     if (repport != null) {
       return repport;
     } else {

@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
     // Move the timeNotifier call here with listen: false
     final timeNotifier = Provider.of<TimerNotifier>(context, listen: false);
     timeNotifier.startTimer(); // Start the timer when the page is displayed
-    repport = _preference.getRepport();
+    repport = _preference.getLastRepport();
   }
 
   bool started = false;
@@ -447,16 +447,19 @@ class _HomePageState extends State<HomePage> {
   void checkForMonthlyReport() {
     DateTime dateTime = DateTime.now();
     var reportList = _preference.getAllRepports();
-    // Get all students and reports from the _preference
 
-    if (dateTime.month > reportList.last.submitAt.month) {
-      _addRepport(reportList); // Run the report at the start of the month
+    // Check if the report list is not empty
+    if (reportList.isNotEmpty) {
+      // Check if the current month is greater than the last report's submission month
+      if (dateTime.month > reportList.last.submitAt.month) {
+        _addRepport(reportList); // Run the report at the start of the month
+      }
     }
   }
 
   void refreshThisPage() {
     setState(() {
-      repport = _preference.getRepport();
+      repport = _preference.getLastRepport();
     });
   }
 
