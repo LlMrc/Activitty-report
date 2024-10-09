@@ -3,7 +3,6 @@ import 'package:intl/intl.dart'; // For formatting the Date and Time
 import 'package:provider/provider.dart';
 import 'package:report/src/notifier/my_notifier.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../local/local.dart';
 import '../../model/student.dart'; // Import your Student model
 
 class AddStudentScreen extends StatefulWidget {
@@ -76,40 +75,19 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
     }
   }
 
-  // Method to add the student
-  Future<void> _addStudent() async {
-    if (_formKey.currentState!.validate()) {
-      // Create a new Student object
-      final student = Student(
-        name: _nameController.text,
-        phoneNumber: _phoneNumberController.text,
-        dateAdded: _selectedDateTime,
-        comment: _commentController.text,
-        address: _addressController.text,
-      );
-
-      // Add student to SharedPreferences
-      await SharedPreferencesSingleton().addStudent(student);
-
-      // Clear the form
-      _nameController.clear();
-      _phoneNumberController.clear();
-      _addressController.clear();
-      _commentController.clear();
-      setState(() {
-        _selectedDateTime = DateTime.now();
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Student added successfully')),
-        );
-      }
-    }
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneNumberController.dispose();
+    _addressController.dispose();
+    _commentController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final refreshPageNotifier = Provider.of<PyonyeNotifier>(context);
+    final notifier = Provider.of<PyonyeNotifier>(context);
+
     return GestureDetector(
       onTap: () {
         // Dismiss the keyboard when tapping outside of the Form
@@ -172,7 +150,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     '${DateFormat.Hm().format(_selectedDateTime)}',
                   ),
                   trailing: IconButton(
-                    icon: const Icon(Icons.calendar_today_rounded),
+                    icon: const Icon(Icons.calendar_today),
                     onPressed: () => _pickDate(context),
                   ),
                 ),
@@ -180,10 +158,35 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(
-                          Theme.of(context).colorScheme.primaryContainer)),
-                  onPressed: () {
-                    _addStudent();
-                    refreshPageNotifier.refreshThisPage(true);
+                          Theme.of(context).colorScheme.secondaryContainer)),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Create a new Student object
+                      final student = Student(
+                        name: _nameController.text,
+                        phoneNumber: _phoneNumberController.text,
+                        dateAdded: _selectedDateTime,
+                        comment: _commentController.text,
+                        address: _addressController.text,
+                      );
+                      await notifier.addStudent(student);
+                      // Clear the form
+                      _nameController.clear();
+                      _phoneNumberController.clear();
+                      _addressController.clear();
+                      _commentController.clear();
+                      setState(() {
+                        _selectedDateTime = DateTime.now();
+                      });
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Student added successfully')),
+                        );
+                      }
+                    }
+                    //     notifier.refreshThisPage(true);
+
                     Navigator.pop(context);
                   },
                   child: Text(AppLocalizations.of(context)!.add),

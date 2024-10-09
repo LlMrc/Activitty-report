@@ -13,17 +13,9 @@ class MyCounter extends StatelessWidget {
     final pyonyeNotifier = Provider.of<PyonyeNotifier>(context);
     return Row(
       children: [
-        IconButton.filled(
-          splashColor: Colors.green,
-          style: ButtonStyle(
-              elevation: const WidgetStatePropertyAll<double>(10),
-              backgroundColor:
-                  WidgetStatePropertyAll(Theme.of(context).cardColor)),
-          iconSize: 14,
-          icon: const Icon(
-            Icons.remove,
-            color: Colors.black,
-          ),
+        counterButton(
+          context,
+          icon: Icons.remove,
           onPressed: () {
             pyonyeNotifier.decrement(student);
           },
@@ -37,18 +29,34 @@ class MyCounter extends StatelessWidget {
             },
           ),
         ),
-        IconButton.filled(
-          style: ButtonStyle(
-              elevation: const WidgetStatePropertyAll<double>(10),
-              backgroundColor:
-                  WidgetStatePropertyAll(Theme.of(context).cardColor)),
-          iconSize: 14,
-          icon: const Icon(Icons.add, color: Colors.black),
+        counterButton(
+          context,
+          icon: Icons.add,
           onPressed: () {
             pyonyeNotifier.increment(student);
           },
         )
       ],
+    );
+  }
+
+  Widget counterButton(BuildContext context,
+      {required onPressed, required IconData icon}) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            boxShadow: const [
+              BoxShadow(
+                  offset: Offset(0.5, -0.5), blurRadius: 1, color: Colors.grey),
+              BoxShadow(
+                  offset: Offset(0.5, 0.5), blurRadius: 1, color: Colors.grey)
+            ],
+            borderRadius: BorderRadius.circular(100)),
+        child: Icon(icon, color: Colors.black),
+      ),
     );
   }
 }

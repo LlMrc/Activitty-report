@@ -47,7 +47,8 @@ class _StudentListTileState extends State<StudentListTile> {
             child: emptyStudentList(),
           );
         }
-
+        // Initialize expansion states with the correct number of students
+        myNotifier.initializeExpansionStates(data.length);
         // SliverList for displaying students
         return SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -73,7 +74,12 @@ class _StudentListTileState extends State<StudentListTile> {
                   ),
                 ),
                 key: Key(student.name),
-                onDismissed: (direction) => _preference.removeStudent(student),
+                onDismissed: (direction) {
+                  _preference.removeStudent(student);
+                  _preference.removeStudent(student);
+                  // Optionally, reinitialize _expansionStates after removal
+                  myNotifier.initializeExpansionStates(data.length - 1);
+                },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Card(
@@ -82,13 +88,10 @@ class _StudentListTileState extends State<StudentListTile> {
                       key: UniqueKey(),
                       dense: true,
                       leading: GestureDetector(
-                        onTap: () {
-                          _makePhoneCall(student.phoneNumber);
-                        },
-                        child: const CircleAvatar(
-                          child: Icon(Icons.call),
-                        ),
-                      ),
+                          onTap: () {
+                            _makePhoneCall(student.phoneNumber);
+                          },
+                          child: const CircleAvatar(child: Icon(Icons.call))),
                       title: Text(student.name.toUpperCase()),
                       subtitle: Text(
                         student.address ?? '',

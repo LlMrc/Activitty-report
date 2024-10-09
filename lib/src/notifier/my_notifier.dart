@@ -51,19 +51,36 @@ class PyonyeNotifier with ChangeNotifier {
   }
 
   // Initialize the list dynamically based on the item count
-  void initializeExpansionStates(int itemCount) {
-    _expansionStates ??= List<bool>.filled(itemCount, false);
+  void initializeExpansionStates(int length) {
+    // If _expansionStates is null or has a different length, reinitialize it
+    if (_expansionStates == null || _expansionStates!.length != length) {
+      _expansionStates = List.filled(length, false);
+      notifyListeners();
+    }
   }
 
   bool isExpand(int index) {
-    // Ensure that _expansionStates is initialized before use
     return _expansionStates?[index] ?? false;
   }
 
-  void toggleExpansion(bool isExpanded, int index) {
-    if (_expansionStates != null) {
-      _expansionStates![index] = isExpanded;
-      notifyListeners(); // Notify listeners to update the UI.
+  void toggleExpansion(bool value, int index) {
+    if (_expansionStates != null && index < _expansionStates!.length) {
+      _expansionStates![index] = value;
+      notifyListeners();
     }
+  }
+
+  Future<void> addStudent(Student student) async {
+    // Save the student to SharedPreferences or any storage
+    await SharedPreferencesSingleton().addStudent(student);
+
+    // Initialize _expansionStates if it's null
+    _expansionStates ??= [];
+
+    // Add the default expansion state for the new student
+    _expansionStates!.add(false);
+
+    // Notify listeners to update the UI if you're using ChangeNotifier
+    notifyListeners();
   }
 }

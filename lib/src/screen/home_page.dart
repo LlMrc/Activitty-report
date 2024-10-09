@@ -101,8 +101,11 @@ class _HomePageState extends State<HomePage> {
 
     // Move the timeNotifier call here with listen: false
     final timeNotifier = Provider.of<TimerNotifier>(context, listen: false);
-    timeNotifier.startTimer(); // Start the timer when the page is displayed
+
     repport = _preference.getLastRepport();
+    if (repport != null && repport!.isPyonye) {
+      timeNotifier.startTimer(); // Start the timer when the page is displayed
+    }
   }
 
   bool started = false;
