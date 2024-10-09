@@ -178,6 +178,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(
+                          Theme.of(context).colorScheme.primaryContainer)),
                   onPressed: () {
                     _addStudent();
                     refreshPageNotifier.refreshThisPage(true);

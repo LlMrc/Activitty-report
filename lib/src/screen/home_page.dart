@@ -130,10 +130,10 @@ class _HomePageState extends State<HomePage> {
     return PopScope(
       canPop: (timeNotifier.getStarted) ? false : true,
       onPopInvokedWithResult: (didPop, result) {
-        ReportNofication.showLocalNotification();
-        timeNotifier.saveTimer();
-        if (didPop) {
-          Navigator.pop(context);
+        if (!didPop) {
+          ReportNofication.showLocalNotification();
+          timeNotifier.saveTimer();
+          // Navigator.pop(context);
         }
       },
       child: Scaffold(

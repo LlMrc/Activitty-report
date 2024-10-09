@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import '../local/local.dart';
 import '../model/report.dart';
-import '../model/student.dart';
 import '../model/timer.dart';
 
 class MyActivity extends StatefulWidget {
@@ -16,19 +15,18 @@ class MyActivity extends StatefulWidget {
 }
 
 class _MyActivityState extends State<MyActivity> {
-  List<Student> students = [];
   final SharedPreferencesSingleton _preference = SharedPreferencesSingleton();
 
   @override
   void initState() {
     super.initState();
-    _loadActivity(); // Load students asynchronously
+    // _loadActivity(); // Load students asynchronously
   }
 
-  Future<void> _loadActivity() async {
-    students = await _preference.getAllStudents();
-    setState(() {}); // Trigger a rebuild after students are loaded.
-  }
+  // Future<void> _loadActivity() async {
+  //   students = await _preference.getAllStudents();
+  //   setState(() {}); // Trigger a rebuild after students are loaded.
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class _MyActivityState extends State<MyActivity> {
     var repport = getTotalPublicationAndVizit();
     var duration = getTotalDuration();
     final date = DateTime.now();
-    Repport? currentReport = _preference.getCurrentRepport();
+    Repport? currentReport = _preference.getLastRepport();
 
     return Scaffold(
       appBar: AppBar(
@@ -83,11 +81,29 @@ class _MyActivityState extends State<MyActivity> {
                             ? '${AppLocalizations.of(context)!.time}: ${duration.inHours}:${duration.inMinutes.remainder(60)}'
                             : '${AppLocalizations.of(context)!.time}: 00:00',
                       ),
-                      buildReportItem(
-                        icon: Icons.person_add,
-                        text:
-                            '${AppLocalizations.of(context)!.student}: ${students.length}',
-                      ),
+                      FutureBuilder(
+                          future: _preference.getAllStudents(),
+                          builder: (context, snapshot) {
+                            final students = snapshot.data;
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator.adaptive());
+                            }
+
+                            if (students == null) {
+                              return buildReportItem(
+                                icon: Icons.person_add,
+                                text:
+                                    '${AppLocalizations.of(context)!.student}: 0',
+                              );
+                            }
+                            return buildReportItem(
+                              icon: Icons.person_add,
+                              text:
+                                  '${AppLocalizations.of(context)!.student}: ${students.length}',
+                            );
+                          }),
                       buildReportItem(
                         icon: Icons.paste_outlined,
                         text: currentReport != null && currentReport.isPyonye

@@ -340,21 +340,7 @@ class SharedPreferencesSingleton {
     return null; // Return null if no report is found for the current month
   }
 
-  Repport? getCurrentRepport() {
-    List<Repport> repports = getAllRepports();
-    DateTime date = DateTime.now();
-    try {
-      return repports.firstWhere(
-        (repport) => repport.submitAt.month == date.month,
-      );
-    } catch (e) {
-      // You can log the error if needed
-      debugPrint('Exception: $e');
-    }
-
-    return null; // Return null if no report is found for the current month
-  }
-
+ 
   // Retrieve all Repports
   List<Repport> getAllRepports() {
     String? repportListJson = _prefs.getString(keyReport);
