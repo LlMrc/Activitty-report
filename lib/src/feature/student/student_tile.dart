@@ -23,11 +23,6 @@ class _StudentListTileState extends State<StudentListTile> {
   @override
   Widget build(BuildContext context) {
     final myNotifier = context.watch<PyonyeNotifier>();
-    if (myNotifier.pageRefresh) {
-      setState(() {
-        debugPrint('THE SCREEN IS UPDATED'); // This should print when refreshed
-      });
-    }
 
     return FutureBuilder<List<Student>>(
       future: SharedPreferencesSingleton().getAllStudents(),
@@ -93,10 +88,12 @@ class _StudentListTileState extends State<StudentListTile> {
                           },
                           child: const CircleAvatar(child: Icon(Icons.call))),
                       title: Text(student.name.toUpperCase()),
-                      subtitle: Text(
-                        student.address ?? '',
-                        overflow: TextOverflow.clip,
-                      ),
+                      subtitle: (student.schedule != null)
+                          ? Text(
+                              student.schedule!,
+                              overflow: TextOverflow.clip,
+                            )
+                          : null,
                       children: [studentDetails(student, context)],
                       onExpansionChanged: (value) {
                         myNotifier.toggleExpansion(value, index);

@@ -4,7 +4,7 @@ class Student {
   final DateTime dateAdded;
   String? comment;
   int? lesson;
-  String? address;
+  String? schedule;
 
   Student({
     required this.name,
@@ -12,7 +12,7 @@ class Student {
     this.comment,
     this.lesson,
     required this.dateAdded,
-    this.address,
+    this.schedule,
   });
 
   // Method to convert a Student object to a map
@@ -23,7 +23,7 @@ class Student {
       'lesson': lesson,
       'phoneNumber': phoneNumber,
       'dateAdded': dateAdded.toIso8601String(),
-      'address': address,
+      'schedule': schedule,
     };
   }
 
@@ -35,7 +35,7 @@ class Student {
       lesson: map['lesson'],
       phoneNumber: map['phoneNumber'],
       dateAdded: DateTime.parse(map['dateAdded']),
-      address: map['address'],
+      schedule: map['schedule'],
     );
   }
 
@@ -46,7 +46,7 @@ class Student {
     DateTime? dateAdded,
     String? comment,
     int? lesson,
-    String? address,
+    String? schedule,
   }) {
     return Student(
       name: name ?? this.name,
@@ -54,7 +54,7 @@ class Student {
       dateAdded: dateAdded ?? this.dateAdded,
       comment: comment ?? this.comment,
       lesson: lesson ?? this.lesson,
-      address: address ?? this.address,
+      schedule: schedule ?? this.schedule,
     );
   }
 }

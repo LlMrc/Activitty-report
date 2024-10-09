@@ -6,16 +6,8 @@ class PyonyeNotifier with ChangeNotifier {
   bool? _isPyonye; // This holds the boolean value
   bool isExpanded = false; // Track whether the ExpansionTile is expanded
   bool? get isPyonye => _isPyonye;
-  bool get pageRefresh => _refresh;
+
   List<bool>? _expansionStates;
-  bool _refresh = false;
-
-  void refreshThisPage(bool newValue) {
-    _refresh = newValue;
-    debugPrint('refreshThisPage called, _refresh: $_refresh');
-
-    notifyListeners(); // Notify listeners to rebuild the UI
-  }
 
   void increment(Student student) async {
     // Retrieve the current count from the student's lesson field
@@ -52,10 +44,13 @@ class PyonyeNotifier with ChangeNotifier {
 
   // Initialize the list dynamically based on the item count
   void initializeExpansionStates(int length) {
-    // If _expansionStates is null or has a different length, reinitialize it
     if (_expansionStates == null || _expansionStates!.length != length) {
       _expansionStates = List.filled(length, false);
-      notifyListeners();
+
+      // Ensure notifyListeners is called after the current frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
     }
   }
 
@@ -78,7 +73,7 @@ class PyonyeNotifier with ChangeNotifier {
     _expansionStates ??= [];
 
     // Add the default expansion state for the new student
-    _expansionStates!.add(false);
+    _expansionStates?.add(false);
 
     // Notify listeners to update the UI if you're using ChangeNotifier
     notifyListeners();

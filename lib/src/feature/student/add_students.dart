@@ -9,6 +9,7 @@ class AddStudentScreen extends StatefulWidget {
   const AddStudentScreen({super.key});
   static const routeName = '/student';
   @override
+  // ignore: library_private_types_in_public_api
   _AddStudentScreenState createState() => _AddStudentScreenState();
 }
 
@@ -16,7 +17,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
   DateTime _selectedDateTime = DateTime.now(); // Store both date and time
 
@@ -79,7 +79,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   void dispose() {
     _nameController.dispose();
     _phoneNumberController.dispose();
-    _addressController.dispose();
+
     _commentController.dispose();
     super.dispose();
   }
@@ -104,7 +104,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             key: _formKey,
             child: ListView(
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 35),
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'Name'),
@@ -115,9 +115,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _phoneNumberController,
                   decoration: const InputDecoration(labelText: 'Phone Number'),
@@ -129,13 +127,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextFormField(
-                  controller: _addressController,
-                  decoration: const InputDecoration(labelText: 'Address'),
-                ),
                 const SizedBox(height: 30),
                 TextFormField(
                   maxLines: 3,
@@ -143,51 +134,52 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       border: OutlineInputBorder(), labelText: 'Comment'),
                   controller: _commentController,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 ListTile(
                   title: Text(
                     '${DateFormat.EEEE().format(_selectedDateTime)} '
                     '${DateFormat.Hm().format(_selectedDateTime)}',
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () => _pickDate(context),
+                  trailing: Card(
+                    child: IconButton(
+                      icon: const Icon(Icons.calendar_month),
+                      onPressed: () => _pickDate(context),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 45),
                 ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(
                           Theme.of(context).colorScheme.secondaryContainer)),
                   onPressed: () async {
+                    setState(() => _selectedDateTime = DateTime.now());
+
                     if (_formKey.currentState!.validate()) {
                       // Create a new Student object
                       final student = Student(
-                        name: _nameController.text,
-                        phoneNumber: _phoneNumberController.text,
-                        dateAdded: _selectedDateTime,
-                        comment: _commentController.text,
-                        address: _addressController.text,
-                      );
+                          name: _nameController.text,
+                          phoneNumber: _phoneNumberController.text,
+                          dateAdded: _selectedDateTime,
+                          comment: _commentController.text,
+                          schedule:
+                              '${DateFormat.EEEE().format(_selectedDateTime)} '
+                              '${DateFormat.Hm().format(_selectedDateTime)}');
                       await notifier.addStudent(student);
                       // Clear the form
                       _nameController.clear();
                       _phoneNumberController.clear();
-                      _addressController.clear();
+
                       _commentController.clear();
-                      setState(() {
-                        _selectedDateTime = DateTime.now();
-                      });
+
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content: Text('Student added successfully')),
                         );
+                        Navigator.pop(context);
                       }
                     }
-                    //     notifier.refreshThisPage(true);
-
-                    Navigator.pop(context);
                   },
                   child: Text(AppLocalizations.of(context)!.add),
                 ),
