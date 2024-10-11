@@ -24,7 +24,7 @@ class StickyNoteCalendar extends StatelessWidget {
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold)),
+                  fontWeight: FontWeight.w700)),
         ),
         const SizedBox(
           height: 10,
@@ -34,9 +34,8 @@ class StickyNoteCalendar extends StatelessWidget {
           child: Text(
               event.comment ?? AppLocalizations.of(context)!.calendarDescrition,
               style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
+                color: Colors.black,
+              )),
         )
       ]),
     );

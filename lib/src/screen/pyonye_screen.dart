@@ -28,16 +28,23 @@ class _PyonyeServicesDataPickerState extends State<PyonyeServicesDataPicker> {
               decoration: const BoxDecoration(
                   image:
                       DecorationImage(image: AssetImage('assets/pyonye.jpg'))),
-              child: Text(
-                AppLocalizations.of(context)!
-                    .pioneerTitle, //Chwazi Dat w\'ap komanse ✍
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.surfaceContainerLow,
-                    fontWeight: FontWeight.w700,
-                    shadows: [
-                      const BoxShadow(
-                          color: Colors.black, offset: Offset(1, -1))
-                    ]),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Text(
+                  AppLocalizations.of(context)!
+                      .pioneerTitle, //Chwazi Dat w\'ap komanse ✍
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      fontWeight: FontWeight.w700,
+                      shadows: [
+                        const BoxShadow(
+                            color: Colors.black,
+                            blurRadius: 2,
+                            offset: Offset(-0.5, -0.5)),
+                        const BoxShadow(
+                            color: Colors.black, offset: Offset(1, -1))
+                      ]),
+                ),
               )),
           const SizedBox(height: 20),
           Padding(

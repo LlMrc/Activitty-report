@@ -120,12 +120,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   controller: _phoneNumberController,
                   decoration: const InputDecoration(labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value != null && value.isNotEmpty && value.length < 7) {
-                      return AppLocalizations.of(context)!.validNumber;
-                    }
-                    return null;
-                  },
+             
                 ),
                 const SizedBox(height: 30),
                 TextFormField(
@@ -169,16 +164,15 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       // Clear the form
                       _nameController.clear();
                       _phoneNumberController.clear();
-
                       _commentController.clear();
 
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content: Text('Student added successfully')),
-                        );
-                        Navigator.pop(context);
-                      }
+                        ); Navigator.pop(context);
+                    
+                      }   
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.add),

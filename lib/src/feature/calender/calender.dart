@@ -282,7 +282,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                                               }
                                             },
                                             icon: const Icon(
-                                              Icons.push_pin_rounded,
+                                              Icons.delete_forever,
                                               color: Colors.blue,
                                             )),
                                       )
