@@ -120,7 +120,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   controller: _phoneNumberController,
                   decoration: const InputDecoration(labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
-             
+                  validator: (value) {
+                    if (value != null ) {
+                      return AppLocalizations.of(context)!.validNumber;
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 30),
                 TextFormField(
@@ -133,7 +138,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 ListTile(
                   title: Text(
                     '${DateFormat.EEEE().format(_selectedDateTime)} '
-                    '${DateFormat.Hm().format(_selectedDateTime)}',
+                        '${DateFormat.Hm().format(_selectedDateTime)}',
                   ),
                   trailing: Card(
                     child: IconButton(
@@ -158,7 +163,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           dateAdded: _selectedDateTime,
                           comment: _commentController.text,
                           schedule:
-                              '${DateFormat.EEEE().format(_selectedDateTime)} '
+                          '${DateFormat.EEEE().format(_selectedDateTime)} '
                               '${DateFormat.Hm().format(_selectedDateTime)}');
                       await notifier.addStudent(student);
                       // Clear the form
@@ -167,12 +172,13 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       _commentController.clear();
 
                       if (context.mounted) {
+                        Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content: Text('Student added successfully')),
-                        ); Navigator.pop(context);
-                    
-                      }   
+                        );
+
+                      }
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.add),
