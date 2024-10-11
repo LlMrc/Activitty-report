@@ -121,7 +121,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   decoration: const InputDecoration(labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
-                    if (value != null ) {
+                    if (value != null && value.length < 5 ) {
                       return AppLocalizations.of(context)!.validNumber;
                     }
                     return null;
