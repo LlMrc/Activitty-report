@@ -149,8 +149,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       backgroundColor: WidgetStatePropertyAll(
                           Theme.of(context).colorScheme.secondaryContainer)),
                   onPressed: () async {
-                    setState(() => _selectedDateTime = DateTime.now());
-
                     if (_formKey.currentState!.validate()) {
                       // Create a new Student object
                       final student = Student(
