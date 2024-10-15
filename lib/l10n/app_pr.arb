@@ -64,10 +64,7 @@
      "description": "O texto exibido para adicionar estudante"
   },
 
-  "homepageTitle": "Uma solução eficaz para gerenciar e acompanhar todas as suas atividades",
-  "@notificationTitle": {
-    "description": "Texto exibido como título da notificação"
-  },
+
 
   "cancelPionner": "Tem certeza de que deseja cancelar o Serviço de Pioneiro?",
   "@notificationDes": {
@@ -165,10 +162,6 @@
    "description": "Texto exibido para o relatório mensal"
   },
 
-  "configuration": "Configurações",
-  "@configuration": {
-   "description": "Texto exibido no cabeçalho do menu"
-  },
   
   "notification": "Notificação",
   "@notification": {
@@ -261,6 +254,26 @@
    "activity": "Minha atividade atual",
    "@activity": {
       "description": "Texto para exibir na tela MinhaAtividade"
+},
+
+"notificationTitle": "Meu relatório",
+"@notificationTitle": {
+  "description": "Texto a ser exibido no título da notificação"
+},
+
+"notificationBody": "Hora de enviar o seu relatório",
+"@notificationBody": {
+  "description": "Texto a ser exibido no corpo da notificação"
+},
+"input": "Por favor, insira um nome",
+"@input": {
+  "description": "Texto a ser exibido no cabeçalho do menu lateral"
+},
+
+"configuration": "Configurações",
+"@configuration": {
+  "description": "Texto a ser exibido no cabeçalho do menu lateral"
 }
+
 
 }

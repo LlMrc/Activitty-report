@@ -6,8 +6,8 @@ import 'package:report/src/local/local.dart';
 import 'package:report/src/model/report.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:report/src/notifier/repport_notifier.dart';
-import '../notification/local_notification.dart';
-import '../model/event.dart'; // Import the month_picker package
+
+import '../../model/event.dart'; // Import the month_picker package
 
 class MonthRangePickerScreen extends StatefulWidget {
   const MonthRangePickerScreen({super.key});
@@ -157,10 +157,7 @@ class _MonthRangePickerScreenState extends State<MonthRangePickerScreen> {
       eventMap[[DateTime(currentMonth.year, currentMonth.month)]] = event;
 
       // Schedule notification for the current month
-      await ReportNofication.scheduleLocalEventNotification(
-        event: event,
-        scheduledDate: DateTime(currentMonth.year, currentMonth.month, 1),
-      );
+     
 
       // Save report for the current month
       final report = Repport(

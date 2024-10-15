@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:report/src/local/local.dart';
 import 'package:report/src/notifier/repport_notifier.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../notification/local_notification.dart';
-import '../model/event.dart';
+
+import '../../model/event.dart';
 
 class SingleMonthPicker extends StatefulWidget {
   const SingleMonthPicker({super.key});
@@ -87,10 +87,10 @@ class _SingleMonthPickerState extends State<SingleMonthPicker> {
     required Event event,
     required DateTime scheduledDate,
   }) async {
-    await ReportNofication.scheduleLocalEventNotification(
-      event: event,
-      scheduledDate: scheduledDate,
-    );
+    // await ReportNofication.scheduleLocalEventNotification(
+    //   event: event,
+    //   scheduledDate: scheduledDate,
+    // );
     // Create the key using only year and month
     DateTime monthKey = DateTime(scheduledDate.year, scheduledDate.month, 1);
     // Create a new map and add the event to the list for the corresponding month

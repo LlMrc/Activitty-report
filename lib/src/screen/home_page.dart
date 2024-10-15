@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:report/src/feature/student/student_tile.dart';
 import 'package:report/src/local/local.dart';
+import 'package:report/src/model/event.dart';
 import 'package:report/src/notifier/repport_notifier.dart';
 import 'package:report/src/notifier/time_notifier.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -133,11 +134,9 @@ class _HomePageState extends State<HomePage> {
     return PopScope(
       canPop: (timeNotifier.getStarted) ? false : true,
       onPopInvokedWithResult: (didPop, result) {
-      
         if (!didPop) {
           ReportNofication.showLocalNotification();
           timeNotifier.saveTimer();
-        
         }
       },
       child: Scaffold(
@@ -448,7 +447,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void checkForMonthlyReport() {
+  void checkForMonthlyReport() async {
     DateTime dateTime = DateTime.now();
     var reportList = _preference.getAllRepports();
 
@@ -457,6 +456,13 @@ class _HomePageState extends State<HomePage> {
       // Check if the current month is greater than the last report's submission month
       if (dateTime.month > reportList.last.submitAt.month) {
         _addRepport(reportList); // Run the report at the start of the month
+        await ReportNofication.scheduleLocalEventNotification(
+          event: Event(
+              comment: AppLocalizations.of(context)!.notificationTitle,
+              title: AppLocalizations.of(context)!.notificationBody),
+          scheduledDate: DateTime(dateTime.year, dateTime.month, 1, 8,
+              0), // Set to 8:00 AM on the first day of the month
+        );
       }
     }
   }

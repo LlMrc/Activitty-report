@@ -26,6 +26,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
     FocusScope.of(context).unfocus();
     final DateTime? pickedDate = await showDatePicker(
       context: context,
+      
       initialDate: _selectedDateTime,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
@@ -57,6 +58,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
     FocusScope.of(context).unfocus();
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
+      initialEntryMode: TimePickerEntryMode.inputOnly,
       initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
     );
 
@@ -79,7 +81,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   void dispose() {
     _nameController.dispose();
     _phoneNumberController.dispose();
-
     _commentController.dispose();
     super.dispose();
   }
@@ -110,7 +111,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   decoration: const InputDecoration(labelText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a name';
+                      return AppLocalizations.of(context)!.input;
                     }
                     return null;
                   },
@@ -120,12 +121,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   controller: _phoneNumberController,
                   decoration: const InputDecoration(labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value != null && value.length < 5 ) {
-                      return AppLocalizations.of(context)!.validNumber;
-                    }
-                    return null;
-                  },
+                
                 ),
                 const SizedBox(height: 30),
                 TextFormField(

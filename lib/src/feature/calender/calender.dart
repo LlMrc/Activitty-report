@@ -451,7 +451,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
               _rangeSelectionMode = RangeSelectionMode.toggledOff;
             });
           },
-          child: const Text('Soumèt'),
+          child: const Text('Submit'),
         )
       ],
     );

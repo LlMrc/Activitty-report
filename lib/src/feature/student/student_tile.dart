@@ -86,7 +86,15 @@ class _StudentListTileState extends State<StudentListTile> {
                           onTap: () {
                             _makePhoneCall(student.phoneNumber);
                           },
-                          child: const CircleAvatar(child: Icon(Icons.call))),
+                          child:  Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration:  BoxDecoration(
+                              color: Theme.of(context).colorScheme.primaryContainer,
+                              border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).colorScheme.surface),
+                              shape: BoxShape.circle),
+                            child: const Icon(Icons.call))),
                       title: Text(student.name.toUpperCase()),
                       subtitle: (student.schedule != null)
                           ? Text(

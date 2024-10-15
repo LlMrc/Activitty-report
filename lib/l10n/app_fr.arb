@@ -14,6 +14,16 @@
   "@addEventButton": {
     "description": "Le texte affiché sur le bouton d'ajout d'événement"
   },
+  "input": "Veuillez entrer un nom",
+"@input": {
+  "description": "Texte à afficher dans l'en-tête du tiroir"
+},
+
+"configuration": "Paramètres",
+"@configuration": {
+  "description": "Texte à afficher dans l'en-tête du tiroir"
+},
+
 
   "calendarTitle": "Pas de titre",
   "@calendarTitle": {
@@ -65,10 +75,7 @@
      "description": "Le texte affiché pour ajouter un étudiant"
   },
 
-  "homepageTitle": "Une solution efficace pour gérer et suivre toutes vos activités",
-  "@notificationTitle": {
-     "description": "Le texte affiché comme titre de notification"
-  },
+ 
 
   "cancelPionner": "Êtes-vous sûr de vouloir annuler le service de pionnier ?",
   "@notificationDes": {
@@ -165,11 +172,6 @@
      "description": "Texte affiché pour le rapport mensuel"
   },
 
-  "configuration": "Configuration",
-  "@configuration": {
-     "description": "Texte affiché dans l'en-tête du menu"
-  },
-
 
   "notification": "Notification",
   "@notification": {
@@ -261,7 +263,18 @@
    "activity": "Mon activité actuelle",
    "@activity": {
       "description": "Texte à afficher dans l'écran MonActivité"
-   }
+   },
+
+   "notificationTitle": "Mon rapport",
+"@notificationTitle": {
+  "description": "Texte à afficher dans le titre de la notification"
+},
+
+"notificationBody": "Il est temps de soumettre votre rapport",
+"@notificationBody": {
+  "description": "Texte à afficher dans le corps de la notification"
+}
+
 
 
 }

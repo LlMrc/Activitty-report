@@ -9,9 +9,19 @@
     "description": "A message shown to greet the user"
   },
 
-  "addEventButton": "event",
+  "addEventButton": "Event",
   "@addEventButton": {
     "description": "The text shown on the add event button"
+  },
+  
+  "input": "Please enter a name",
+  "@input": {
+   "description": "Text to display in the drawer header"
+  },
+
+  "configuration": "Settings",
+  "@configuration": {
+   "description": "Text to display in the drawer header"
   },
 
   "calendarTitle": "No title",
@@ -173,10 +183,7 @@
    "description": "Text to display for the study book"
   },
   
-  "configuration": "Configuration",
-  "@configuration": {
-   "description": "Text to display in the drawer header"
-  },
+
   
   "notification": "Notification",
   "@notification": {
@@ -247,6 +254,16 @@
    "activity": "My current activity",
    "@activity": {
     "description": "Text to show in MyActivity screen"
+   },
+
+   "notificationTitle": "My report",
+   "@notificationTitle": {
+    "description": "Text to display in notification title"
+   },
+
+   "notificationBody": "Time to submit your report",
+   "@notificationBody": {
+    "description": "Text to display in notification body"
    }
 }
 
